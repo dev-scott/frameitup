@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Recursive } from 'next/font/google'
+import { Inter, Recursive, Roboto_Mono } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -11,6 +11,19 @@ const recursive = Recursive({ subsets: ['latin'] })
 
 export const metadata = constructMetadata()
 
+const inter = Inter({
+  subsets: ['latin'],
+  
+  
+})
+
+export const roboto_mono = Roboto_Mono({
+  subsets: ['latin'],
+  variable: '--roboto-mono',
+  display: 'swap',
+
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -18,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={recursive.className}>
+      <body className={`${inter.className} ${roboto_mono.variable} `}>
         <Navbar />
 
         <main className='flex grainy-light flex-col min-h-[calc(100vh-3.5rem-1px)]'>

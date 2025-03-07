@@ -82,6 +82,10 @@ const config = {
         'fade-in': 'fade-in 0.5s linear forwards',
         flashing: 'flashing 1.4s infinite linear',
       },
+      fontFamily: {
+        sans: ['var(--font-inter)'],
+        mono: ['var(--font-roboto-mono)']
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],
