@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} ${roboto_mono.variable} `}>
+      <body className={`${inter.className} `}>
         <Navbar />
 
         <main className='flex grainy-light flex-col min-h-[calc(100vh-3.5rem-1px)]'>

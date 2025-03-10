@@ -12,14 +12,14 @@
     --popover-foreground: 240 10% 3.9%;
 
     /* Nouvelles couleurs principales */
-    --primary: 28, 90%, 55%; /* #f69021 */
-    --primary-foreground: 0, 0%, 100%; /* Blanc */
+    --tertiary: 28, 90%, 55%; /* #f69021 */
+    --tertiary-foreground: 0, 0%, 100%; /* Blanc */
 
     --secondary: 15, 83%, 55%; /* #f16028 */
     --secondary-foreground: 0, 0%, 100%; /* Blanc */
 
-    --tertiary: 22, 42%, 15%; /* #3c2415 */
-    --tertiary-foreground: 28, 90%, 85%; /* Teinte plus claire de l'orange */
+    --primary: 22, 42%, 15%; /* #3c2415 */
+    --primary-foreground: 28, 90%, 85%; /* Teinte plus claire de l'orange */
 
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
