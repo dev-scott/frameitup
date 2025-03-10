@@ -47,11 +47,19 @@ const Navbar = async () => {
                     Dashboard ✨
                   </Link>
                 ) : null}
+                  <Link
+                  href='/market'
+                  className={buttonVariants({
+                    size: 'sm',
+                    variant: 'ghost',
+                  })}>
+                  Market
+                </Link>
                 <Link
                   href='/configure/upload'
                   className={buttonVariants({
                     size: 'sm',
-                    className: 'hidden sm:flex items-center gap-1',
+                    className: 'hidden sm:flex items-center gap-1 hover:bg-primary ',
                   })}>
                   Create case
                   <ArrowRight className='ml-1.5 h-5 w-5' />

@@ -1,9 +1,13 @@
 import { Icons } from "@/components/Icons";
+import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
+import { DotPattern } from "@/components/magicui/dot-pattern";
+import { RetroGrid } from "@/components/magicui/retro-grid";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Phone from "@/components/Phone";
 import { Reviews } from "@/components/Reviews";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { ArrowRight, Check, Star } from "lucide-react";
 import Link from "next/link";
 
@@ -113,7 +117,7 @@ export default function Home() {
           </div> */}
         </MaxWidthWrapper>
       </section>
-      <section className="  ">
+      <section className=" mb-4  ">
         <MaxWidthWrapper className="">
           <div className="flex flex-col items-start gap-4">
             <div className="  w-full flex justify-between items-end">
@@ -141,7 +145,11 @@ export default function Home() {
                 <Button className="px-6 hover:bg-primary transition-all duration-75 ease-in-out hover:text-white text-white font-normal text-ellipsis text-base bg-transparent border-2 border-primary text-primary">Test</Button>
                 <Button className="px-6 hover:bg-primary transition-all duration-75 ease-in-out hover:text-white text-white font-normal text-ellipsis text-base bg-transparent border-2 border-primary text-primary">Test</Button>
               </div>
-            <div className="w-full h-full min-h-[600px] bg-tertiary"></div>
+            <div className="w-full h-full min-h-[600px] bg-tertiary flex items-center justify-center  ">
+
+              <h1 className="text-white">Cadre photo </h1>
+
+            </div>
           </div>
         </MaxWidthWrapper>
       </section>
@@ -241,6 +249,40 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="mt-6 relative">
+        <MaxWidthWrapper className="py-24 flex items-center justify-center flex-col gap-y-2">
+
+        <h1 className=" z-100 text-[22px] font-[700] text-[#828282] font-mono ">Keep your eyes peeled</h1>
+          <span className="z-100 text-[#111111] text-[16px] text-start ">Subscribe to receive news and current promotions. it's for the <br/> best new
+          </span>
+
+          <div className=" z-100 flex border rounded-[5px] border-zinc-600 rounded-[2px] px-2 py-2 bg-white mt-3 w-1/2 ">
+            <input type="email" placeholder="Email" className="border-none outline-none w-full flex h-full " />
+
+            <button className="px-5 py-3 text-white font-semibold tracking-wider uppercase text-center transition-all duration-75 ease-in-out bg-primary hover:text-white">
+              Subscribe
+            </button>
+
+          </div>
+
+
+
+
+        </MaxWidthWrapper>
+
+        <AnimatedGridPattern
+        numSquares={30}
+        maxOpacity={0.1}
+        duration={3}
+        repeatDelay={1}
+        className={cn(
+          "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+          "inset-x-0 bottom-0 top-0   h-full skew-y-12",
+        )}
+      />
+ 
+      </section>
+{/* 
       <section>
         <MaxWidthWrapper className="py-24">
           <div className="mb-12 px-6 lg:px-8">
@@ -304,7 +346,7 @@ export default function Home() {
             </div>
           </ul>
         </MaxWidthWrapper>
-      </section>
+      </section> */}
     </div>
   );
 }
