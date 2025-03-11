@@ -6,12 +6,12 @@ import { usePathname } from 'next/navigation'
 const STEPS = [
   {
     name: 'Step 1: Add image',
-    description: 'Choose an image for your case',
+    description: 'Choose an image for your frame',
     url: '/upload',
   },
   {
-    name: 'Step 2: Customize design',
-    description: 'Make the case yours',
+    name: 'Step 2: Customize your design',
+    description: 'Make the frame yours',
     url: '/design',
   },
   {
@@ -20,6 +20,7 @@ const STEPS = [
     url: '/preview',
   },
 ]
+
 
 const Steps = () => {
   const pathname = usePathname()
@@ -50,7 +51,10 @@ const Steps = () => {
               <span
                 className={cn(
                   i !== 0 ? 'lg:pl-9' : '',
-                  'flex items-center px-6 py-4 text-sm font-medium'
+                  'flex items-center px-6 py-4 text-sm font-medium',
+                  // {
+                  //   'bg-primary':isCurrent
+                  // }
                 )}>
                 <span className='flex-shrink-0'>
                   <img

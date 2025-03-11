@@ -59,9 +59,9 @@ const Navbar = async () => {
                   href='/configure/upload'
                   className={buttonVariants({
                     size: 'sm',
-                    className: 'hidden sm:flex items-center gap-1 hover:bg-primary ',
+                    className: 'hidden sm:flex items-center gap-1   rounded-[5px] text-white',
                   })}>
-                  Create case
+                  Customize your frame
                   <ArrowRight className='ml-1.5 h-5 w-5' />
                 </Link>
               </>

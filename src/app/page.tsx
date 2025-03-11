@@ -1,3 +1,5 @@
+"use client"
+
 import { Icons } from "@/components/Icons";
 import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
 import { DotPattern } from "@/components/magicui/dot-pattern";
@@ -10,13 +12,21 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Check, Star } from "lucide-react";
 import Link from "next/link";
+import {motion} from "framer-motion"
 
 export default function Home() {
   return (
     <div className="bg-slate-50 grainy-light">
       <section>
         <MaxWidthWrapper className="pb-24 pt-10 lg:grid lg:grid-cols-3 sm:pb-32 lg:gap-x-0 xl:gap-x-8 lg:pt-24 xl:pt-32 lg:pb-52">
-          <div className="col-span-2 px-6 lg:px-0 lg:pt-4">
+          <motion.div
+          
+          initial={{x:"100%" , opacity:0}}
+
+          animate={{x:"0%", opacity:1}}
+          transition={{duration:0.5 , ease:"easeInOut"}}
+          
+          className="col-span-2 px-6 lg:px-0 lg:pt-4">
             <div className="relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start">
               <div className="absolute w-28 left-0 -top-20 hidden lg:block">
                 {/* i forgot this div right here in the video, it's purely visual gradient and looks nice */}
@@ -100,7 +110,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* <div className="col-span-full lg:col-span-1 w-full flex justify-center px-8 sm:px-16 md:px-0 mt-32 lg:mx-0 lg:mt-20 h-fit">
             <div className="relative md:max-w-xl">

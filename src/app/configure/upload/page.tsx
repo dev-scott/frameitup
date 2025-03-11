@@ -25,9 +25,18 @@ const Page = () => {
     onUploadProgress(p) {
       setUploadProgress(p)
     },
+    // onClientUploadError(err) {
+    //   console.error("upload error", err)
+    //   toast({
+    //     title: "Error uploading image",
+    //     description: "Please try again later.",
+
+    //   })
+    // }
   })
 
   const onDropRejected = (rejectedFiles: FileRejection[]) => {
+    console.log("rejected files", rejectedFiles)
     const [file] = rejectedFiles
 
     setIsDragOver(false)
@@ -41,6 +50,7 @@ const Page = () => {
 
   const onDropAccepted = (acceptedFiles: File[]) => {
     startUpload(acceptedFiles, { configId: undefined })
+    console.log("acceptedFiles: " + acceptedFiles)
 
     setIsDragOver(false)
   }
