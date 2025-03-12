@@ -13,25 +13,15 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       try {
-        console.log("Upload complete", metadata, file);
+        console.log("here is the metadata", metadata);
         const { configId } = metadata.input;
-
+console.log("file data",file)
         const res = await fetch(file.url);
+        console.log("image i fetch from uploadthing", res);
         const buffer = await res.arrayBuffer();
 
-        let width = 500;
-        let height = 500;
-
-        try {
-          const imgMetadata = await sharp(buffer).metadata();
-          width = imgMetadata.width || width;
-          height = imgMetadata.height || height;
-        } catch (error) {
-          console.warn(
-            "⚠️ Failed to extract image metadata with sharp:",
-            error
-          );
-        }
+        const imgMetadata = await sharp(buffer).metadata();
+        const { width, height } = imgMetadata;
 
         if (!configId) {
           const configuration = await db.configuration.create({
@@ -56,8 +46,7 @@ export const ourFileRouter = {
           return { configId: updatedConfiguration.id };
         }
       } catch (error) {
-        console.log("UploadThing onUploadComplete error", error);
-        return { configId: null };
+        console.log("UploadComplete error", error);
       }
     }),
 } satisfies FileRouter;
