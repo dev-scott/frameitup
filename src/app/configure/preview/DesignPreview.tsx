@@ -4,7 +4,7 @@ import Phone from '@/components/Phone'
 import { Button } from '@/components/ui/button'
 import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products'
 import { cn, formatPrice } from '@/lib/utils'
-import { COLORS, FINISHES, MODELS } from '@/validators/option-validator'
+import { COLORS, STYLES, MODELS } from '@/validators/option-validator'
 import { Configuration } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
 import { ArrowRight, Check } from 'lucide-react'
@@ -26,18 +26,18 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const [showConfetti, setShowConfetti] = useState<boolean>(false)
   useEffect(() => setShowConfetti(true))
 
-  const { color, model, finish, material } = configuration
+  const { color,  style, material } = configuration
 
   const tw = COLORS.find((supportedColor) => supportedColor.value === color)?.tw
 
-  const { label: modelLabel } = MODELS.options.find(
-    ({ value }) => value === model
-  )!
+  // const { label: modelLabel } = MODELS.options.find(
+  //   ({ value }) => value === model
+  // )!
 
   let totalPrice = BASE_PRICE
-  if (material === 'polycarbonate')
-    totalPrice += PRODUCT_PRICES.material.polycarbonate
-  if (finish === 'textured') totalPrice += PRODUCT_PRICES.finish.textured
+  if (material === 'WOOD')
+    totalPrice += PRODUCT_PRICES.material.WOOD
+  if (style === 'CLASSIC') totalPrice += PRODUCT_PRICES.style.CLASSIC
 
   const { mutate: createPaymentSession } = useMutation({
     mutationKey: ['get-checkout-session'],
@@ -89,7 +89,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
 
         <div className='mt-6 sm:col-span-9 md:row-end-1'>
           <h3 className='text-3xl font-bold tracking-tight text-gray-900'>
-            Your {modelLabel} Case
+            Your Frame
           </h3>
           <div className='mt-3 flex items-center gap-1.5 text-base'>
             <Check className='h-4 w-4 text-green-500' />
@@ -127,20 +127,20 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                   </p>
                 </div>
 
-                {finish === 'textured' ? (
+                {style === 'MODERN' ? (
                   <div className='flex items-center justify-between py-1 mt-2'>
                     <p className='text-gray-600'>Textured finish</p>
                     <p className='font-medium text-gray-900'>
-                      {formatPrice(PRODUCT_PRICES.finish.textured / 100)}
+                      {formatPrice(PRODUCT_PRICES.style.MODERN / 100)}
                     </p>
                   </div>
                 ) : null}
 
-                {material === 'polycarbonate' ? (
+                {material === 'METAL' ? (
                   <div className='flex items-center justify-between py-1 mt-2'>
                     <p className='text-gray-600'>Soft polycarbonate material</p>
                     <p className='font-medium text-gray-900'>
-                      {formatPrice(PRODUCT_PRICES.material.polycarbonate / 100)}
+                      {formatPrice(PRODUCT_PRICES.material.METAL / 100)}
                     </p>
                   </div>
                 ) : null}

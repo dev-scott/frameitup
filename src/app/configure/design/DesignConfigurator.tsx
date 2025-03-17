@@ -10,7 +10,7 @@ import { RadioGroup } from '@headlessui/react'
 import { useRef, useState } from 'react'
 import {
   COLORS,
-  FINISHES,
+  STYLES,
   MATERIALS,
   MODELS,
 } from '@/validators/option-validator'
@@ -63,14 +63,14 @@ const DesignConfigurator = ({
 
   const [options, setOptions] = useState<{
     color: (typeof COLORS)[number]
-    model: (typeof MODELS.options)[number]
+    // model: (typeof MODELS.options)[number]
     material: (typeof MATERIALS.options)[number]
-    finish: (typeof FINISHES.options)[number]
+    style: (typeof STYLES.options)[number]
   }>({
     color: COLORS[0],
-    model: MODELS.options[0],
+    // model: MODELS.options[0],
     material: MATERIALS.options[0],
-    finish: FINISHES.options[0],
+    style: STYLES.options[0],
   })
 
   const [renderedDimension, setRenderedDimension] = useState({
@@ -83,7 +83,7 @@ const DesignConfigurator = ({
     y: 205,
   })
 
-  const phoneCaseRef = useRef<HTMLDivElement>(null)
+  const frameCaseRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { startUpload } = useUploadThing('imageUploader')
@@ -95,7 +95,7 @@ const DesignConfigurator = ({
         top: caseTop,
         width,
         height,
-      } = phoneCaseRef.current!.getBoundingClientRect()
+      } = frameCaseRef.current!.getBoundingClientRect()
 
       const { left: containerLeft, top: containerTop } =
         containerRef.current!.getBoundingClientRect()
@@ -158,7 +158,7 @@ const DesignConfigurator = ({
         className='relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'>
         <div className='relative w-60 bg-opacity-50 pointer-events-none aspect-[896/1831]'>
           <AspectRatio
-            ref={phoneCaseRef}
+            ref={frameCaseRef}
             ratio={896 / 1831}
             className='pointer-events-none relative z-50 aspect-[896/1831] w-full'>
             <NextImage
@@ -215,7 +215,7 @@ const DesignConfigurator = ({
         </Rnd>
       </div>
 
-      <div className='h-[37.5rem] w-full col-span-full lg:col-span-1 flex flex-col bg-white'>
+      <div className='h-[37.5rem] w-full col-span-full lg:col-span-1 flex flex-col '>
         <ScrollArea className='relative flex-1 overflow-auto'>
           <div
             aria-hidden='true'
@@ -223,9 +223,10 @@ const DesignConfigurator = ({
           />
 
           <div className='px-8 pb-12 pt-8'>
-            <h2 className='tracking-tight font-bold text-3xl'>
-              Customize your case
+            <h2 className='tracking-tight font-bold text-3xl font-mono'>
+              Customize your Frame
             </h2>
+            <span>Make your best configuration</span>
 
             <div className='w-full h-px bg-zinc-200 my-6' />
 
@@ -264,7 +265,7 @@ const DesignConfigurator = ({
                   </div>
                 </RadioGroup>
 
-                <div className='relative flex flex-col gap-3 w-full'>
+                {/* <div className='relative flex flex-col gap-3 w-full'>
                   <Label>Model</Label>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -303,9 +304,9 @@ const DesignConfigurator = ({
                       ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </div>
+                </div> */}
 
-                {[MATERIALS, FINISHES].map(
+                {[MATERIALS, STYLES].map(
                   ({ name, options: selectableOptions }) => (
                     <RadioGroup
                       key={name}
@@ -356,7 +357,7 @@ const DesignConfigurator = ({
                               as='span'
                               className='mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right'>
                               <span className='font-medium text-gray-900'>
-                                {formatPrice(option.price / 100)}
+                                {formatPrice(option.price)}
                               </span>
                             </RadioGroup.Description>
                           </RadioGroup.Option>
@@ -376,8 +377,7 @@ const DesignConfigurator = ({
             <div className='w-full flex gap-6 items-center'>
               <p className='font-medium whitespace-nowrap'>
                 {formatPrice(
-                  (BASE_PRICE + options.finish.price + options.material.price) /
-                    100
+                  (BASE_PRICE + options.style.price + options.material.price) 
                 )}
               </p>
               <Button
@@ -388,9 +388,9 @@ const DesignConfigurator = ({
                   saveConfig({
                     configId,
                     color: options.color.value,
-                    finish: options.finish.value,
+                    style: options.style.value,
                     material: options.material.value,
-                    model: options.model.value,
+                    // model: options.model.value,
                   })
                 }
                 size='sm'

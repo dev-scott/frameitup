@@ -13,7 +13,7 @@ enum OrderStatus {
   awaiting_shipment
 }
 
-enum PhoneModel {
+enum FrameModel {
   iphonex
   iphone11
   iphone12
@@ -22,17 +22,21 @@ enum PhoneModel {
   iphone15
 }
 
-enum CaseMaterial {
-  silicone
-  polycarbonate
+enum FrameMaterial {
+  WOOD
+  METAL
+  PLASTIC
+  COMPOSITE
 }
 
-enum CaseFinish {
-  smooth
-  textured
+enum FrameStyle {
+  CLASSIC
+  MODERN
+  RUSTIC
+  INDUSTRIAL
 }
 
-enum CaseColor {
+enum FrameColor {
   black
   blue
   rose
@@ -43,10 +47,10 @@ model Configuration {
   width           Int
   height          Int
   imageUrl        String
-  color           CaseColor?
-  model           PhoneModel?
-  material        CaseMaterial?
-  finish          CaseFinish?
+  color           FrameColor?
+  model           FrameModel?
+  material        FrameMaterial?
+  style          FrameStyle?
   croppedImageUrl String?
   Order           Order[]
 }

@@ -26,12 +26,12 @@ export const createCheckoutSession = async ({
     throw new Error('You need to be logged in')
   }
 
-  const { finish, material } = configuration
+  const { style, material } = configuration
 
   let price = BASE_PRICE
-  if (finish === 'textured') price += PRODUCT_PRICES.finish.textured
-  if (material === 'polycarbonate')
-    price += PRODUCT_PRICES.material.polycarbonate
+  if (style === 'MODERN') price += PRODUCT_PRICES.style.MODERN
+  if (material === 'METAL')
+    price += PRODUCT_PRICES.material.METAL
 
   let order: Order | undefined = undefined
 
