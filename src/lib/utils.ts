@@ -16,8 +16,8 @@ export const formatPrice = (price: number) => {
 }
 
 export function constructMetadata({
-  title = 'CaseCobra - custom high-quality phone cases',
-  description = 'Create custom high-quality phone cases in seconds',
+  title = 'FrameitUp - custom high-quality frame fro your',
+  description = 'Create custom high-quality frame for your favorite moments',
   image = '/thumbnail.png',
   icons = '/favicon.ico',
 }: {
@@ -42,6 +42,6 @@ export function constructMetadata({
       creator: '@joshtriedcoding',
     },
     icons,
-    metadataBase: new URL("https://casecobra.vercel.app/")
+    metadataBase: new URL("https://frameitup.store/")
   }
 }
