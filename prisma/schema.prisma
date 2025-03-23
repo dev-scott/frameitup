@@ -53,7 +53,8 @@ model Configuration {
   style           FrameStyle?
   croppedImageUrl String?
   Order           Order[]
-  Product         Product[]
+  Product         Product?       @relation(fields: [productId], references: [id])
+  productId       String?
 }
 
 model User {
@@ -130,10 +131,11 @@ model Product {
   Category   Category? @relation(fields: [categoryId], references: [id])
   categoryId String?
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  configurations  Configuration @relation(fields: [configurationId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   configurationId String
 
-  Order Order[]
+  Order         Order[]
+  Configuration Configuration[]
 }

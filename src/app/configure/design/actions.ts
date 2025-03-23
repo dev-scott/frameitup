@@ -7,7 +7,6 @@ export type SaveConfigArgs = {
   color: FrameColor
   style: FrameStyle
   material: FrameMaterial
-  
   configId: string
 }
 

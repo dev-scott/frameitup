@@ -119,7 +119,7 @@ const DesignConfigurator = ({
       ctx?.drawImage(
         userImage,
         actualX,
-        actualY,
+        actualY, 
         renderedDimension.width,
         renderedDimension.height
       )
