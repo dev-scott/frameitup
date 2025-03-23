@@ -43,16 +43,18 @@ enum FrameColor {
 }
 
 model Configuration {
-  id              String        @id @default(cuid())
+  id              String         @id @default(cuid())
   width           Int
   height          Int
   imageUrl        String
   color           FrameColor?
   model           FrameModel?
   material        FrameMaterial?
-  style          FrameStyle?
+  style           FrameStyle?
   croppedImageUrl String?
   Order           Order[]
+  Product         Product?       @relation(fields: [productId], references: [id])
+  productId       String?
 }
 
 model User {
@@ -81,6 +83,8 @@ model Order {
 
   createdAt DateTime @default(now())
   updated   DateTime @updatedAt
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?
 }
 
 model ShippingAddress {
@@ -105,4 +109,33 @@ model BillingAddress {
   state       String?
   phoneNumber String?
   orders      Order[]
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  products    Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  basePrice   Float
+  images      String[]
+
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  configurationId String
+
+  Order         Order[]
+  Configuration Configuration[]
 }
