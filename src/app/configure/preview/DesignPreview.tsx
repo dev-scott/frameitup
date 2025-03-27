@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ArrowRight, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import Confetti from "react-dom-confetti";
-import {  createOrder } from "./actions";
+import { createOrder } from "./actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
@@ -18,7 +18,18 @@ import LoginModal from "@/components/LoginModal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { OrderFormSchema } from "@/lib/schema";
 const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -35,6 +46,16 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     (supportedColor) => supportedColor.value === color
   )?.tw;
 
+  const form = useForm<z.infer<typeof OrderFormSchema>>({
+    resolver: zodResolver(OrderFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+    },
+  });
+
   // const { label: modelLabel } = MODELS.options.find(
   //   ({ value }) => value === model
   // )!
@@ -49,9 +70,10 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     onSuccess: () => {
       toast({
         title: "Redirecting to checkout",
-        description: "There was an error on our end. Please try again.",
+        description: "Order created successfully.",
         variant: "destructive",
       });
+      router.push(`/`);
     },
     onError: () => {
       toast({
@@ -62,10 +84,10 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
     },
   });
 
-  const handleOrder = () => {
+  const handleOrder = (values: z.infer<typeof OrderFormSchema>) => {
     if (user) {
       // create payment session
-      createOrderFunction({ configId: id });
+      createOrderFunction({ configId: id, values });
     } else {
       // need to log in
       localStorage.setItem("configurationId", id);
@@ -96,6 +118,10 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
         </div>
 
         <div className=" h-[37.5rem] sm:col-span-12 row-span-2 md:col-span-9  text-base flex flex-col">
+
+        <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleOrder)}>
+
           <ScrollArea className="  relative flex-1 overflow-auto">
             <div className=" px-5">
               <div className="mt-6  ">
@@ -124,35 +150,85 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                 </div>
               </div>
 
-<form >
+                  <div className=" text-base  mt-8 flex flex-col justify-start gap-y-2">
+                    <div className="flex flex-row">
+                      <div className="flex flex-col gap-y-2 max-w-[500px] w-full mr-4">
+                        {/* <span className="text-zinc-700">Enter your name</span>
 
-              <div className=" text-base  mt-8 flex flex-col justify-start gap-y-2">
-                <div className="flex flex-row">
-                  <div className="flex flex-col gap-y-2 max-w-[500px] w-full mr-4">
-                    <span className="text-zinc-700">Enter your name</span>
+                        <Input placeholder="Enter your name" /> */}
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Name</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter Name" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-y-2 max-w-[500px] w-full">
+                        {/* <span className="text-zinc-700">Enter your email</span>
 
-                    <Input placeholder="Enter your name" />
+                        <Input type="email" placeholder="Enter your name" /> */}
+                          <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter your Email" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-y-2 mt-4 w-full">
+                      {/* <span className="text-zinc-700">Enter yor number</span>
+
+                      <Input type="email" placeholder="Enter your name" /> */}
+
+                      <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter your phone" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-y-2 mt-4 w-full">
+                      {/* <span className="text-zinc-700">Enter yor addresse</span>
+
+                      <Textarea placeholder="Type your message here." /> */}
+
+                      <FormField
+                          control={form.control}
+                          name="address"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Adresse</FormLabel>
+                              <FormControl>
+                                <Textarea placeholder="Enter your adresse" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-y-2 max-w-[500px] w-full">
-                    <span className="text-zinc-700">Enter your name</span>
-
-                    <Input type="email" placeholder="Enter your name" />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-y-2 mt-4 w-full">
-                  <span className="text-zinc-700">Enter yor number</span>
-
-                  <Input type="email" placeholder="Enter your name" />
-                </div>
-                <div className="flex flex-col gap-y-2 mt-4 w-full">
-                  <span className="text-zinc-700">Enter yor addresse</span>
-
-                  <Textarea placeholder="Type your message here." />
-                </div>
-              </div>
-
-</form>
-
+            
 
               <div className="mt-8">
                 <div className="bg-gray-50 py-6 mr-8 sm:rounded-lg sm:py-8">
@@ -199,13 +275,24 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
           </ScrollArea>
           <div className="mt-8 flex justify-end pb-12">
             <Button
-              onClick={() => handleOrder()}
+              // onClick={() => handleOrder()}
+              type="submit"
               className="px-4 sm:px-6 lg:px-8"
             >
               Make order <ArrowRight className="h-4 w-4 ml-1.5 inline" />
             </Button>
           </div>
-        </div>
+
+
+
+
+          </form>
+          </Form>
+
+
+
+          
+        </div>        
       </div>
     </>
   );
