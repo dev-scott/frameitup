@@ -75,6 +75,10 @@ model Order {
   amount          Float
   isPaid          Boolean       @default(false)
   status          OrderStatus   @default(awaiting_shipment)
+  name String?
+  email String?
+  phone String?
+  address String?
 
   shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId String?

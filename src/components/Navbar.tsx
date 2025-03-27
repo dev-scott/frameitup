@@ -8,6 +8,7 @@ import Image from 'next/image'
 const Navbar = async () => {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
+  console.log("here is the use connected" , user)
 
   const isAdmin = user?.email === process.env.ADMIN_EMAIL
 

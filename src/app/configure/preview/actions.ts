@@ -1,10 +1,10 @@
-'use server'
+"use server";
 
-import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products'
-import { db } from '@/db'
+import { BASE_PRICE, PRODUCT_PRICES } from "@/config/products";
+import { db } from "@/db";
 // import { stripe } from '@/lib/stripe'
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-import { Order } from '@prisma/client'
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { Order } from "@prisma/client";
 
 // export const createCheckoutSession = async ({
 //   configId,
@@ -87,68 +87,70 @@ import { Order } from '@prisma/client'
 //   return { url: stripeSession.url }
 // }
 
+export const createOrder = async ({ configId,values }: { configId: string,values: { [key: string]: string } }) => {
+  try {
+    console.log("action for creating order");
+    console.log("here is the values i get from the order creation form",values)
 
-export const createOrder = async({
-  configId,
-}:{configId:string})=>{
+    const configuration = await db.configuration.findUnique({
+      where: { id: configId },
+    });
 
-  console.log("action for creating order")
+    console.log(
+      "here is the configuration id and the configuration data",
+      configId,
+      configuration
+    );
 
+    if (!configuration) {
+      throw new Error("No such configuration found");
+    }
 
-  const configuration = await db.configuration.findUnique({
-    where: { id: configId },
-  })
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+    console.log("here is the user", user);
 
-  if (!configuration) {
-    throw new Error('No such configuration found')
-  }
+    if (!user) {
+      throw new Error("You need to be logged in");
+    }
 
-  const { getUser } = getKindeServerSession()
-  const user = await getUser()
-  console.log("here is the user",user)
+    const { style, material } = configuration;
 
-  if (!user) {
-    throw new Error('You need to be logged in')
-  }
+    let price = BASE_PRICE;
+    if (style === "MODERN") price += PRODUCT_PRICES.style.MODERN;
+    if (style === "RUSTIC") price += PRODUCT_PRICES.style.RUSTIC;
+    if (style === "INDUSTRIAL") price += PRODUCT_PRICES.style.INDUSTRIAL;
+    if (material === "METAL") price += PRODUCT_PRICES.material.METAL;
+    if (material === "PLASTIC") price += PRODUCT_PRICES.material.PLASTIC;
+    if (material === "COMPOSITE") price += PRODUCT_PRICES.material.COMPOSITE;
 
-  const { style, material } = configuration
+    let order: Order | undefined = undefined;
 
-  let price = BASE_PRICE
-  if (style === 'MODERN') price += PRODUCT_PRICES.style.MODERN
-  if (style === 'RUSTIC') price += PRODUCT_PRICES.style.RUSTIC
-  if (style === 'INDUSTRIAL') price += PRODUCT_PRICES.style.INDUSTRIAL
-  if (material === 'METAL')
-    price += PRODUCT_PRICES.material.METAL
-  if (material === 'PLASTIC')
-    price += PRODUCT_PRICES.material.PLASTIC
-  if (material === 'COMPOSITE')
-    price += PRODUCT_PRICES.material.COMPOSITE
-
-  let order: Order | undefined = undefined
-
-  const existingOrder = await db.order.findFirst({
-    where: {
-      userId: user.id,
-      configurationId: configuration.id,
-    },
-  })
-
-  console.log(user.id, configuration.id)
-
-  if (existingOrder) {
-    order = existingOrder
-  } else {
-    console.log("create order if not exist")
-    order = await db.order.create({
-      data: {
-        amount: price,
+    const existingOrder = await db.order.findFirst({
+      where: {
         userId: user.id,
         configurationId: configuration.id,
       },
-    })
+    });
+
+    console.log(user.id, configuration.id);
+
+    if (existingOrder) {
+      order = existingOrder;
+    } else {
+      console.log("create order if not exist");
+      order = await db.order.create({
+        data: {
+          amount: price,
+          userId: user.id,
+          configurationId: configuration.id,
+          ...values
+        },
+      });
+    }
+
+    return order;
+  } catch (error) {
+    console.log("Failed to create order", error);
   }
-
-  return order
-
-
-}
+};
