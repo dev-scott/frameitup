@@ -5,7 +5,7 @@ import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern"
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import { RetroGrid } from "@/components/magicui/retro-grid";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import Phone from "@/components/Phone";
+import Phone from "@/components/FrameCase";
 import { Reviews } from "@/components/Reviews";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
