@@ -20,6 +20,7 @@ import { formatPrice } from '@/lib/utils'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { notFound } from 'next/navigation'
 import StatusDropdown from './StatusDropdown'
+import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 
 const Page = async () => {
   const { getUser } = getKindeServerSession()
@@ -33,7 +34,7 @@ const Page = async () => {
 
   const orders = await db.order.findMany({
     where: {
-      isPaid: true,
+      // isPaid: false,
       createdAt: {
         gte: new Date(new Date().setDate(new Date().getDate() - 7)),
       },
@@ -46,6 +47,8 @@ const Page = async () => {
       shippingAddress: true,
     },
   })
+
+
 
   const lastWeekSum = await db.order.aggregate({
     where: {
@@ -75,7 +78,11 @@ const Page = async () => {
   const MONTHLY_GOAL = 2500
 
   return (
+    <div className=' z-[100]  inset-x-0  w-full  border-gray-200  '>
+
+    <MaxWidthWrapper>
     <div className='flex min-h-screen w-full bg-muted/40'>
+      
       <div className='max-w-7xl w-full mx-auto flex flex-col sm:gap-4 sm:py-4'>
         <div className='flex flex-col gap-16'>
           <div className='grid gap-4 sm:grid-cols-2'>
@@ -158,6 +165,9 @@ const Page = async () => {
         </div>
       </div>
     </div>
+    </MaxWidthWrapper>
+    </div>
+
   )
 }
 

@@ -58,16 +58,7 @@ export async function POST(req: Request) {
               state: shippingAddress!.state,
             },
           },
-          billingAddress: {
-            create: {
-              name: session.customer_details!.name!,
-              city: billingAddress!.city!,
-              country: billingAddress!.country!,
-              postalCode: billingAddress!.postal_code!,
-              street: billingAddress!.line1!,
-              state: billingAddress!.state,
-            },
-          },
+       
         },
       })
 
