@@ -27,6 +27,7 @@ export const changeOrderStatus = async ({
   });
 
   if(user){
+    console.log("the user exist yesss")
 
   await resend.emails.send({
     from: "Frameitup <hello.dev-scott.me>",
@@ -42,6 +43,7 @@ export const changeOrderStatus = async ({
       },
     }),
   });
+  
 }
 
 };

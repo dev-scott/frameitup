@@ -1,4 +1,5 @@
 "use client";
+import { Order, Prisma } from "@prisma/client";
 
 import FrameCase from "@/components/FrameCase";
 import { Button } from "@/components/ui/button";
@@ -68,13 +69,15 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const { mutate: createOrderFunction } = useMutation({
     mutationKey: ["get-checkout-session"],
     mutationFn: createOrder,
-    onSuccess: () => {
+    onSuccess: (order) => {
       toast({
         title: "Redirecting to checkout",
         description: "Order created successfully.",
         variant: "default",
       });
+      handleSendEmail(order);
       router.push(`/`);
+
     },
     onError: () => {
       toast({
@@ -84,6 +87,14 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
       });
     },
   });
+
+  const handleSendEmail = async(order:Order|undefined)=>{
+    await fetch('/api/send',{
+      method:'POST',
+      body:JSON.stringify({order:order})
+
+    })
+  }
 
   const handleOrder = (values: z.infer<typeof OrderFormSchema>) => {
     if (user) {

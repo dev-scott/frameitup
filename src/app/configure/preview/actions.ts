@@ -148,7 +148,6 @@ export const createOrder = async ({
       order = existingOrder;
     } else {
       try {
-        const result = await db.$transaction(async () => {
           // Étape 1 : Création de la commande
            order = await db.order.create({
             data: {
@@ -179,12 +178,10 @@ export const createOrder = async ({
             },
           });
 
-          return order
 
 
-        });
 
-        console.log("Commande créée avec succès :", result);
+        console.log("Commande créée avec succès :", order);
       } catch (error) {
         console.error("Erreur lors de la création de la commande :", error);
         throw new Error("Échec de la création de la commande");
