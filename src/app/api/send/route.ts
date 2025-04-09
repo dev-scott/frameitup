@@ -39,7 +39,7 @@ export async function POST(req: Request) {
         }),
       })
       console.log("here is the response i have after sending the mail" , response)
-      return response
+      return NextResponse.json(response)
   } catch (error) {
     return NextResponse.json({ error });
   }
