@@ -242,7 +242,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
                       <div className="flex items-center justify-between py-1 mt-2">
                         <p className="text-gray-600">Base price</p>
                         <p className="font-medium text-gray-900">
-                          {formatPrice(BASE_PRICE / 100)}
+                          {formatPrice(BASE_PRICE )}
                         </p>
                       </div>
 

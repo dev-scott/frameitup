@@ -4,7 +4,7 @@ import { BASE_PRICE, PRODUCT_PRICES } from "@/config/products";
 import { db } from "@/db";
 // import { stripe } from '@/lib/stripe'
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { Order } from "@prisma/client";
+import { Order, Prisma } from "@prisma/client";
 
 // export const createCheckoutSession = async ({
 //   configId,
@@ -87,10 +87,19 @@ import { Order } from "@prisma/client";
 //   return { url: stripeSession.url }
 // }
 
-export const createOrder = async ({ configId,values }: { configId: string,values: { [key: string]: string } }) => {
+export const createOrder = async ({
+  configId,
+  values,
+}: {
+  configId: string;
+  values: { [key: string]: string };
+}) => {
   try {
     console.log("action for creating order");
-    console.log("here is the values i get from the order creation form",values)
+    console.log(
+      "here is the values i get from the order creation form",
+      values
+    );
 
     const configuration = await db.configuration.findUnique({
       where: { id: configId },
@@ -138,15 +147,48 @@ export const createOrder = async ({ configId,values }: { configId: string,values
     if (existingOrder) {
       order = existingOrder;
     } else {
-      console.log("create order if not exist");
-      order = await db.order.create({
-        data: {
-          amount: price,
-          userId: user.id,
-          configurationId: configuration.id,
-          ...values
-        },
-      });
+      try {
+        const result = await db.$transaction(async () => {
+          // Étape 1 : Création de la commande
+           order = await db.order.create({
+            data: {
+              amount: price,
+              userId: user.id,
+              configurationId: configuration.id,
+            },
+          });
+
+          // Étape 2 : Création de l'adresse
+          const shippingAddress = await db.shippingAddress.create({
+            data: {
+              name: values.name,
+              email: values.email,
+              phone: values.phone,
+              address: values.address,
+            },
+          });
+
+          // Étape 3 : Lier l'adresse à la commande
+           order = await db.order.update({
+            where: { id: order.id },
+            data: {
+              shippingAddressId: shippingAddress.id,
+            },
+            include: {
+              shippingAddress: true,
+            },
+          });
+
+          return order
+
+
+        });
+
+        console.log("Commande créée avec succès :", result);
+      } catch (error) {
+        console.error("Erreur lors de la création de la commande :", error);
+        throw new Error("Échec de la création de la commande");
+      }
     }
 
     return order;
