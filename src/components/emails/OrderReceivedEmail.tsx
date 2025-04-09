@@ -26,7 +26,7 @@ const OrderReceivedEmail = ({
   const baseUrl =
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000'
-      : 'https://casecobra.vercel.app'
+      : 'https://www.frameitup.store'
 
   return (
     <Html>
@@ -56,8 +56,7 @@ const OrderReceivedEmail = ({
           <Section style={global.defaultPadding}>
             <Text style={adressTitle}>Shipping to: {shippingAddress.name}</Text>
             <Text style={{ ...global.text, fontSize: 14 }}>
-              {shippingAddress.street}, {shippingAddress.city},{' '}
-              {shippingAddress.state} {shippingAddress.postalCode}
+              {shippingAddress.address}
             </Text>
           </Section>
           <Hr style={global.hr} />
@@ -90,7 +89,7 @@ const OrderReceivedEmail = ({
             </Row>
             <Row>
               <Text style={footer.text}>
-                © CaseCobra, Inc. All Rights Reserved.
+                © FrameitUp, Inc. All Rights Reserved.
               </Text>
             </Row>
           </Section>

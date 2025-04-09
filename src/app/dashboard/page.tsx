@@ -52,7 +52,7 @@ const Page = async () => {
 
   const lastWeekSum = await db.order.aggregate({
     where: {
-      isPaid: true,
+      // isPaid: false,
       createdAt: {
         gte: new Date(new Date().setDate(new Date().getDate() - 7)),
       },
@@ -64,7 +64,7 @@ const Page = async () => {
 
   const lastMonthSum = await db.order.aggregate({
     where: {
-      isPaid: true,
+      // isPaid: false,
       createdAt: {
         gte: new Date(new Date().setDate(new Date().getDate() - 30)),
       },
@@ -74,8 +74,8 @@ const Page = async () => {
     },
   })
 
-  const WEEKLY_GOAL = 500
-  const MONTHLY_GOAL = 2500
+  const WEEKLY_GOAL = 100000
+  const MONTHLY_GOAL = 1500000
 
   return (
     <div className=' z-[100]  inset-x-0  w-full  border-gray-200  '>
@@ -101,6 +101,7 @@ const Page = async () => {
               <CardFooter>
                 <Progress
                   value={((lastWeekSum._sum.amount ?? 0) * 100) / WEEKLY_GOAL}
+                  className="bg-green-400/50"
                 />
               </CardFooter>
             </Card>
@@ -119,6 +120,7 @@ const Page = async () => {
               <CardFooter>
                 <Progress
                   value={((lastMonthSum._sum.amount ?? 0) * 100) / MONTHLY_GOAL}
+                  className="bg-green-400/50"
                 />
               </CardFooter>
             </Card>
