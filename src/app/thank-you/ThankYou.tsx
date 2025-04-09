@@ -91,14 +91,12 @@ const ThankYou = () => {
               <div className='mt-2 text-zinc-700'>
                 <address className='not-italic'>
                   <span className='block'>{shippingAddress?.name}</span>
-                  <span className='block'>{shippingAddress?.street}</span>
-                  <span className='block'>
-                    {shippingAddress?.postalCode} {shippingAddress?.city}
-                  </span>
+                  <span className='block'>{shippingAddress?.address}</span>
+                  
                 </address>
               </div>
             </div>
-            <div>
+            {/* <div>
               <p className='font-medium text-gray-900'>Billing address</p>
               <div className='mt-2 text-zinc-700'>
                 <address className='not-italic'>
@@ -109,7 +107,7 @@ const ThankYou = () => {
                   </span>
                 </address>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className='grid grid-cols-2 gap-x-6 border-t border-zinc-200 py-10 text-sm'>
