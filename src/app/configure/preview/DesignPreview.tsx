@@ -37,6 +37,7 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   const { toast } = useToast();
   const { id } = configuration;
   const { user } = useKindeBrowserClient();
+  console.log("here i get" , user)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
@@ -65,6 +66,14 @@ const DesignPreview = ({ configuration }: { configuration: Configuration }) => {
   let totalPrice = BASE_PRICE;
   if (material === "WOOD") totalPrice += PRODUCT_PRICES.material.WOOD;
   if (style === "CLASSIC") totalPrice += PRODUCT_PRICES.style.CLASSIC;
+  if (style === "MODERN") totalPrice += PRODUCT_PRICES.style.MODERN;
+
+  if (style === "RUSTIC") totalPrice += PRODUCT_PRICES.style.RUSTIC;
+  if (style === "INDUSTRIAL") totalPrice += PRODUCT_PRICES.style.INDUSTRIAL;
+  if (material === "METAL") totalPrice += PRODUCT_PRICES.material.METAL;
+  if (material === "PLASTIC") totalPrice += PRODUCT_PRICES.material.PLASTIC;
+  if (material === "COMPOSITE") totalPrice += PRODUCT_PRICES.material.COMPOSITE;
+
 
   const { mutate: createOrderFunction } = useMutation({
     mutationKey: ["get-checkout-session"],

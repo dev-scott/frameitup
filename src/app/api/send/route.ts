@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
     
      const response =  await resend.emails.send({
-        from: 'FrameitUp <hello.dev-scott.me>',
+        from: 'FrameitUp <support@mail.frameitup.store>',
         to: [order!.user!.email!],
         subject: 'Thanks for your order!',
         react: OrderReceivedEmail({
