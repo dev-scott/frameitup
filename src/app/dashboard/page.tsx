@@ -18,9 +18,9 @@ import {
 import { db } from '@/db'
 import { formatPrice } from '@/lib/utils'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-import { notFound } from 'next/navigation'
 import StatusDropdown from './StatusDropdown'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
+import NotFound from '@/components/NotFound'
 
 const Page = async () => {
   const { getUser } = getKindeServerSession()
@@ -29,7 +29,7 @@ const Page = async () => {
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL
 
   if (!user || user.email !== ADMIN_EMAIL) {
-    return notFound()
+    return <NotFound/>
   }
 
   const orders = await db.order.findMany({
