@@ -1,44 +1,65 @@
 export const PRODUCT_CATEGORIES = [
   {
-    label: 'UI Kits',
-    value: 'ui_kits' as const,
+    label: "Lacquered wood frame",
+    value: "wood_frame" as const,
     featured: [
       {
-        name: 'Editor picks',
-        href: `/products?category=ui_kits`,
-        imageSrc: '/nav/ui-kits/mixed.jpg',
+        name: "Favorite Frame Picks",
+        href: `/products?category=photo_frames`,
+        imageSrc: "/nav/photo-frames/mixed.jpg",
       },
       {
-        name: 'New Arrivals',
-        href: '/products?category=ui_kits&sort=desc',
-        imageSrc: '/nav/ui-kits/blue.jpg',
+        name: "New Arrivals",
+        href: "/products?category=photo_frames&sort=desc",
+        imageSrc: "/nav/photo-frames/blue.jpg",
       },
       {
-        name: 'Bestsellers',
-        href: '/products?category=ui_kits',
-        imageSrc: '/nav/ui-kits/purple.jpg',
+        name: "Bestsellers",
+        href: "/products?category=photo_frames",
+        imageSrc: "/nav/photo-frames/purple.jpg",
       },
     ],
   },
   {
-    label: 'Icons',
-    value: 'icons' as const,
+    label: "Plastic frame",
+    value: "plastic_frame" as const,
     featured: [
       {
-        name: 'Favorite Icon Picks',
-        href: `/products?category=icons`,
-        imageSrc: '/nav/icons/picks.jpg',
+        name: "Favorite Icon Picks",
+        href: `/products?category=phone_cases`,
+        imageSrc: "/nav/phone-cases/picks.jpg",
       },
       {
-        name: 'New Arrivals',
-        href: '/products?category=icons&sort=desc',
-        imageSrc: '/nav/icons/new.jpg',
+        name: "New Arrivals",
+        href: "/products?category=phone-cases&sort=desc",
+        imageSrc: "/nav/icons/new.jpg",
       },
       {
-        name: 'Bestselling Icons',
-        href: '/products?category=icons',
-        imageSrc: '/nav/icons/bestsellers.jpg',
+        name: "Bestselling Icons",
+        href: "/products?category=icons",
+        imageSrc: "/nav/icons/bestsellers.jpg",
       },
     ],
   },
-]
+  {
+    label: "Bordered frame",
+    value: "bordered_frame" as const,
+    featured: [
+      {
+        name: "Favorite Icon Picks",
+        href: `/products?category=phone_cases`,
+        imageSrc: "/nav/phone-cases/picks.jpg",
+      },
+      {
+        name: "New Arrivals",
+        href: "/products?category=phone-cases&sort=desc",
+        imageSrc: "/nav/icons/new.jpg",
+      },
+      {
+        name: "Bestselling Icons",
+        href: "/products?category=icons",
+        imageSrc: "/nav/icons/bestsellers.jpg",
+      },
+    ],
+  },
+];
