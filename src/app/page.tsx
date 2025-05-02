@@ -1,7 +1,6 @@
 import { BentoCard } from "@/components/magicui/bento-grid";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ProductReel from "@/components/ProductReel";
-// import ProductReel from '@/components/ProductReel'
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowDownToLine, CheckCircle, FileTextIcon, Leaf } from "lucide-react";
