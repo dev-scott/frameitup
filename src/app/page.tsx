@@ -150,7 +150,7 @@ export default function Home() {
                     href="/products?category=plastic_frame"
                     className={cn(buttonVariants(), "w-full")} // {buttonVariants("")}
                   >
-                    Browse Trending
+                    Browse Trending ...
                   </Link>
                 </div>
               </div>
