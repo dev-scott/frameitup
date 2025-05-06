@@ -8,7 +8,12 @@ import { ArrowDownToLine, CheckCircle, FileTextIcon, Leaf } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { cardVariants, divVariants } from "@/lib/motion-variants";
+import {
+  cardVariants,
+  childVariants,
+  divVariants,
+  parentVariants,
+} from "@/lib/motion-variants";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 
 const perks = [
@@ -73,7 +78,8 @@ export default function Home() {
         <motion.div
           variants={divVariants}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true }}
           className="py-20 mx-auto relative text-center flex flex-col items-center max-w-3xl"
         >
           <DotPattern
@@ -117,10 +123,17 @@ export default function Home() {
         className="border-t border-gray-200 bg-gray-50"
       >
         <MaxWidthWrapper className="py-20">
-          <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
+          <motion.div
+            className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0"
+            variants={parentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
             {perks.map((perk) => (
-              <div
+              <motion.div
                 key={perk.name}
+                variants={childVariants}
                 className="text-center md:flex md:items-start md:text-left lg:block lg:text-center"
               >
                 <div className="md:flex-shrink-0 flex justify-center">
@@ -137,9 +150,9 @@ export default function Home() {
                     {perk.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </MaxWidthWrapper>
       </motion.section>
     </>
