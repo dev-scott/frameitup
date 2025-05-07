@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import {
+  buttonVariantsForMotion,
   cardVariants,
   childVariants,
   divVariants,
@@ -95,10 +96,39 @@ export default function Home() {
             With FrameitUp , we bring your photos to life with high-quality
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
-            <Link href="/products" className={buttonVariants()}>
-              Browse Trending
+            <Link href="/products">
+              {/* <motion.a
+                whileHover="hover"
+                whileTap="tap"
+                variants={buttonVariantsForMotion}
+           className="bg-primary text-primary-foreground shadow"
+              >
+                Browse Trending
+              </motion.a> */}
+              <motion.button
+                variants={buttonVariantsForMotion}
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
+                style={{
+                  padding: "12px 32px",
+                  borderRadius: "8px",
+                  border: "none",
+                  // background:
+                  //   "linear-gradient(90deg, #6366f1 0%, #60a5fa 100%)",
+                  // color: "#fff",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  fontSize: "1.1rem",
+                }}
+                className="bg-primary text-primary-foreground shadow"
+              >
+                Browse Trending
+              </motion.button>
             </Link>
-            <Button variant="ghost">Our quality promise &rarr;</Button>
+            <Button variant="ghost" style={{ padding: "12px 32px" }}>
+              Our quality promise &rarr;
+            </Button>
           </div>
         </motion.div>
 

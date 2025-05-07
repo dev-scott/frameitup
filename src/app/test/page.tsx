@@ -20,7 +20,7 @@ interface EmailTemplateProps {
   href: string;
 }
 
-export const EmailTemplate = ({
+const EmailTemplate = ({
   actionLabel = "action label example",
   buttonText = "test example",
   href = "https://google.com",
@@ -30,21 +30,13 @@ export const EmailTemplate = ({
       <Head />
       <Preview>The marketplace for high-quality digital goods.</Preview>
       <Body style={main}>
-        <Container style={container}>
-          <div
-            style={{ width: "100%", height: "150px", backgroundColor: "green" }}
-          >
+        <Container style={container} className="p-6 bg-white text-black">
+          <div className="w-full h-[150px] bg-green-400">
             <Img
               src={`${process.env.NEXT_PUBLIC_SERVER_URL}/thumbnail.png`}
-              // className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center"
               alt="FrameitUp"
-              style={{
-                margin: "0 0",
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center",
-              }}
+              style={logo}
             />
           </div>
           {/* <Img
@@ -61,15 +53,15 @@ export const EmailTemplate = ({
             Hi there,
           </Text>
           <Text style={paragraph} className="text-base font-base ">
-            HeHe Welcome to FrameitUp, the marketplace for high quality digital
+            Welcome to FrameitUp, the marketplace for high quality digital
             goods. Use the button below to {actionLabel}.
           </Text>
           <Section style={btnContainer}>
-            <Button style={button} href={href}>
+            <Button style={button} href={href} className="bg-primary">
               {buttonText}
             </Button>
           </Section>
-          <Text style={{ ...paragraph, fontWeight: "bold" }}>
+          <Text style={paragraph} className="font-bold">
             Best,
             <br />
             The FrameitUp team
@@ -84,8 +76,15 @@ export const EmailTemplate = ({
   );
 };
 
-export const PrimaryActionEmailHtml = (props: EmailTemplateProps) =>
-  render(<EmailTemplate {...props} />, { pretty: true });
+export const Page = (props: EmailTemplateProps) => {
+  return (
+    <>
+      <EmailTemplate {...props} />
+    </>
+  );
+};
+
+export default Page;
 
 const main = {
   backgroundColor: "#ffffff",
@@ -94,11 +93,12 @@ const main = {
 };
 
 const container = {
-  padding: "20px 20px",
   margin: "0 auto",
-  backgroundColor: "white",
-  fontColor: "black",
   //   padding: "20px 0 48px",
+};
+
+const logo = {
+  margin: "0 0",
 };
 
 const paragraph = {
@@ -118,7 +118,6 @@ const button = {
   textDecoration: "none",
   textAlign: "center" as const,
   display: "block",
-  backgroundColor: "#3c2415",
 };
 
 const hr = {
