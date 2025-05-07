@@ -1,3 +1,4 @@
+"use client";
 import { BentoCard } from "@/components/magicui/bento-grid";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ProductReel from "@/components/ProductReel";
@@ -6,6 +7,15 @@ import { cn } from "@/lib/utils";
 import { ArrowDownToLine, CheckCircle, FileTextIcon, Leaf } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "motion/react";
+import {
+  buttonVariantsForMotion,
+  cardVariants,
+  childVariants,
+  divVariants,
+  parentVariants,
+} from "@/lib/motion-variants";
+import { DotPattern } from "@/components/magicui/dot-pattern";
 
 const perks = [
   {
@@ -66,7 +76,18 @@ export default function Home() {
   return (
     <>
       <MaxWidthWrapper>
-        <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
+        <motion.div
+          variants={divVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="py-20 mx-auto relative text-center flex flex-col items-center max-w-3xl"
+        >
+          <DotPattern
+            className={cn(
+              "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)] -z-10"
+            )}
+          />
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
             Your favorite moments deserve more than just a{" "}
             <span className="text-secondary">digital screen</span>
@@ -75,12 +96,41 @@ export default function Home() {
             With FrameitUp , we bring your photos to life with high-quality
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
-            <Link href="/products" className={buttonVariants()}>
-              Browse Trending
+            <Link href="/products">
+              {/* <motion.a
+                whileHover="hover"
+                whileTap="tap"
+                variants={buttonVariantsForMotion}
+           className="bg-primary text-primary-foreground shadow"
+              >
+                Browse Trending
+              </motion.a> */}
+              <motion.button
+                variants={buttonVariantsForMotion}
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
+                style={{
+                  padding: "12px 32px",
+                  borderRadius: "8px",
+                  border: "none",
+                  // background:
+                  //   "linear-gradient(90deg, #6366f1 0%, #60a5fa 100%)",
+                  // color: "#fff",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  fontSize: "1.1rem",
+                }}
+                className="bg-primary text-primary-foreground shadow"
+              >
+                Browse Trending
+              </motion.button>
             </Link>
-            <Button variant="ghost">Our quality promise &rarr;</Button>
+            <Button variant="ghost" style={{ padding: "12px 32px" }}>
+              Our quality promise &rarr;
+            </Button>
           </div>
-        </div>
+        </motion.div>
 
         <ProductReel
           query={{ sort: "desc", limit: 4 }}
@@ -96,12 +146,24 @@ export default function Home() {
         />
       </MaxWidthWrapper>
 
-      <section className="border-t border-gray-200 bg-gray-50">
+      <motion.section
+        variants={cardVariants}
+        initial="hidden"
+        animate="visible"
+        className="border-t border-gray-200 bg-gray-50"
+      >
         <MaxWidthWrapper className="py-20">
-          <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
+          <motion.div
+            className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0"
+            variants={parentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+          >
             {perks.map((perk) => (
-              <div
+              <motion.div
                 key={perk.name}
+                variants={childVariants}
                 className="text-center md:flex md:items-start md:text-left lg:block lg:text-center"
               >
                 <div className="md:flex-shrink-0 flex justify-center">
@@ -118,62 +180,11 @@ export default function Home() {
                     {perk.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </MaxWidthWrapper>
-      </section>
-      <MaxWidthWrapper>
-        <div className="py-20 mx-auto h-[800px] ">
-          {/* <div className="w-full md:flex md:items-center md:justify-between mb-4">
-            <div className="max-w-2xl lg:max-w-4xl lg:px-0">
-              <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
-                Browse by Category
-              </h1>
-              <p className="mt-1 text-lg max-w-prose text-muted-foreground">
-                With FrameitUp , we bring your photos to life with high-quality
-              </p>
-            </div>
-          </div> */}
-          <div className="relative grid grid-cols-3 gap-4 grid-rows-2 w-full   aspect-square h-full">
-            <div className="bg-gray-200 col-span-2 col-start-1 row-start-1 row-span-2 w-full h-full relative flex flex-col justify-between items-center rounded-xl  ">
-              <div className="flex items-center flex-col justify-center py-4 gap-4 mt-10">
-                <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                  Plastic frame
-                </h1>
-                <span>
-                  Discover quality frame that reflect your style and make
-                  everyday enjoyable
-                </span>
-                <div className=" md:block">
-                  <Link
-                    href="/products?category=plastic_frame"
-                    className={cn(buttonVariants(), "w-full")} // {buttonVariants("")}
-                  >
-                    Browse Trending ..
-                  </Link>
-                </div>
-              </div>
-              <div className="abosolute -bottom-10  w-2/4 h-[400px] relative">
-                <Image
-                  src="/category_frame/frame1.jpg"
-                  fill
-                  alt="platics frames"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-            <div className=" col-span-1 col-start-3 row-start-1 row-span-1 w-full h-full">
-              <BentoCard key={borderedFrameData.name} {...borderedFrameData} />
-            </div>
-
-            <div className=" col-span-1 col-start-3 row-start-2 row-span-1 w-full h-full ">
-              <BentoCard key={woodFrameData.name} {...woodFrameData} />
-            </div>
-          </div>
-        </div>
-      </MaxWidthWrapper>
+      </motion.section>
     </>
   );
 }
