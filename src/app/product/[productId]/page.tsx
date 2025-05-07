@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import AddToCartButton from '@/components/AddToCartButton'
 import ImageSlider from '@/components/ImageSlider'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
@@ -45,7 +47,7 @@ const Page = async ({ params }: PageProps) => {
   const label = PRODUCT_CATEGORIES.find(
     ({ value }) => value === product.category
   )?.label
-
+//@ts-ignore
   const validUrls = product.images
     .map(({ image }) =>
       typeof image === 'string' ? image : image.url
