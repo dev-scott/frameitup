@@ -4,14 +4,38 @@ import { Button } from "@/components/ui/button";
 import { PRODUCT_CATEGORIES } from "@/config";
 import { useCart } from "@/hooks/use-cart";
 import { cn, formatPrice } from "@/lib/utils";
+import { OrderFormSchema } from "@/lib/validators/order-validator";
 import { trpc } from "@/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
 
 const Page = () => {
+  const form = useForm<z.infer<typeof OrderFormSchema>>({
+    resolver: zodResolver(OrderFormSchema),
+    defaultValues: {
+      phone: "",
+      address: "",
+    },
+  });
+
+  const handlerOrder = (values: z.infer<typeof OrderFormSchema>) => {
+    console.log("here is the order value" , values)
+  };
+
   const { items, removeItem } = useCart();
 
   const router = useRouter();
@@ -32,7 +56,7 @@ const Page = () => {
 
   const cartTotal = items.reduce(
     (total, { product }) => total + product.price,
-    0
+    0,
   );
 
   const fee = 1;
@@ -82,7 +106,7 @@ const Page = () => {
               {isMounted &&
                 items.map(({ product }) => {
                   const label = PRODUCT_CATEGORIES.find(
-                    (c) => c.value === product.category
+                    (c) => c.value === product.category,
                   )?.label;
 
                   const { image } = product.images[0];
@@ -153,6 +177,17 @@ const Page = () => {
           </div>
 
           <section className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
+            <div className="mt-6 space-y-4 mb-6 border-b pb-3 border-gray-200">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(handlerOrder)}>
+                  <h1 className="font-medium text-gray-900 text-lg">
+                    Your shipping address
+                  </h1>
+
+                  <div></div>
+                </form>
+              </Form>
+            </div>
             <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
 
             <div className="mt-6 space-y-4">
