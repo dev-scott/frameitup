@@ -4,14 +4,44 @@ import { Button } from "@/components/ui/button";
 import { PRODUCT_CATEGORIES } from "@/config";
 import { useCart } from "@/hooks/use-cart";
 import { cn, formatPrice } from "@/lib/utils";
+import {
+  ExtendedOrderFormSchema,
+  OrderFormSchema,
+} from "@/lib/validators/order-validator";
 import { trpc } from "@/trpc/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const Page = () => {
+  const form = useForm<z.infer<typeof OrderFormSchema>>({
+    resolver: zodResolver(OrderFormSchema),
+    defaultValues: {
+      phone: "",
+      address: "",
+    },
+  });
+
+  const handlerOrder = (values: z.infer<typeof OrderFormSchema>) => {
+    console.log("here is the order value", values);
+    createOrder({ ...values, productIds: { productIds } });
+  };
+
   const { items, removeItem } = useCart();
 
   const router = useRouter();
@@ -19,6 +49,14 @@ const Page = () => {
   const { mutate: createCheckoutSession, isLoading } =
     trpc.payment.createSession.useMutation({
       onSuccess: ({ url }) => {
+        if (url) router.push(url);
+      },
+    });
+
+  const { mutate: createOrder, isLoading: createOrderLoading } =
+    trpc.order.createOrder.useMutation({
+      onSuccess: ({ url }) => {
+        toast.success("Order created successfully");
         if (url) router.push(url);
       },
     });
@@ -32,7 +70,7 @@ const Page = () => {
 
   const cartTotal = items.reduce(
     (total, { product }) => total + product.price,
-    0
+    0,
   );
 
   const fee = 1;
@@ -82,7 +120,7 @@ const Page = () => {
               {isMounted &&
                 items.map(({ product }) => {
                   const label = PRODUCT_CATEGORIES.find(
-                    (c) => c.value === product.category
+                    (c) => c.value === product.category,
                   )?.label;
 
                   const { image } = product.images[0];
@@ -152,61 +190,110 @@ const Page = () => {
             </ul>
           </div>
 
-          <section className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
-            <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
+          <section className="mt-16 rounded-lg bg-gray-100 px-4 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handlerOrder)}>
+                <div className="mt-6 space-y-4 mb-6 border-b pb-3 border-gray-200">
+                  <h1 className="font-medium text-gray-900 text-lg">
+                    Your shipping address
+                  </h1>
 
-            <div className="mt-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-600">Subtotal</p>
-                <p className="text-sm font-medium text-gray-900">
-                  {isMounted ? (
-                    formatPrice(cartTotal)
-                  ) : (
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  )}
-                </p>
-              </div>
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>PHone field</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Enter your phone number"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Your address</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Enter your address"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+                <h2 className="text-lg font-medium text-gray-900">
+                  Order summary
+                </h2>
 
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <span>Flat Transaction Fee</span>
-                </div>
-                <div className="text-sm font-medium text-gray-900">
-                  {isMounted ? (
-                    formatPrice(fee)
-                  ) : (
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  )}
-                </div>
-              </div>
+                <div className="mt-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-600">Subtotal</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {isMounted ? (
+                        formatPrice(cartTotal)
+                      ) : (
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      )}
+                    </p>
+                  </div>
 
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <div className="text-base font-medium text-gray-900">
-                  Order Total
-                </div>
-                <div className="text-base font-medium text-gray-900">
-                  {isMounted ? (
-                    formatPrice(cartTotal + fee)
-                  ) : (
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  )}
-                </div>
-              </div>
-            </div>
+                  <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <span>Flat Transaction Fee</span>
+                    </div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {isMounted ? (
+                        formatPrice(fee)
+                      ) : (
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      )}
+                    </div>
+                  </div>
 
-            <div className="mt-6">
-              <Button
-                disabled={items.length === 0 || isLoading}
-                onClick={() => createCheckoutSession({ productIds })}
-                className="w-full"
-                size="lg"
-              >
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin mr-1.5" />
-                ) : null}
-                Checkout
-              </Button>
-            </div>
+                  <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                    <div className="text-base font-medium text-gray-900">
+                      Order Total
+                    </div>
+                    <div className="text-base font-medium text-gray-900">
+                      {isMounted ? (
+                        formatPrice(cartTotal + fee)
+                      ) : (
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <Button
+                    disabled={items.length === 0 || createOrderLoading}
+                    // onClick={() => createCheckoutSession({ productIds })}
+                    type="submit"
+                    className="w-full"
+                    size="lg"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin mr-1.5" />
+                    ) : null}
+                    Make order
+                  </Button>
+                </div>
+              </form>
+            </Form>
           </section>
         </div>
       </div>
