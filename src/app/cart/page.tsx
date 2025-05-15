@@ -55,9 +55,9 @@ const Page = () => {
 
   const { mutate: createOrder, isLoading: createOrderLoading } =
     trpc.order.createOrder.useMutation({
-      onSuccess: ({ orderId }) => {
+      onSuccess: ({ url }) => {
         toast.success("Order created successfully");
-        // router.push(`/thank-you?orderId=${orderId}`);
+        if (url) router.push(url);
       },
     });
 
