@@ -2,12 +2,13 @@ import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { Icons } from "./Icons";
 import NavItems from "./NavItems";
-import { buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import Cart from "./Cart";
 import { getServerSideUser } from "@/lib/payload-utils";
 import { cookies } from "next/headers";
 import UserAccountNav from "./UserAccountNav";
 import MobileNav from "./MobileNav";
+import { ChevronDown } from "lucide-react";
 
 const Navbar = async () => {
   const nextCookies = cookies();
@@ -28,7 +29,22 @@ const Navbar = async () => {
               </div>
 
               <div className="hidden z-50 lg:ml-8 lg:block lg:self-stretch">
-                <NavItems />
+                {/* <NavItems /> */}
+                <Button
+                  className="gap-1.5"
+                  // onClick={handleOpen}
+                  variant={"ghost"}
+                >
+                  Make your own order
+                  <ChevronDown
+                    className={cn(
+                      "h-4 w-4 transition-all text-muted-foreground",
+                      {
+                        "-rotate-180": isOpen,
+                      },
+                    )}
+                  />
+                </Button>
               </div>
 
               <div className="ml-auto flex items-center">
