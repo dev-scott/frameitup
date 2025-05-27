@@ -8,7 +8,7 @@ import { getServerSideUser } from "@/lib/payload-utils";
 import { cookies } from "next/headers";
 import UserAccountNav from "./UserAccountNav";
 import MobileNav from "./MobileNav";
-import { ChevronDown } from "lucide-react";
+import { Ban, ChevronDown } from "lucide-react";
 
 const Navbar = async () => {
   const nextCookies = cookies();
@@ -28,9 +28,9 @@ const Navbar = async () => {
                 </Link>
               </div>
 
-              <div className="hidden z-50 lg:ml-8 lg:block lg:self-stretch">
+              <div className="hidden z-50 lg:ml-8 lg:flex lg:justify-center lg:items-center lg:self-stretch ">
                 {/* <NavItems /> */}
-                <Button
+                {/* <Button
                   className="gap-1.5"
                   // onClick={handleOpen}
                   variant={"ghost"}
@@ -44,6 +44,14 @@ const Navbar = async () => {
                       },
                     )}
                   />
+                </Button> */}
+                <Button
+                  className="gap-1.5 relative  border border-gray-300 rounded-sm opacity-50 cursor-not-allowed"
+                  variant={"ghost"}
+                  disabled={true}
+                >
+                  Create your own frame
+                  <Ban className="absolute -top-[5px] -right-[8px] text-red-500 " size={30} />
                 </Button>
               </div>
 
