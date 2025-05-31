@@ -70,6 +70,9 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+       backgroundImage: {
+        hero: "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.2) 15%, rgba(0,0,0,0.4) 29%, rgba(0,0,0,0.6) 44%, rgba(0,0,0,0.7) 56%, rgba(0,0,0,0.8) 69%, rgba(0,0,0,0.9) 84%, rgba(0,0,0,1) 100%)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

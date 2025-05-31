@@ -5,6 +5,9 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import { Icons } from "./Icons";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { anton, festive, goblin_one } from "@/lib/font";
+
 const Footer = () => {
   const pathname = usePathname();
   const pathsToMinimize = ["/verify-email", "/sign-up", "/sign-in"];
@@ -48,18 +51,22 @@ const Footer = () => {
 
                 <div className="text-center relative mx-auto max-w-sm">
                   <h3 className="font-semibold text-gray-900">
-                    Become a seller
+                    Become a FrameitUp Agent
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    If you&apos;d like to sell high-quality digital products,
-                    you can do so in minutes.{" "}
-                    <Link
-                      href="/sign-in?as=seller"
-                      className="whitespace-nowrap font-medium text-black hover:text-zinc-900"
-                    >
-                      Get started &rarr;
-                    </Link>
+                  <p className="mt-2 mb-3 text-sm text-muted-foreground">
+                    If you&apos;d like to be a frameitup agent and sell
+                    high-quality digital products, you can do so in
+                    minutes.{" "}
                   </p>
+                  <Link
+                    href="/sign-in"
+                    className={cn(
+                      "whitespace-nowrap mt-3 font-bold underline text-black hover:text-zinc-900",
+                      anton.className,
+                    )}
+                  >
+                    Become an agent &rarr;
+                  </Link>
                 </div>
               </div>
             </div>

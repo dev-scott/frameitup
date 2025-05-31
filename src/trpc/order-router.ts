@@ -21,7 +21,8 @@ export const orderRouter = router({
         console.log("here is the order value in the trpc router", input);
         console.log("user", ctx);
 
-        let { productIds } = input.productIds;
+        let { productIds  } = input.productIds;
+        let {phone, address} = input;
         console.log(productIds);
 
         if (productIds.length === 0) {
@@ -53,6 +54,8 @@ export const orderRouter = router({
             //@ts-ignore
             products: products.map((prod) => prod.id),
             user: user.id,
+            phone: phone,
+            address: address,
           },
         });
         console.log("order created", order);
