@@ -9,13 +9,20 @@ import { cookies } from "next/headers";
 import UserAccountNav from "./UserAccountNav";
 import MobileNav from "./MobileNav";
 import { Ban, ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { anton } from "@/lib/font";
 
 const Navbar = async () => {
   const nextCookies = cookies();
   const { user } = await getServerSideUser(nextCookies);
 
   return (
-    <div className="bg-white sticky z-50 top-0 inset-x-0 h-16">
+    <div
+      className={cn(
+        "bg-white sticky z-50 top-0 inset-x-0 h-16",
+        anton.className,
+      )}
+    >
       <header className="relative bg-white">
         <MaxWidthWrapper>
           <div className="border-b border-gray-200">
@@ -51,7 +58,10 @@ const Navbar = async () => {
                   disabled={true}
                 >
                   Create your own frame
-                  <Ban className="absolute -top-[5px] -right-[8px] text-red-500 " size={30} />
+                  <Ban
+                    className="absolute -top-[5px] -right-[8px] text-red-500 "
+                    size={30}
+                  />
                 </Button>
               </div>
 
