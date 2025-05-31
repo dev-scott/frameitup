@@ -9,8 +9,11 @@ const socials = [
   { icon: <Instagram className="w-5 h-5" />, path: "/" },
   { icon: <Twitter className="w-5 h-5" />, path: "/" },
 ];
-
-const Socials = ({ containerStyles, iconsStyles }) => {
+interface Props {
+  containerStyles?: string;
+  iconsStyles?: string;
+}
+const Socials = ({ containerStyles, iconsStyles }: Props) => {
   return (
     <div className={`${containerStyles}`}>
       {socials.map((item, index) => {
