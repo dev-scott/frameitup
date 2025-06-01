@@ -26,7 +26,7 @@ import { festive, goblin_one } from "@/lib/font";
 import Pretitle from "@/components/Pretitle";
 import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 import ProductsList from "@/components/ProductsList";
-
+import { fadeIn } from "@/lib/motion-variants";
 const perks = [
   {
     name: "Instant Delivery",
@@ -93,11 +93,17 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-l from-black/0 via-black/50 to-black/70 z-10"></div>
         <div className="container mx-auto h-full flex items-center">
           <div className="z-20 text-white text-center xl:text-left mx-auto xl:mx-0 flex flex-col items-center xl:items-start max-w-[608px] ">
-            <h1 className="font-bold line-clamp-2 text-4xl text-white mb-4">
+            <motion.h1
+              variants={fadeIn({ direction: "up", delay: 0.2 })}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.1 }}
+              className="font-bold line-clamp-2 text-4xl text-white mb-4"
+            >
               <span className="text-[#e7c819]  ">Your favorite </span>
               moments deserve more than just a{" "}
               <span className="text-secondary">digital screen</span>
-            </h1>
+            </motion.h1>
             <p className="mb-8 ">
               Celebrate icons, honor memories, and showcase your unique style.
               Built for elegance and impact. Bring personality to every corner
