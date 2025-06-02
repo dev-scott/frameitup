@@ -1,5 +1,3 @@
-
-
 export const cardVariants = {
   hidden: { opacity: 0, y: -30 },
   visible: {
@@ -40,10 +38,10 @@ export const itemVariants = {
 };
 
 export const buttonVariantsForMotion = {
-    initial: { scale: 1, boxShadow: "0px 2px 8px rgba(0,0,0,0.1)" },
-    hover: { scale: 1.08, boxShadow: "0px 4px 16px rgba(0,0,0,0.15)" },
-    tap: { scale: 0.96, boxShadow: "0px 1px 4px rgba(0,0,0,0.08)" },
-  };
+  initial: { scale: 1, boxShadow: "0px 2px 8px rgba(0,0,0,0.1)" },
+  hover: { scale: 1.08, boxShadow: "0px 4px 16px rgba(0,0,0,0.15)" },
+  tap: { scale: 0.96, boxShadow: "0px 1px 4px rgba(0,0,0,0.08)" },
+};
 
 export const parentVariants = {
   hidden: { opacity: 0 },
@@ -64,4 +62,30 @@ export const childVariants = {
     scale: 1,
     transition: { duration: 0.7, ease: "easeInOut" },
   },
+};
+
+export const fadeIn = ({
+  direction,
+  delay,
+}: {
+  direction?: "left" | "right" | "up" | "down";
+  delay?: number;
+}) => {
+  return {
+    hidden: {
+      x: direction === "left" ? 100 : direction === "right" ? -100 : 0,
+      y: direction === "up" ? 100 : direction === "down" ? -100 : 0,
+      opacity: 0,
+    },
+    show: {
+      x: 0,
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "tween",
+        duration: 0.6,
+        delay: delay,
+      },
+    },
+  };
 };

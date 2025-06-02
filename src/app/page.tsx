@@ -26,7 +26,7 @@ import { festive, goblin_one } from "@/lib/font";
 import Pretitle from "@/components/Pretitle";
 import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 import ProductsList from "@/components/ProductsList";
-
+import { fadeIn } from "@/lib/motion-variants";
 const perks = [
   {
     name: "Instant Delivery",
@@ -93,17 +93,34 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-l from-black/0 via-black/50 to-black/70 z-10"></div>
         <div className="container mx-auto h-full flex items-center">
           <div className="z-20 text-white text-center xl:text-left mx-auto xl:mx-0 flex flex-col items-center xl:items-start max-w-[608px] ">
-            <h1 className="font-bold line-clamp-2 text-4xl text-white mb-4">
+            <motion.h1
+              variants={fadeIn({ direction: "up", delay: 0.2 })}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.1 }}
+              className="font-bold line-clamp-2 text-4xl text-white mb-4"
+            >
               <span className="text-[#e7c819]  ">Your favorite </span>
               moments deserve more than just a{" "}
               <span className="text-secondary">digital screen</span>
-            </h1>
-            <p className="mb-8 ">
+            </motion.h1>
+            <motion.p
+              variants={fadeIn({ direction: "up", delay: 0.4 })}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.1 }}
+              className="mb-8 "
+            >
               Celebrate icons, honor memories, and showcase your unique style.
               Built for elegance and impact. Bring personality to every corner
               of your space.
-            </p>
-            <div>
+            </motion.p>
+            <motion.div
+              variants={fadeIn({ direction: "up", delay: 0.6 })}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.1 }}
+            >
               <Button
                 className=" flex items-center w-[210px] h-[54px] justify-center gap-2 group py-[10px] pl-[10px] pr-[10px] bg-secondary hover:bg-[#e7c819] rounded-[2px]"
                 variant={"ghost"}
@@ -116,7 +133,7 @@ export default function Home() {
                   <ArrowRight className=" group-hover:rotate-45 group-hover:text-white transition-all duration-200 " />
                 </div>
               </Button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -150,18 +167,30 @@ export default function Home() {
               <div className="flex-1">
                 <div className="max-w-[500px]">
                   <Pretitle text={"About us"} />
-                  <h2 className="font-bold text-4xl mb-6">
+                  <motion.h2
+                    variants={fadeIn({ direction: "left", delay: 0.2 })}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: false, amount: 0.1 }}
+                    className="font-bold text-4xl mb-6"
+                  >
                     {" "}
                     Crafted With Passion, Framed With Purpose{" "}
-                  </h2>
-                  <p className={cn("font-light  mb-11")}>
+                  </motion.h2>
+                  <motion.p
+                    variants={fadeIn({ direction: "left", delay: 0.4 })}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: false, amount: 0.1 }}
+                    className={cn("font-light  mb-11")}
+                  >
                     We turn art, icons, and personal moments into timeless
                     framed pieces. From legendary characters to your own
                     portrait, every creation is designed with care, style, and
                     soul. Our commitment to quality ensures that each frame is
                     made to last and inspire. Because your walls deserve more
                     than decoration—they deserve meaning.
-                  </p>
+                  </motion.p>
                   <div className="w-max flex flex-col text-right mb-10">
                     {/* <Image
                       src={aboutUs}
@@ -169,19 +198,51 @@ export default function Home() {
                       width={154}
                       height={38}
                     /> */}
-                    <p className={cn("font-bold text-4xl", festive.className)}>
+                    <motion.p
+                      variants={fadeIn({ direction: "left", delay: 0.6 })}
+                      initial="hidden"
+                      whileInView="show"
+                      viewport={{ once: false, amount: 0.1 }}
+                      className={cn("font-bold text-4xl", festive.className)}
+                    >
                       {" "}
                       Frameit UP
-                    </p>
+                    </motion.p>
                   </div>
-                  <Button className="flex items-center w-[210px] h-[54px] justify-center gap-2 group py-[10px] pl-[10px] pr-[10px] bg-secondary hover:bg-[#e7c819] rounded-[2px]">
-                    {" "}
-                    <Link href="mailto:frameitup05@gmail.com">Contact us</Link>
-                  </Button>
+                  <motion.div
+                    variants={fadeIn({ direction: "left", delay: 0.8 })}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: false, amount: 0.1 }}
+                  >
+                    <Button className="flex items-center w-[210px] h-[54px] justify-center gap-2 group py-[10px] pl-[10px] pr-[10px] bg-secondary hover:bg-[#e7c819] rounded-[2px]">
+                      {" "}
+                      <Link href="mailto:frameitup05@gmail.com">
+                        Contact us
+                      </Link>
+                    </Button>
+                  </motion.div>
                 </div>
               </div>
               <div className="flex-1 xl:flex xl:justify-center">
-                <div className="xl:w-full xl:h-full relative flex justify-center items-center">
+                <motion.div
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: false, amount: 0.4 }}
+                  variants={{
+                    hidden: { opacity: 0, y: -30 },
+                    show: {
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        duration: 0.7,
+                        delay: 0.1,
+                        ease: "easeInOut",
+                      },
+                    },
+                  }}
+                  className="xl:w-full xl:h-full relative flex justify-center items-center"
+                >
                   <div className="absolute hidden xl:flex w-[444px] h-[444px] bg-gradient-to-t from-[#f16028] to-[#7a3012] -top-4 -left-4 -z-10"></div>
                   <HeroVideoDialog
                     className="block dark:hidden h-full w-full"
@@ -203,7 +264,7 @@ export default function Home() {
                     width={444}
                     height={493}
                   /> */}
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
