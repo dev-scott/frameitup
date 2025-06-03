@@ -137,16 +137,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* <MaxWidthWrapper>
 
-        <ProductReel
-          query={{ category: "plastic_frame", limit: 4 }}
-          href="/products?sort=recent"
-          title="Plastic frame category"
-          subtitle="See all your favorite Plastic frame in this section"
-        />
-      
-      </MaxWidthWrapper> */}
 
       <ProductsList query={{ sort: "asc", limit: 4 }} />
 
