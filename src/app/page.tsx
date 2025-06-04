@@ -183,12 +183,7 @@ export default function Home() {
                     than decoration—they deserve meaning.
                   </motion.p>
                   <div className="w-max flex flex-col text-right mb-10">
-                    {/* <Image
-                      src={aboutUs}
-                      alt="about us"
-                      width={154}
-                      height={38}
-                    /> */}
+              
                     <motion.p
                       variants={fadeIn({ direction: "left", delay: 0.6 })}
                       initial="hidden"
