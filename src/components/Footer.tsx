@@ -43,10 +43,10 @@ const Footer = () => {
             <div>
               <div className="relative flex items-center px-6 py-6 sm:py-8 lg:mt-0">
                 <div className="absolute inset-0 overflow-hidden rounded-lg">
-                  <div
+                  {/* <div
                     aria-hidden="true"
                     className="absolute bg-zinc-50 inset-0 bg-gradient-to-br bg-opacity-90"
-                  />
+                  /> */}
                 </div>
 
                 <div className="text-center relative mx-auto max-w-sm">
@@ -83,13 +83,7 @@ const Footer = () => {
           <div className="mt-4 flex items-center justify-center md:mt-0">
             <div className="flex space-x-8">
               <Link
-                href="#"
-                className="text-sm text-muted-foreground hover:text-gray-600"
-              >
-                Terms
-              </Link>
-              <Link
-                href="#"
+                href="/privacy"
                 className="text-sm text-muted-foreground hover:text-gray-600"
               >
                 Privacy Policy
@@ -98,7 +92,7 @@ const Footer = () => {
                 href="#"
                 className="text-sm text-muted-foreground hover:text-gray-600"
               >
-                Cookie Policy
+                Fr
               </Link>
             </div>
           </div>

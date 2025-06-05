@@ -11,6 +11,7 @@ import MobileNav from "./MobileNav";
 import { Ban, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { anton } from "@/lib/font";
+import { ScrollProgress } from "./magicui/scroll-progress";
 
 const Navbar = async () => {
   const nextCookies = cookies();
@@ -23,6 +24,8 @@ const Navbar = async () => {
         anton.className,
       )}
     >
+      <ScrollProgress />
+
       <header className="relative bg-white">
         <MaxWidthWrapper>
           <div className="border-b border-gray-200">
