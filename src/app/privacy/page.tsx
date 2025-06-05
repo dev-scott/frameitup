@@ -59,13 +59,13 @@ const Page = () => {
       {/* Main Content */}
       <MaxWidthWrapper className="my-20 flex flex-col md:flex-row gap-10">
         {/* Main Article */}
-        <div className="flex-1 space-y-20">
+        <div className="flex-1 space-y-10">
           {sections.map((section) => (
             <section id={section.id} key={section.id} className="scroll-mt-24">
-              <h2 className="text-3xl font-semibold text-gray-900 mb-4  ">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4   ">
                 {section.title}
               </h2>
-              <p className="text-gray-700 leading-relaxed font-light text-lg">
+              <p className="text-gray-700 leading-relaxed font-light text-base">
                 {section.description}
               </p>
             </section>
