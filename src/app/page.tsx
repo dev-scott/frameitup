@@ -27,6 +27,7 @@ import Pretitle from "@/components/Pretitle";
 import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 import ProductsList from "@/components/ProductsList";
 import { fadeIn } from "@/lib/motion-variants";
+import { SmoothCursor } from "@/components/ui/smooth-cursor";
 const perks = [
   {
     name: "Instant Delivery",
@@ -91,8 +92,9 @@ export default function Home() {
     <>
       <section className=" h-[70vh] bg-hero py-20 w-full bg-no-repeat relative">
         <div className="absolute inset-0 bg-gradient-to-l from-black/0 via-black/50 to-black/70 z-10"></div>
-        <div className="container mx-auto h-full flex items-center">
-          <div className="z-20 text-white text-center xl:text-left mx-auto xl:mx-0 flex flex-col items-center xl:items-start max-w-[608px] ">
+        <div className="container mx-auto h-full flex items-center relative">
+
+          <div className="z-20 relative text-white text-center xl:text-left mx-auto xl:mx-0 flex flex-col items-center xl:items-start max-w-[608px] ">
             <motion.h1
               variants={fadeIn({ direction: "up", delay: 0.2 })}
               initial="hidden"
@@ -138,7 +140,6 @@ export default function Home() {
         </div>
       </section>
 
-
       <ProductsList query={{ sort: "asc", limit: 4 }} />
 
       {/* <MaxWidthWrapper>
@@ -183,7 +184,6 @@ export default function Home() {
                     than decoration—they deserve meaning.
                   </motion.p>
                   <div className="w-max flex flex-col text-right mb-10">
-              
                     <motion.p
                       variants={fadeIn({ direction: "left", delay: 0.6 })}
                       initial="hidden"
@@ -263,6 +263,8 @@ export default function Home() {
         animate="visible"
         className="border-t border-gray-200 bg-gray-50"
       >
+        {/* <SmoothCursor /> */}
+
         <MaxWidthWrapper className="py-20">
           <motion.div
             className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0"
