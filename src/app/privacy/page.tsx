@@ -42,7 +42,7 @@ const sections = [
 
 const Page = () => {
   return (
-    <section>
+    <section className="">
       {/* Hero Header */}
       <div className="w-full  h-[500px] bg-gradient-to-t from-black to-gray-900 text-white">
         <MaxWidthWrapper className=" h-full w-full flex items-start gap-y-3 justify-center flex-col">
@@ -62,10 +62,10 @@ const Page = () => {
         <div className="flex-1 space-y-10">
           {sections.map((section) => (
             <section id={section.id} key={section.id} className="scroll-mt-24">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4   ">
+              <h2 className="text-xl font-sans font-semibold text-gray-900 mb-4   ">
                 {section.title}
               </h2>
-              <p className="text-gray-700 leading-relaxed font-light text-base">
+              <p className="text-gray-700 font-sans leading-relaxed font-light text-base">
                 {section.description}
               </p>
             </section>
@@ -79,7 +79,7 @@ const Page = () => {
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="block text-gray-600 hover:text-black font-medium transition-all py-1"
+                className="block text-gray-600 font-sans hover:text-black font-medium transition-all py-1"
               >
                 {section.title}
               </a>
