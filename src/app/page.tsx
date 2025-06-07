@@ -115,7 +115,7 @@ export default function Home() {
             >
               Celebrate icons, honor memories, and showcase your unique style.
               Built for elegance and impact. Bring personality to every corner
-              of your space.
+              of your space ...
             </motion.p>
             <motion.div
               variants={fadeIn({ direction: "up", delay: 0.6 })}
