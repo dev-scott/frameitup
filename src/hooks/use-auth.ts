@@ -16,7 +16,7 @@ export const useAuth = () => {
           },
         },
       );
-
+3
       if (!res.ok) throw new Error();
 
       toast.success("Signed out successfully");
