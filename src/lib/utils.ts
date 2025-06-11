@@ -12,7 +12,7 @@ export function formatPrice(
     currency?: "USD" | "EUR" | "GBP" | "BDT" | "XAF";
     notation?: Intl.NumberFormatOptions["notation"];
     locale?: string;
-  } = {}
+  } = {},
 ) {
   // Default to XAF and Cameroon locale
   const { currency = "XAF", notation = "compact", locale = "fr-CM" } = options;
@@ -32,12 +32,14 @@ export function constructMetadata({
   title = "FrameitUp - Your favorite moments deserve more than just a digital screen.",
   description = " With FrameitUp , we bring your photos to life with high-quality",
   image = "/thumbnail.png",
+  keywords = "FrameitUp, FrameitUp, FrameitUp, FrameitUp, FrameitUp, FrameitUp",
   icons = "/favicon.ico",
   noIndex = false,
 }: {
   title?: string;
   description?: string;
   image?: string;
+  keywords?: string;
   icons?: string;
   noIndex?: boolean;
 } = {}): Metadata {
