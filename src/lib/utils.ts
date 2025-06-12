@@ -54,6 +54,7 @@ export function constructMetadata({
           url: image,
         },
       ],
+      type: "website",
     },
     twitter: {
       card: "summary_large_image",

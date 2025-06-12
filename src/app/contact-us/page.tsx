@@ -20,17 +20,11 @@ import {
   SendMailCredentialsValidator,
   TSendMailCredentialsValidator,
 } from "@/lib/validators/account-credentials-validator";
-const Page = () => {
-  const metadata = constructMetadata({
-    title: "Contact Us",
-    description:
-      "Get in touch with FrameitUp today and let us know how we can help you make your photos shine. We're here to help you create memories that last a lifetime.",
-    keywords:
-      "FrameitUp, FrameitUp, FrameitUp, FrameitUp, FrameitUp, FrameitUp",
-    image: "/thumbnail.png",
-    icons: "/favicon.ico",
-  });
+import { Metadata } from "next";
 
+
+
+const Page = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
