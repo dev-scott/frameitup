@@ -1,4 +1,6 @@
-export const cardVariants = {
+import { Variants } from "framer-motion";
+
+export const cardVariants: Variants = {
   hidden: { opacity: 0, y: -30 },
   visible: {
     opacity: 1,
@@ -7,7 +9,7 @@ export const cardVariants = {
   },
 };
 
-export const divVariants = {
+export const divVariants: Variants = {
   hidden: { opacity: 0, y: -30 },
   visible: {
     opacity: 1,
@@ -16,12 +18,12 @@ export const divVariants = {
   },
 };
 
-export const paragraphVariants = {
+export const paragraphVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.2 } },
 };
 
-export const containerVariants = {
+export const containerVariants:Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -32,18 +34,18 @@ export const containerVariants = {
   },
 };
 
-export const itemVariants = {
+export const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-export const buttonVariantsForMotion = {
+export const buttonVariantsForMotion: Variants = {
   initial: { scale: 1, boxShadow: "0px 2px 8px rgba(0,0,0,0.1)" },
   hover: { scale: 1.08, boxShadow: "0px 4px 16px rgba(0,0,0,0.15)" },
   tap: { scale: 0.96, boxShadow: "0px 1px 4px rgba(0,0,0,0.08)" },
 };
 
-export const parentVariants = {
+export const parentVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -54,7 +56,7 @@ export const parentVariants = {
   },
 };
 
-export const childVariants = {
+export const childVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
   visible: {
     opacity: 1,
@@ -70,7 +72,7 @@ export const fadeIn = ({
 }: {
   direction?: "left" | "right" | "up" | "down";
   delay?: number;
-}) => {
+}): Variants => {
   return {
     hidden: {
       x: direction === "left" ? 100 : direction === "right" ? -100 : 0,
