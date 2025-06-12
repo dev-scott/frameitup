@@ -93,7 +93,6 @@ export default function Home() {
       <section className=" h-[70vh] bg-hero py-20 w-full bg-no-repeat relative">
         <div className="absolute inset-0 bg-gradient-to-l from-black/0 via-black/50 to-black/70 z-10"></div>
         <div className="container mx-auto h-full flex items-center relative">
-
           <div className="z-20 relative text-white text-center xl:text-left mx-auto xl:mx-0 flex flex-col items-center xl:items-start max-w-[608px] ">
             <motion.h1
               variants={fadeIn({ direction: "up", delay: 0.2 })}
@@ -115,7 +114,7 @@ export default function Home() {
             >
               Celebrate icons, honor memories, and showcase your unique style.
               Built for elegance and impact. Bring personality to every corner
-              of your space.
+              of your space ..
             </motion.p>
             <motion.div
               variants={fadeIn({ direction: "up", delay: 0.6 })}

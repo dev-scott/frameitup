@@ -22,7 +22,7 @@ export default function RootLayout({
         "h-full",
         playfair_Display.className,
         nunito.className,
-        goblin_one.className,
+        // goblin_one.className,
       )}
     >
       <body className={cn("relative h-full  antialiased")}>

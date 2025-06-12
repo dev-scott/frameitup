@@ -10,7 +10,12 @@ import { anton, festive, goblin_one } from "@/lib/font";
 
 const Footer = () => {
   const pathname = usePathname();
-  const pathsToMinimize = ["/verify-email", "/sign-up", "/sign-in"];
+  const pathsToMinimize = [
+    "/verify-email",
+    "/sign-up",
+    "/sign-in",
+    "/contact-us",
+  ];
 
   return (
     <footer className="bg-white flex-grow-0">
@@ -88,6 +93,13 @@ const Footer = () => {
               >
                 Privacy Policy
               </Link>
+              <Link
+                href="/contact-us"
+                className="text-sm text-muted-foreground hover:text-gray-600"
+              >
+                Contact us
+              </Link>
+
               <Link
                 href="#"
                 className="text-sm text-muted-foreground hover:text-gray-600"
