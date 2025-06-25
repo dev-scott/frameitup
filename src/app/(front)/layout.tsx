@@ -3,7 +3,7 @@ import Providers from "@/components/Providers";
 import { cn, constructMetadata } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
-import "./globals.css";
+import "../globals.css";
 import Footer from "@/components/Footer";
 import { nunito, goblin_one, playfair_Display } from "@/lib/font";
 import TopBar from "@/components/topBar";
@@ -26,9 +26,17 @@ export default function RootLayout({
       )}
     >
       <body className={cn("relative h-full  antialiased")}>
-        <main className="relative flex justify-center items-center flex-col w-full min-h-screen ">
-          {children}
+        <main className="relative flex flex-col min-h-screen">
+          <Providers>
+            <TopBar />
+
+            <Navbar />
+            <div className="flex-grow flex-1">{children}</div>
+            <Footer />
+          </Providers>
         </main>
+
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );
