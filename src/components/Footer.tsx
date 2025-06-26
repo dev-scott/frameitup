@@ -15,6 +15,7 @@ const Footer = () => {
     "/sign-up",
     "/sign-in",
     "/contact-us",
+    "/agent/register",
   ];
 
   return (
@@ -64,7 +65,7 @@ const Footer = () => {
                     minutes.{" "}
                   </p>
                   <Link
-                    href="/sign-in"
+                    href="/agent/register"
                     className={cn(
                       "whitespace-nowrap mt-3 font-bold underline text-black hover:text-zinc-900",
                       anton.className,

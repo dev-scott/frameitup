@@ -25,10 +25,8 @@ export default function RootLayout({
         // goblin_one.className,
       )}
     >
-      <body className={cn("relative h-full  antialiased")}>
-        <main className="relative flex justify-center items-center flex-col w-full min-h-screen ">
+      <body className={cn("     antialiased")}>
           {children}
-        </main>
       </body>
     </html>
   );

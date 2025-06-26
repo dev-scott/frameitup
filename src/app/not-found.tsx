@@ -8,8 +8,8 @@ import { useRouter } from "next/navigation";
 export default function NotFound() {
   const router = useRouter();
   return (
-    <div className="w-full h-full  mx-auto ">
-      <div className="flex flex-col justify-center items-center gap-y-5">
+    <div className="w-full h-[100%]   min-h-screen  flex justify-center items-center  ">
+      <div className="  flex flex-col justify-center items-center gap-y-5">
         <h2 className="text-5xl font-bold font-serif">404</h2>
         <p className="text-center">
           The page you are looking for might have been removed had its <br />{" "}
