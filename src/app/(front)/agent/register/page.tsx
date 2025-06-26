@@ -20,14 +20,14 @@ const page = () => {
           our brand, presenting the quality, elegance and diversity <br /> of
           our products to an audience eager to beautify their homes.
         </p>
-        <Button
-          className="px-6 py-3 text-white bg-secondary hover:text-secondary hover:bg-none hover:border hover:border-2px hover:border-secondary"
-          variant="ghost"
-        >
-          <Link target="_blank" href="https://forms.gle/k9scR3Q7YSPaRoUc9">
+        <Link target="_blank" href="https://forms.gle/k9scR3Q7YSPaRoUc9">
+          <Button
+            className="px-6 py-3 text-white bg-secondary hover:text-secondary hover:bg-none hover:border hover:border-2px hover:border-secondary"
+            variant="ghost"
+          >
             Click here to register
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
     </MaxWidthWrapper>
   );
