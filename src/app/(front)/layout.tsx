@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className=" relative flex flex-col  min-h-screen">
+    <main className="  relative flex flex-col  min-h-screen">
       <Providers>
         <TopBar />
 

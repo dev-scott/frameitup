@@ -16,10 +16,13 @@ const Footer = () => {
     "/sign-in",
     "/contact-us",
     "/agent/register",
+    "/configure/design",
+    "/configure/preview",
+    "/configure/upload",
   ];
 
   return (
-    <footer className="bg-white flex-grow-0">
+    <footer className="bg-white flex-grow-0 ">
       <MaxWidthWrapper>
         <div className="border-t border-gray-200">
           {pathsToMinimize.includes(pathname) ? null : (

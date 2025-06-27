@@ -8,10 +8,10 @@ const page = () => {
     <MaxWidthWrapper className=" h-[60vh] mt-10  flex justify-center items-center py-5">
       <div className=" gap-y-6 flex justify-center items-center flex-col ">
         <span className="font-light text-center text-[14px] text-secondary">
-          Gagnez plus. Devenez un Pilier de l&apos;Art avec FrameItUp !
+          Earn More. Become a Pillar of Art with FrameItUp !
         </span>
         <h1 className="text-center font-semibold text-4xl ">
-          Rejoignez l&apos;Équipe FrameItUp et Gagnez en Partageant la Beauté.
+          Join the FrameItUp Agent Team and Earn by Sharing Beauty..
         </h1>
         <p className="text-center  ">
           As a FrameItUp agent, your role will be to showcase our unique frame
