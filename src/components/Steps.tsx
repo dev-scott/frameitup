@@ -48,7 +48,7 @@ const Steps = () => {
               <span
                 className={cn(
                   i !== 0 ? "lg:pl-9" : "",
-                  "flex items-center justify-start px-0 py-6 text-sm font-medium",
+                  "flex ml-4 lg:ml-0  items-center justify-start px-0 py-6 text-sm font-medium",
                 )}
               >
                 <span className="flex-shrink-0">

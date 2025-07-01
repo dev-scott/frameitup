@@ -25,9 +25,7 @@ export default function RootLayout({
         // goblin_one.className,
       )}
     >
-      <body className={cn("     antialiased")}>
-          {children}
-      </body>
+      <body className={cn("     antialiased")}>{children}</body>
     </html>
   );
 }
