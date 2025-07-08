@@ -14,7 +14,7 @@ const Page = () => {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const router = useRouter();
 
-  const { startUpload, isUploading } = useUploadThing("imageUploader", {
+  const { startUpload, isUploading } = useUploadThing("frameUploader", {
     onClientUploadComplete: ([data]) => {
       const configId = data.serverData?.configId;
       startTransition(() => {
@@ -35,6 +35,7 @@ const Page = () => {
   };
 
   const onDropAccepted = (acceptedFiles: File[]) => {
+    console.log("here is th file i accepted", acceptedFiles);
     startUpload(acceptedFiles, { configId: undefined });
 
     setIsDragOver(false);
@@ -46,7 +47,7 @@ const Page = () => {
     <div className="w-full h-fit">
       <div
         className={cn(
-          " h-[700px] relative h-full flex-1 my-16 w-full rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl flex justify-center flex-col items-center",
+          " h-[700px] relative  flex-1 my-16 w-full rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:rounded-2xl flex justify-center flex-col items-center cursor-pointer ",
           {
             "ring-blue-900/25 bg-blue-900/10": isDragOver,
           },
@@ -66,7 +67,7 @@ const Page = () => {
           >
             {({ getRootProps, getInputProps }) => (
               <div
-                className="h-full w-full flex-1 flex flex-col items-center justify-center"
+                className="h-full w-full flex-1 flex flex-col items-center justify-center "
                 {...getRootProps()}
               >
                 <input {...getInputProps()} />
