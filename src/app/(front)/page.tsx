@@ -91,7 +91,17 @@ export default function Home() {
   return (
     <>
       <section className=" h-[70vh] bg-hero py-20 w-full bg-no-repeat relative">
-        <div className="absolute inset-0 bg-gradient-to-l from-black/0 via-black/50 to-black/70 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/60  to-black/95 z-10"></div>
+        <video
+          autoPlay
+          loop
+          muted
+          className="absolute top-0 left-0 w-full h-full object-cover"
+        >
+          <source src="/video/video_hero_section.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
         <div className="container mx-auto h-full flex items-center relative">
           <div className="z-20 relative text-white text-center xl:text-left mx-auto xl:mx-0 flex flex-col items-center xl:items-start max-w-[608px] ">
             <motion.h1

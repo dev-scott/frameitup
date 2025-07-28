@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import {
+  ConfigurationSchema,
   ExtendedOrderFormSchema,
   OrderFormSchema,
 } from "../lib/validators/order-validator";
@@ -12,6 +13,8 @@ import { Product } from "@/payload-types";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const orderRouter = router({
+
+
   createOrder: privateProcedure
     .input(ExtendedOrderFormSchema)
     .mutation(async ({ ctx, input }) => {
@@ -54,6 +57,7 @@ export const orderRouter = router({
             //@ts-ignore
             products: products.map((prod) => prod.id),
             user: user.id,
+                        //@ts-ignore
             phone: phone,
             address: address,
           },
@@ -84,4 +88,14 @@ export const orderRouter = router({
         };
       }
     }),
+
+    createConfiguration:privateProcedure.input(ConfigurationSchema).mutation(async ({ctx,input})=>{
+
+      const { user } = ctx;
+
+        console.log("here is the order value in the trpc router", input);
+        console.log("user", ctx);
+        return "test"
+
+    })
 });
