@@ -55,19 +55,22 @@ const Navbar = async () => {
                     )}
                   />
                 </Button> */}
-                <Link href="/configure/upload">
-                  <Button
-                    className="gap-1.5 relative  border hover:border-secondary border-gray-700 text-gray-700  rounded-sm  cursor-pointer hover:bg-secondary hover:text-white "
-                    variant={"ghost"}
-                    // disabled={true}
-                  >
-                    Create your own frame
-                    {/* <Ban
-                      className="absolute -top-[5px] -right-[8px] text-red-500 "
-                      size={30}
-                    /> */}
-                  </Button>
-                </Link>
+                {/* <Link 
+                href="/configure/upload"
+
+                > */}
+                <Button
+                  className="gap-1.5 relative  border hover:border-secondary border-gray-700 text-gray-700  rounded-sm  cursor-pointer hover:bg-secondary hover:text-white "
+                  variant={"ghost"}
+                  disabled={true}
+                >
+                  Create your own frame
+                  <Ban
+                    className="absolute -top-[5px] -right-[8px] text-red-500 "
+                    size={30}
+                  />
+                </Button>
+                {/* </Link> */}
               </div>
 
               <div className="ml-auto flex items-center">
