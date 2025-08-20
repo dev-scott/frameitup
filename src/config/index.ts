@@ -21,6 +21,27 @@ export const PRODUCT_CATEGORIES = [
     ],
   },
   {
+    label: "Glass frame",
+    value: "glass_frame" as const,
+    featured: [
+      {
+        name: "Favorite Frame Picks",
+        href: `/products?category=glass_frame`,
+        imageSrc: "/nav/frames/4.jpg",
+      },
+      {
+        name: "New Arrivals",
+        href: "/products?category=bordered_frame&sort=desc",
+        imageSrc: "/nav/frames/5.jpg",
+      },
+      {
+        name: "Bestsellers",
+        href: "/products?category=bordered_frame&sort=desc&limit=8",
+        imageSrc: "/nav/frames/6.png",
+      },
+    ],
+  },
+  {
     label: "Plastic frame",
     value: "plastic_frame" as const,
     featured: [
@@ -59,27 +80,6 @@ export const PRODUCT_CATEGORIES = [
         name: "Bestsellers",
         href: "/products?category=bordered_frame&sort=desc&limit=8",
         imageSrc: "/nav/frames/9.png",
-      },
-    ],
-  },
-  {
-    label: "Glass frame",
-    value: "glass_frame" as const,
-    featured: [
-      {
-        name: "Favorite Frame Picks",
-        href: `/products?category=glass_frame`,
-        imageSrc: "/nav/frames/4.jpg",
-      },
-      {
-        name: "New Arrivals",
-        href: "/products?category=bordered_frame&sort=desc",
-        imageSrc: "/nav/frames/5.jpg",
-      },
-      {
-        name: "Bestsellers",
-        href: "/products?category=bordered_frame&sort=desc&limit=8",
-        imageSrc: "/nav/frames/6.png",
       },
     ],
   },
