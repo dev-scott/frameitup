@@ -151,9 +151,9 @@ export const Products: CollectionConfig = {
     },
     {
       name: "price",
-      label: "Price in USD",
+      label: "Price in CFA",
       min: 0,
-      max: 1000,
+      max: 50000,
       type: "number",
       required: true,
     },
