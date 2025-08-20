@@ -149,7 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      <ProductsList query={{ sort: "asc", limit: 4 }} />
+      <ProductsList query={{ sort: "asc", limit: 10 }} />
 
       {/* <MaxWidthWrapper>
 
