@@ -22,6 +22,7 @@ const BREADCRUMBS = [
   { id: 2, name: 'Products', href: '/products' },
 ]
 
+
 const Page = async ({ params }: PageProps) => {
   const { productId } = params
 

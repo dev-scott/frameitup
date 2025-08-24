@@ -28,6 +28,7 @@ import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 import ProductsList from "@/components/ProductsList";
 import { fadeIn } from "@/lib/motion-variants";
 import { SmoothCursor } from "@/components/ui/smooth-cursor";
+import { PRODUCT_CATEGORIES } from "@/config";
 const perks = [
   {
     name: "Instant Delivery",
@@ -161,7 +162,65 @@ export default function Home() {
           subtitle="See all your favorite  Lacquered wood frame in this section"
         />
       </MaxWidthWrapper> */}
-      <MaxWidthWrapper className="">
+      <MaxWidthWrapper className="max-w-[100vw]">
+        <section className="py-16 xl:pt-32 w-full">
+          <div className="">
+            <div className="w-full flex items-center flex-col justify-center">
+              <Pretitle text={"Our collections"} />
+              {/* <motion.h2 className="font-normal block text-3xl mb-6">
+                {" "}
+                Our different categories of frames
+              </motion.h2> */}
+              <p className="mb-11 max-w-[480px] mx-auto text-center ">
+                Providing expert services designer to deliver quality and
+                innovations in every project we undertakes{" "}
+              </p>
+            </div>
+            <div className="w-full h-[900px] grid grid-cols-2 grid-rows-2 gap-4 ">
+              {PRODUCT_CATEGORIES.map(
+                (category: (typeof PRODUCT_CATEGORIES)[number]) => (
+                  <Link
+                    href={`/category?category=${category.value}`}
+                    key={category.value}
+                    className={cn(
+                      "rounded-md col-span-1 row-span-1 relative overflow-hidden h-full flex justify-start items-center px-8",
+                      category.bgColor,
+                    )}
+                  >
+                    <div className="z-20 flex flex-col items-start gap-4">
+                      <div>
+                        <span className="text-[32px]  font-bold text-white">
+                          {category.label}
+                        </span>
+                      </div>
+                      <Button className=" text-lg rounded-md px-16 py-8 bg-gradient-to-r z-25 from-white via-slate-200 to-slate-400 text-gray-900 transition-all duration-100 hover:bg-gradient-to-b hover:from-slate-400 hover:via-slate-200 hover:to-white  ">
+                        Shop this now
+                      </Button>
+                    </div>
+                    <div
+                      className={cn(
+                        " absolute w-[500px] rounded-md h-[500px] right-[-20%] top-[10%]",
+                      )}
+                    >
+                      <Image
+                        src={category.img}
+                        alt={category.label}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </Link>
+                ),
+              )}
+              {/* <Link href="/products?category=wood_frame">
+                {" "}
+                <div className="    rounded-md col-span-1 row-span-1"></div>{" "}
+              </Link> */}
+            </div>
+          </div>
+        </section>
+      </MaxWidthWrapper>
+      {/* <MaxWidthWrapper className="">
         <section className="py-16 xl:pt-32 w-full">
           <div className="container pl-0 mx-auto">
             <div className="flex flex-col gap-12 xl:gap-0 xl:flex-row xl:items-center">
@@ -253,18 +312,13 @@ export default function Home() {
                     thumbnailSrc="https://startup-template-sage.vercel.app/hero-dark.png"
                     thumbnailAlt="Hero Video"
                   />
-                  {/* <Image
-                    src="/category_frame/frame1.jpg"
-                    alt="about us"
-                    width={444}
-                    height={493}
-                  /> */}
+                
                 </motion.div>
               </div>
             </div>
           </div>
         </section>
-      </MaxWidthWrapper>
+      </MaxWidthWrapper> */}
 
       <motion.section
         variants={cardVariants}
