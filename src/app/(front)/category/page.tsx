@@ -34,12 +34,12 @@ const Page = async ({ searchParams }: PageProps) => {
           <h1 className="text-3xl font-bold mb-4  text-white">
             {categoryData?.label}
           </h1>
-          <p className=" mb-8 text-white font-bold text-6xl">
+          <p className=" mb-8 text-white font-bold text-4xl md:text-6xl">
             {categoryData?.description}
           </p>
         </div>
         {/* image here */}
-        <div className=" z-40 absolute -bottom-20 right-20 w-1/2 h-full hidden lg:block">
+        <div className=" z-40 absolute -bottom-20 right-20 w-1/2 h-full hidden xl:block">
           <img
             src={categoryData?.img}
             alt={categoryData?.label}

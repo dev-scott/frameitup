@@ -176,37 +176,40 @@ export default function Home() {
                 innovations in every project we undertakes{" "}
               </p>
             </div>
-            <div className="w-full h-[900px] grid grid-cols-2 grid-rows-2 gap-4 ">
+            <div className="w-full  grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-4 ">
               {PRODUCT_CATEGORIES.map(
                 (category: (typeof PRODUCT_CATEGORIES)[number]) => (
                   <Link
                     href={`/category?category=${category.value}`}
                     key={category.value}
                     className={cn(
-                      "rounded-md col-span-1 row-span-1 relative overflow-hidden h-full flex justify-start items-center px-8",
+                      "rounded-md col-span-1 row-span-1 relative overflow-hidden  flex justify-start h-[450px] md:h-[450px] items-center px-4 md:px-8 backdrop-filter backdrop-blur-md bg-opacity-10",
                       category.bgColor,
                     )}
                   >
-                    <div className="z-20 flex flex-col items-start gap-4">
+                    {/* <div className=" h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 ">
+                      {" "}
+                    </div> */}
+                    <div className="z-20 flex flex-col items-start gap-4 p-0  md:p-14 ">
                       <div>
                         <span className="text-[32px]  font-bold text-white">
                           {category.label}
                         </span>
                       </div>
-                      <Button className=" text-lg rounded-md px-16 py-8 bg-gradient-to-r z-25 from-white via-slate-200 to-slate-400 text-gray-900 transition-all duration-100 hover:bg-gradient-to-b hover:from-slate-400 hover:via-slate-200 hover:to-white  ">
+                      <Button className=" text-md md:text-lg rounded-md px-4 py-2 md:px-16 md:py-8 bg-gradient-to-r z-25 from-white via-slate-200 to-slate-400 text-gray-900 transition-all duration-100 hover:bg-gradient-to-b hover:from-slate-400 hover:via-slate-200 hover:to-white  ">
                         Shop this now
                       </Button>
                     </div>
                     <div
                       className={cn(
-                        " absolute w-[500px] rounded-md h-[500px] right-[-20%] top-[10%]",
+                        " absolute w-full h-full md:w-[500px] rounded-md md:h-[500px] md:right-[-20%] md:top-[10%] hidden 2xl:block ",
                       )}
                     >
                       <Image
                         src={category.img}
                         alt={category.label}
                         fill
-                        className="object-cover"
+                        className="object-cover "
                       />
                     </div>
                   </Link>
