@@ -88,8 +88,8 @@ const ProductsList = (props: ProductsListProps) => {
           },
         }}
       >
-        {[...map].map((product, index) => {
-          if (!product) return <ProductPlaceholder key={index} />;
+        {[...products,...products,...products].map((product, index) => {
+          // if (!product) return <ProductPlaceholder key={index} />;
 
           const validUrls = product.images
             .map(({ image }) => (typeof image === "string" ? image : image.url))
@@ -97,7 +97,10 @@ const ProductsList = (props: ProductsListProps) => {
 
           return (
             <SwiperSlide key={index} className="w-full max-w-[400px] h-[450px]">
-              <div className="w-full h-[450px] flex-1 relative overflow-hidden group flex justify-center">
+              <Link
+                href={`/product/${product.id}`}
+                className="w-full h-[450px] flex-1 relative overflow-hidden group flex justify-center"
+              >
                 <Image
                   src={validUrls[0] || ""}
                   fill
@@ -122,7 +125,7 @@ const ProductsList = (props: ProductsListProps) => {
                     <ArrowRightToLineIcon />
                   </Link>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           );
         })}
@@ -134,13 +137,12 @@ const ProductsList = (props: ProductsListProps) => {
 
 const ProductPlaceholder = () => {
   return (
-    <div className="flex flex-row gap-5 w-full">
-      {/* <div className="relative bg-zinc-100 aspect-square w-full overflow-hidden rounded-xl">
-        <Skeleton className="h-full w-full" />
-      </div> */}
-      <Skeleton className="flex-1  h-4 rounded-lg" />
-      <Skeleton className="flex-1  h-4 rounded-lg" />
-      <Skeleton className="flex-1  h-4 rounded-lg" />
+    <div className="flex items-center justify-center flex-row gap-5 w-full">
+      
+      <Skeleton className="w-full max-w-[400px] h-[450px] rounded-lg" />
+      <Skeleton className="w-full max-w-[400px] h-[450px] rounded-lg" />
+      <Skeleton className="w-full max-w-[400px] h-[450px] rounded-lg" />
+      <Skeleton className="w-full max-w-[400px] h-[450px] rounded-lg" />
     </div>
   );
 };

@@ -110,10 +110,10 @@ export default function Home() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: false, amount: 0.1 }}
-              className="font-bold line-clamp-2 text-4xl text-white mb-4"
+              className="font-bold  text-2xl md:text-4xl text-white mb-4"
             >
-              <span className="text-[#e7c819]  ">Your favorite </span>
-              moments deserve more than just a{" "}
+              <span className="text-[#e7c819]">Your favorite </span>
+              moments deserve more than just a
               <span className="text-secondary">digital screen</span>
             </motion.h1>
             <motion.p
