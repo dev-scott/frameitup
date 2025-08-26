@@ -46,6 +46,8 @@ const ProductsList = (props: ProductsListProps) => {
 
   map = [...map, ...map, ...map, ...map, ...map];
 
+  const showSkeletons = isLoading && !products?.length;
+
   return (
     <section className="h-fit w-full pt-16 xl:pt-16 ">
       <div className="container mx-auto">
@@ -61,86 +63,93 @@ const ProductsList = (props: ProductsListProps) => {
           </p>
         </div>
       </div>
-      <Swiper
-        slidesPerView={4}
-        spaceBetween={30}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Pagination]}
-        loop={true}
-        breakpoints={{
-          0: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-          },
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 3,
-            spaceBetween: 40,
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 50,
-          },
-        }}
-      >
-        {[...map].map((product, index) => {
-          if (!product) return <ProductPlaceholder key={index} />;
+      {showSkeletons ? (
+        <ProductPlaceholder />
+      ) : (
+        <Swiper
+          slidesPerView={4}
+          spaceBetween={30}
+          // pagination={{
+          //   clickable: true,
+          // }}
+          modules={[Pagination]}
+          loop={true}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 40,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 50,
+            },
+          }}
+        >
+          {[...map].map((product, index) => {
+            const validUrls = product!!.images
+              .map(({ image }) =>
+                typeof image === "string" ? image : image.url,
+              )
+              .filter(Boolean) as string[];
 
-          const validUrls = product.images
-            .map(({ image }) => (typeof image === "string" ? image : image.url))
-            .filter(Boolean) as string[];
-
-          return (
-            <SwiperSlide key={index} className="w-full max-w-[400px] h-[450px]">
-              <div className="w-full h-[450px] flex-1 relative overflow-hidden group flex justify-center">
-                <Image
-                  src={validUrls[0] || ""}
-                  fill
-                  className="object-cover"
-                  alt="product image"
-                  quality={100}
-                />
-                <div className="w-[90%] h-[84px] bg-black absolute bottom-4 flex justify-between items-center text-white md:translate-y-[108px] md:group-hover:translate-y-0 transition-all duration-500">
-                  <div className="pl-8">
-                    <h4 className="text-white font-normal font-semibold tracking-[1px] uppercase">
-                      {product.name}
-                    </h4>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle className="text-[#e7c819] text-xl" />
-                      <p>{formatPrice(product.price)}</p>
+            return (
+              <SwiperSlide
+                key={index}
+                className="w-full max-w-[400px] h-[450px]"
+              >
+                <Link
+                  href={`/product/${product!!.id}`}
+                  className="w-full h-[450px] flex-1 relative overflow-hidden group flex justify-center"
+                >
+                  <Image
+                    src={validUrls[0] || ""}
+                    fill
+                    className="object-cover"
+                    alt="product image"
+                    quality={100}
+                  />
+                  <div className="w-[90%] h-[84px] bg-black absolute bottom-4 flex justify-between items-center text-white md:translate-y-[108px] md:group-hover:translate-y-0 transition-all duration-500">
+                    <div className="pl-8">
+                      <h4 className="text-white font-normal font-semibold tracking-[1px] uppercase">
+                        {product!!.name}
+                      </h4>
+                      <div className="flex items-center gap-1">
+                        <CheckCircle className="text-[#e7c819] text-xl" />
+                        <p>{formatPrice(product!!.price)}</p>
+                      </div>
                     </div>
+                    <Link
+                      href={`/product/${product!!.id}`}
+                      className="w-[44px] xl:w-[60px] xl:h-[68px] h-[44px] bg-[#e7c819] text-black text-2xl flex items-center justify-center absolute right-3"
+                    >
+                      <ArrowRightToLineIcon />
+                    </Link>
                   </div>
-                  <Link
-                    href={`/product/${product.id}`}
-                    className="w-[44px] xl:w-[60px] xl:h-[68px] h-[44px] bg-[#e7c819] text-black text-2xl flex items-center justify-center absolute right-3"
-                  >
-                    <ArrowRightToLineIcon />
-                  </Link>
-                </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
-        {/* pagination */}
-      </Swiper>
+                </Link>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      )}
     </section>
   );
 };
 
 const ProductPlaceholder = () => {
   return (
-    <div className="flex flex-row gap-5 w-full">
-      {/* <div className="relative bg-zinc-100 aspect-square w-full overflow-hidden rounded-xl">
-        <Skeleton className="h-full w-full" />
-      </div> */}
-      <Skeleton className="flex-1  h-4 rounded-lg" />
-      <Skeleton className="flex-1  h-4 rounded-lg" />
-      <Skeleton className="flex-1  h-4 rounded-lg" />
+    <div className="flex items-center justify-center flex-row gap-5 w-full">
+      <Skeleton className="w-full max-w-[400px] h-[450px] rounded-lg" />
+      <Skeleton className="w-full max-w-[400px] h-[450px] rounded-lg" />
+      <Skeleton className="w-full max-w-[400px] h-[450px] rounded-lg" />
+      <Skeleton className="w-full max-w-[400px] h-[450px] rounded-lg" />
     </div>
   );
 };

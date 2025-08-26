@@ -29,7 +29,7 @@ const Navbar = async () => {
       <header className="relative bg-white">
         <MaxWidthWrapper>
           <div className="border-b border-gray-200">
-            <div className="flex h-16 items-center">
+            <div className="flex h-16 items-center justify-between ">
               <MobileNav />
 
               <div className="ml-4 flex lg:ml-0">
@@ -74,6 +74,18 @@ const Navbar = async () => {
               </div>
 
               <div className="ml-auto flex items-center">
+                <Button
+                  className=" block  lg:hidden gap-1.5 relative  border hover:border-secondary border-gray-700 text-gray-700  rounded-sm  cursor-pointer hover:bg-secondary hover:text-white "
+                  variant={"ghost"}
+                  disabled={true}
+                >
+                  Create your own frame
+                  <Ban
+                    className="absolute -top-[5px] -right-[8px] text-red-500 "
+                    size={30}
+                  />
+                </Button>
+
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {user ? null : (
                     <Link

@@ -22,8 +22,6 @@ import {
 } from "@/lib/validators/account-credentials-validator";
 import { Metadata } from "next";
 
-
-
 const Page = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -85,14 +83,15 @@ const Page = () => {
           <Icons.logo className="h-12 w-auto" />
         </motion.div>
         <h1
-          className={cn("font-bold text-5xl tracking-wider", festive.className)}
+          className={cn(
+            "font-bold text-5xl text-center tracking-wider",
+            festive.className,
+          )}
         >
           {" "}
           Contact our friendly team
         </h1>
-        <span className="text-base text-muted-foreground">
-          Let us know how we can help
-        </span>
+        <span className="text-base ">Let us know how we can help</span>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="w-full mt-4 h-full  relative ">
@@ -226,7 +225,7 @@ const Page = () => {
                       {isLoading && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       )}
-                      Browse products
+                      Send to us
                     </div>
                     <div className="p-2 bg-black rounded-md">
                       <ArrowRight className=" text-white group-hover:rotate-45 group-hover:text-white transition-all duration-200 " />
