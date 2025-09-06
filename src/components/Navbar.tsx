@@ -12,6 +12,7 @@ import { Ban, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { anton } from "@/lib/font";
 import { ScrollProgress } from "./magicui/scroll-progress";
+import CreateOwnFrameButton from "./CreateOwnFrameButton";
 
 const Navbar = async () => {
   const nextCookies = cookies();
@@ -39,52 +40,15 @@ const Navbar = async () => {
               </div>
 
               <div className="hidden z-50 lg:ml-8 lg:flex lg:justify-center lg:items-center lg:self-stretch ">
-                {/* <NavItems /> */}
-                {/* <Button
-                  className="gap-1.5"
-                  // onClick={handleOpen}
-                  variant={"ghost"}
-                >
-                  Make your own order
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 transition-all text-muted-foreground",
-                      {
-                        "-rotate-180": isOpen,
-                      },
-                    )}
-                  />
-                </Button> */}
-                {/* <Link 
-                href="/configure/upload"
-
-                > */}
-                <Button
-                  className="gap-1.5 relative  border hover:border-secondary border-gray-700 text-gray-700  rounded-sm  cursor-pointer hover:bg-secondary hover:text-white "
-                  variant={"ghost"}
-                  disabled={true}
-                >
-                  Create your own frame
-                  <Ban
-                    className="absolute -top-[5px] -right-[8px] text-red-500 "
-                    size={30}
-                  />
-                </Button>
+                <CreateOwnFrameButton />
                 {/* </Link> */}
               </div>
 
               <div className="ml-auto flex items-center">
-                <Button
-                  className=" block  lg:hidden gap-1.5 relative  border hover:border-secondary border-gray-700 text-gray-700  rounded-sm  cursor-pointer hover:bg-secondary hover:text-white "
-                  variant={"ghost"}
-                  disabled={true}
-                >
-                  Create your own frame
-                  <Ban
-                    className="absolute -top-[5px] -right-[8px] text-red-500 "
-                    size={30}
-                  />
-                </Button>
+             
+                <div className="block lg:hidden">
+                  <CreateOwnFrameButton />
+                </div>
 
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {user ? null : (
