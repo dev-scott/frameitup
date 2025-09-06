@@ -20,7 +20,7 @@ const TopBar = () => {
                   <Phone className="w-4 h-4  text-primary " />
                 </div>
                 <p className={cn("font-medium text-white", anton.className)}>
-                  +237 654544544
+                  +237 689502147
                 </p>
               </div>
               <div className="flex items-center gap-3">
