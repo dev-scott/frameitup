@@ -85,47 +85,6 @@ export const Products: CollectionConfig = {
   },
   hooks: {
     afterChange: [syncUser],
-    // beforeChange: [
-    //   addUser,
-    //   async (args) => {
-    //     if (args.operation === 'create') {
-    //       const data = args.data as Product
-
-    //       const createdProduct =
-    //         await stripe.products.create({
-    //           name: data.name,
-    //           default_price_data: {
-    //             currency: 'USD',
-    //             unit_amount: Math.round(data.price * 100),
-    //           },
-    //         })
-
-    //       const updated: Product = {
-    //         ...data,
-    //         stripeId: createdProduct.id,
-    //         priceId: createdProduct.default_price as string,
-    //       }
-
-    //       return updated
-    //     } else if (args.operation === 'update') {
-    //       const data = args.data as Product
-
-    //       const updatedProduct =
-    //         await stripe.products.update(data.stripeId!, {
-    //           name: data.name,
-    //           default_price: data.priceId!,
-    //         })
-
-    //       const updated: Product = {
-    //         ...data,
-    //         stripeId: updatedProduct.id,
-    //         priceId: updatedProduct.default_price as string,
-    //       }
-
-    //       return updated
-    //     }
-    //   },
-    // ],
   },
   fields: [
     {
@@ -149,14 +108,44 @@ export const Products: CollectionConfig = {
       type: "textarea",
       label: "Product details",
     },
+    // <--- REMPLACEMENT DU CHAMP 'price' PAR UN CHAMP 'array' POUR LES VARIANTES --->
     {
-      name: "price",
-      label: "Price in CFA",
-      min: 0,
-      max: 50000,
-      type: "number",
+      name: "variants",
+      label: "Sizes and Prices",
+      type: "array",
+      minRows: 1,
       required: true,
+      labels: {
+        singular: "Variant",
+        plural: "Variants",
+      },
+      fields: [
+        {
+          name: "size",
+          label: "Size",
+          type: "select",
+          options: [
+            { label: "13x18cm", value: "13x18cm" },
+            { label: "20x45cm", value: "20x45cm" },
+            { label: "30x45cm", value: "30x45cm" },
+            { label: "40x60cm", value: "40x60cm" },
+            { label: "50x75cm", value: "50x75cm" },
+            { label: "60x120cm", value: "60x120cm" },
+            // Ajoutez d'autres tailles si nécessaire
+          ],
+          required: true,
+        },
+        {
+          name: "price",
+          label: "Price in CFA",
+          min: 0,
+          max: 80000,
+          type: "number",
+          required: true,
+        },
+      ],
     },
+    // <--- FIN DE L'AJOUT --->
     {
       name: "category",
       label: "Category",

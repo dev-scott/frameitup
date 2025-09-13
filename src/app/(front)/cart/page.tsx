@@ -27,6 +27,13 @@ import {
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { Product } from "@/payload-types";
+
+// Type pour la variante sélectionnée
+type SelectedVariant = {
+  size: string;
+  price: number;
+};
 
 const Page = () => {
   const form = useForm<z.infer<typeof OrderFormSchema>>({
@@ -37,14 +44,42 @@ const Page = () => {
     },
   });
 
-  const handlerOrder = (values: z.infer<typeof OrderFormSchema>) => {
-    console.log("here is the order value", values);
-    createOrder({ ...values, productIds: { productIds } });
-  };
-
   const { items, removeItem } = useCart();
-
   const router = useRouter();
+
+  // État local pour gérer la variante sélectionnée pour chaque produit
+  const [selectedVariants, setSelectedVariants] = useState<
+    Record<string, SelectedVariant>
+  >({});
+
+  // Initialisation de l'état des variantes au chargement
+  useEffect(() => {
+    if (items.length > 0) {
+      const initialVariants: Record<string, SelectedVariant> = {};
+      items.forEach(({ product }) => {
+        // Sélectionne la première variante par défaut
+        if (product.variants && product.variants.length > 0) {
+          initialVariants[product.id] = product.variants[0];
+        }
+      });
+      setSelectedVariants(initialVariants);
+    }
+  }, [items]);
+
+  const handlerOrder = (values: z.infer<typeof OrderFormSchema>) => {
+    // Crée une liste d'objets avec l'ID du produit et la variante sélectionnée
+    const orderItems = items.map(({ product }) => {
+      const variant = selectedVariants[product.id];
+      return {
+        productId: product.id,
+        size: variant.size,
+        price: variant.price,
+      };
+    });
+
+    // Envoi des données de la commande
+    createOrder({ ...values, items: orderItems });
+  };
 
   const { mutate: createCheckoutSession, isLoading } =
     trpc.payment.createSession.useMutation({
@@ -61,17 +96,16 @@ const Page = () => {
       },
     });
 
-  const productIds = items.map(({ product }) => product.id);
-
   const [isMounted, setIsMounted] = useState<boolean>(false);
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const cartTotal = items.reduce(
-    (total, { product }) => total + product.price,
-    0,
-  );
+  // Calcul du total basé sur les prix des variantes sélectionnées
+  const cartTotal = items.reduce((total, { product }) => {
+    const selectedVariant = selectedVariants[product.id];
+    return total + (selectedVariant?.price || 0);
+  }, 0);
 
   const fee = 1;
 
@@ -124,6 +158,7 @@ const Page = () => {
                   )?.label;
 
                   const { image } = product.images[0];
+                  const selectedVariant = selectedVariants[product.id];
 
                   return (
                     <li key={product.id} className="flex py-6 sm:py-10">
@@ -160,8 +195,40 @@ const Page = () => {
                               </p>
                             </div>
 
-                            <p className="mt-1 text-sm font-medium text-gray-900">
-                              {formatPrice(product.price)}
+                            <div className="mt-2 flex w-full">
+                              <label
+                                htmlFor={`size-select-${product.id}`}
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Size:
+                              </label>
+                              <select
+                                id={`size-select-${product.id}`}
+                                value={selectedVariant?.size || ""}
+                                onChange={(e) => {
+                                  const newSize = e.target.value;
+                                  const newVariant = product.variants?.find(
+                                    (v) => v.size === newSize,
+                                  );
+                                  if (newVariant) {
+                                    setSelectedVariants({
+                                      ...selectedVariants,
+                                      [product.id]: newVariant,
+                                    });
+                                  }
+                                }}
+                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                              >
+                                {product.variants?.map((variant, index) => (
+                                  <option key={index} value={variant.size}>
+                                    {variant.size}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <p className="mt-2 text-sm font-medium text-gray-900">
+                              {formatPrice(selectedVariant?.price || 0)}
                             </p>
                           </div>
 
@@ -180,7 +247,6 @@ const Page = () => {
 
                         <p className="mt-4 flex space-x-2 text-sm text-gray-700">
                           <Check className="h-5 w-5 flex-shrink-0 text-green-500" />
-
                           <span>Eligible for instant delivery</span>
                         </p>
                       </div>
@@ -204,7 +270,7 @@ const Page = () => {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>PHone field</FormLabel>
+                          <FormLabel>Phone field</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Enter your phone number"
@@ -281,12 +347,11 @@ const Page = () => {
                 <div className="mt-6">
                   <Button
                     disabled={items.length === 0 || createOrderLoading}
-                    // onClick={() => createCheckoutSession({ productIds })}
                     type="submit"
                     className="w-full"
                     size="lg"
                   >
-                    {isLoading ? (
+                    {createOrderLoading ? (
                       <Loader2 className="w-4 h-4 animate-spin mr-1.5" />
                     ) : null}
                     Make order

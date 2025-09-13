@@ -25,16 +25,22 @@ interface ReceiptEmailProps {
   email: string;
   date: Date;
   orderId: string;
-  products: Product[];
+  items: {
+    price: number;
+    productId: string;
+    size: string;
+  }[];
+  products:Product[]
 }
 
 export const ReceiptEmail = ({
   email,
   date,
   orderId,
-  products,
+  items,
+  products
 }: ReceiptEmailProps) => {
-  const total = products.reduce((acc, curr) => acc + curr.price, 0) + 1;
+  const total = items.reduce((acc, curr) => acc + curr.price, 0) + 1;
 
   return (
     <Html>
@@ -126,7 +132,7 @@ export const ReceiptEmail = ({
                 </Column>
 
                 <Column style={productPriceWrapper} align="right">
-                  <Text style={productPrice}>{formatPrice(product.price)}</Text>
+                  {/* <Text style={productPrice}>{formatPrice(product.price)}</Text> */}
                 </Column>
               </Section>
             );
