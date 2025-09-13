@@ -13,8 +13,6 @@ import { Product } from "@/payload-types";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const orderRouter = router({
-
-
   createOrder: privateProcedure
     .input(ExtendedOrderFormSchema)
     .mutation(async ({ ctx, input }) => {
@@ -24,13 +22,14 @@ export const orderRouter = router({
         console.log("here is the order value in the trpc router", input);
         console.log("user", ctx);
 
-        let { productIds  } = input.productIds;
-        let {phone, address} = input;
-        console.log(productIds);
+        // Remplace `productIds` par `items` et extrait les IDs
+        const { items, phone, address } = input;
 
-        if (productIds.length === 0) {
+        if (items.length === 0) {
           throw new TRPCError({ code: "BAD_REQUEST" });
         }
+
+        const productIds = items.map((item) => item.productId);
 
         const payload = await getPayloadClient();
 
@@ -44,22 +43,23 @@ export const orderRouter = router({
         });
         console.log("list of product to order", products);
 
-        // const filteredProducts = products.filter((prod) =>
-        //   Boolean(prod.priceId),
-        // );
-        // console.log("filtered products", filteredProducts);
-
         console.log("in the try catch block");
         const order = await payload.create({
           collection: "orders",
           data: {
             _isPaid: false,
             //@ts-ignore
-            products: products.map((prod) => prod.id),
             user: user.id,
-                        //@ts-ignore
+            //@ts-ignore
             phone: phone,
             address: address,
+            // Ajout du champ `items` pour stocker les détails de la variante choisie
+            //@ts-ignore
+            items: items.map((item) => ({
+              product: item.productId, // Assurez-vous d'utiliser productId pour la relation
+              size: item.size,
+              price: item.price,
+            })),
           },
         });
         console.log("order created", order);
@@ -74,7 +74,9 @@ export const orderRouter = router({
             //@ts-ignore
             email: user.email,
             orderId: order.id as string,
-            products: order.products as Product[],
+            products: products as unknown as Product[],
+
+            items: items,
           }),
         });
 
@@ -89,13 +91,13 @@ export const orderRouter = router({
       }
     }),
 
-    createConfiguration:privateProcedure.input(ConfigurationSchema).mutation(async ({ctx,input})=>{
-
+  createConfiguration: privateProcedure
+    .input(ConfigurationSchema)
+    .mutation(async ({ ctx, input }) => {
       const { user } = ctx;
 
-        console.log("here is the order value in the trpc router", input);
-        console.log("user", ctx);
-        return "test"
-
-    })
+      console.log("here is the order value in the trpc router", input);
+      console.log("user", ctx);
+      return "test";
+    }),
 });

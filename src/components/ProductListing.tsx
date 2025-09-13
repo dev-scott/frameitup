@@ -27,7 +27,7 @@ const ProductListing = ({ product, index }: ProductListingProps) => {
   if (!product || !isVisible) return <ProductPlaceholder />;
 
   const label = PRODUCT_CATEGORIES.find(
-    ({ value }) => value === product.category
+    ({ value }) => value === product.category,
   )?.label;
 
   const validUrls = product.images
@@ -49,9 +49,14 @@ const ProductListing = ({ product, index }: ProductListingProps) => {
             {product.name}
           </h3>
           <p className="mt-1 text-sm text-gray-500">{label}</p>
-          <p className="mt-1 font-medium text-sm text-gray-900">
-            {formatPrice(product.price)}
-          </p>
+          <div>
+            <p className="mt-1 font-medium text-sm text-gray-900">
+              {formatPrice(product.variants[0].price)}
+            </p>
+            <p className="mt-1 font-medium text-sm text-gray-900">
+              {product.variants[0].size}
+            </p>
+          </div>
         </div>
       </Link>
     );

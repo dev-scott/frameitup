@@ -34,6 +34,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
   });
 
   const [order] = orders;
+  console.log("order in thank-you page", order);
 
   if (!order) return notFound();
 
@@ -46,7 +47,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
 
   const products = order.products as Product[];
 
-  const orderTotal = products.reduce((total, product) => {
+  const orderTotal = order.items.reduce((total, product) => {
     return total + product.price;
   }, 0);
 
@@ -92,7 +93,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
               <div className="text-muted-foreground">Order nr.</div>
               <div className="mt-2 text-gray-900">{order.id}</div>
 
-              <ul className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-muted-foreground">
+              {/* <ul className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-muted-foreground">
                 {(order.products as Product[]).map((product) => {
                   const label = PRODUCT_CATEGORIES.find(
                     ({ value }) => value === product.category,
@@ -140,7 +141,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
                     </li>
                   );
                 })}
-              </ul>
+              </ul> */}
 
               <div className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-muted-foreground">
                 <div className="flex justify-between">

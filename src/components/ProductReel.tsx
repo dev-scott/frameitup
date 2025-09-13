@@ -42,7 +42,7 @@ const ProductReel = (props: ProductReelProps) => {
 
   console.log("list of all my products", map);
   return (
-    <section className="py-12">
+    <section className="py-12 h-fit">
       <div className="md:flex md:items-center md:justify-between mb-4">
         <div className="max-w-2xl px-4 lg:max-w-4xl lg:px-0">
           {title ? (
@@ -65,13 +65,13 @@ const ProductReel = (props: ProductReelProps) => {
         ) : null}
       </div>
 
-      <div className="relative">
-        <div className="mt-6 flex items-center w-full">
+      <div className="relative  h-full">
+        <div className="mt-6 flex items-center w-full h-full">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="show"
-            className="w-full grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-10 lg:gap-x-8"
+            className="w-full grid grid-cols-2 h-full gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-10 lg:gap-x-8"
           >
             {map.map((product, i) => (
               <motion.div key={`product-${i}`} variants={itemVariants}>

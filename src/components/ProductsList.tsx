@@ -123,8 +123,11 @@ const ProductsList = (props: ProductsListProps) => {
                       </h4>
                       <div className="flex items-center gap-1">
                         <CheckCircle className="text-[#e7c819] text-xl" />
-                        <p>{formatPrice(product!!.price)}</p>
+                        <p>{formatPrice(product!!.variants[0].price)}</p>
                       </div>
+                      <h4 className="text-white font-normal font-semibold tracking-[1px] uppercase">
+                        {product!!.variants[0].size}
+                      </h4>
                     </div>
                     <Link
                       href={`/product/${product!!.id}`}

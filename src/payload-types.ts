@@ -50,7 +50,11 @@ export interface Product {
   user?: (string | null) | User;
   name: string;
   description?: string | null;
-  price: number;
+  variants: {
+    size: string;
+    price: number;
+    id?: string | null; // Les éléments de tableau ont un ID dans Payload CMS
+  }[];
   category: 'wood_frame' | 'plastic_frame' | 'bordered_frame';
   product_files: string | ProductFile;
   approvedForSale?: ('pending' | 'approved' | 'denied') | null;

@@ -9,10 +9,17 @@ export const OrderFormSchema = z.object({
 });
 export const ExtendedOrderFormSchema = z.object({
   phone: z.string().regex(/^6\d{8}$/, "Invalid phone number"),
-  productIds: z.object({ productIds: z.array(z.string()) }),
+  // productIds: z.object({ productIds: z.array(z.string()) }),
   address: z.string().min(8, {
     message: "Address must be at least 8 characters long.",
   }),
+  items: z.array(
+    z.object({
+      productId: z.string(),
+      size: z.string(),
+      price: z.number(),
+    }),
+  ),
 });
 
 export const ConfigurationSchema = z.object({
