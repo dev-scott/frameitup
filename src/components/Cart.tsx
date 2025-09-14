@@ -29,10 +29,10 @@ const Cart = () => {
     setIsMounted(true);
   }, []);
 
-  const cartTotal = items.reduce(
-    (total, { product }) => total + product.variants[0].price,
-    0,
-  );
+  // const cartTotal = items.reduce(
+  //   (total, { product }) => total + product.variants[0].price,
+  //   0,
+  // );
 
   const fee = 1;
 
@@ -73,7 +73,7 @@ const Cart = () => {
                 </div>
                 <div className="flex">
                   <span className="flex-1">Total</span>
-                  <span>{formatPrice(cartTotal + fee)}</span>
+                  {/* <span>{formatPrice(cartTotal + fee)}</span> */}
                 </div>
               </div>
 
