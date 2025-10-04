@@ -99,6 +99,7 @@ const ProductsList = (props: ProductsListProps) => {
                 typeof image === "string" ? image : image.url,
               )
               .filter(Boolean) as string[];
+            console.log("validUrls", validUrls);
 
             return (
               <SwiperSlide
