@@ -24,30 +24,6 @@ export const PRODUCT_CATEGORIES = [
     ],
   },
   {
-    label: "Glass frame",
-    value: "glass_frame" as const,
-    bgColor: "bg-gradient-to-b from-[#06b6d4] via-[#2563eb] to-[#6366f1]",
-    img: "/category_frame/g1.png",
-    description: " frame with glass and lacquer , perfect for your memories.",
-    featured: [
-      {
-        name: "Favorite Frame Picks",
-        href: `/products?category=glass_frame`,
-        imageSrc: "/nav/frames/4.jpg",
-      },
-      {
-        name: "New Arrivals",
-        href: "/products?category=bordered_frame&sort=desc",
-        imageSrc: "/nav/frames/5.jpg",
-      },
-      {
-        name: "Bestsellers",
-        href: "/products?category=bordered_frame&sort=desc&limit=8",
-        imageSrc: "/nav/frames/6.png",
-      },
-    ],
-  },
-  {
     label: "Plastic frame",
     value: "plastic_frame" as const,
     bgColor: "bg-gradient-to-tl from-[#15803d] via-[#115e59] to-[#164e63]",
