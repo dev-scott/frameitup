@@ -110,13 +110,19 @@ const ProductsList = (props: ProductsListProps) => {
                   href={`/product/${product!!.id}`}
                   className="w-full h-[450px] flex-1 relative overflow-hidden group flex justify-center"
                 >
-                  <Image
+                  {/* <Image
                     src={validUrls[0] || ""}
                     fill
                     className="object-cover"
                     alt="product image"
                     quality={100}
+                  /> */}
+                  <img
+                    src={validUrls[0] || ""}
+                    alt="product image"
+                    className="object-cover"
                   />
+
                   <div className="w-[90%] h-[84px] bg-black absolute bottom-4 flex justify-between items-center text-white md:translate-y-[108px] md:group-hover:translate-y-0 transition-all duration-500">
                     <div className="pl-8">
                       <h4 className="text-white font-normal font-semibold tracking-[1px] uppercase">

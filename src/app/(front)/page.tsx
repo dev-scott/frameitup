@@ -205,12 +205,13 @@ export default function Home() {
                         " absolute w-full h-full md:w-[500px] rounded-md md:h-[500px] md:right-[-20%] md:top-[10%] hidden 2xl:block ",
                       )}
                     >
-                      <Image
+                      {/* <Image
                         src={category.img}
                         alt={category.label}
                         fill
                         className="object-cover "
-                      />
+                      /> */}
+                      <img src={category.img} alt={category.label} className="object-cover" />
                     </div>
                   </Link>
                 ),
