@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const TopBar = () => {
   return (
     <section
-      className="py-4 xl:h-16 xl:py-0 bg-gradient-to-t from-[#000000] to-[#000000] flex items-center"
+      className="py-4 xl:h-16 xl:py-0 bg-gradient-to-t from-[#92400e] to-[#ea580c] flex items-center"
       id="home"
     >
       <MaxWidthWrapper className="flex justify-start items-center">
