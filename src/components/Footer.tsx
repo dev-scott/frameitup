@@ -2,11 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import { Icons } from "./Icons";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { anton, festive, goblin_one } from "@/lib/font";
+import { Icons } from "./Icons";
 
 const Footer = () => {
   const pathname = usePathname();

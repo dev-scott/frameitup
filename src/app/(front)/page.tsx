@@ -113,7 +113,7 @@ export default function Home() {
               className="font-bold  text-2xl md:text-4xl text-white mb-4"
             >
               <span className="text-[#e7c819]">Your favorite </span>
-              moments deserve more than just a
+              moments deserve more than just a{" "}
               <span className="text-secondary">digital screen</span>
             </motion.h1>
             <motion.p
@@ -178,13 +178,14 @@ export default function Home() {
             </div>
             <div className="w-full  grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-4 ">
               {PRODUCT_CATEGORIES.map(
-                (category: (typeof PRODUCT_CATEGORIES)[number]) => (
+                (category: (typeof PRODUCT_CATEGORIES)[number], index) => (
                   <Link
                     href={`/category?category=${category.value}`}
                     key={category.value}
                     className={cn(
-                      "rounded-md col-span-1 row-span-1 relative overflow-hidden  flex justify-start h-[450px] md:h-[450px] items-center px-4 md:px-8 backdrop-filter backdrop-blur-md bg-opacity-10",
+                      "rounded-md col-span-1 row-span-1 relative overflow-hidden  flex justify-between h-[450px] md:h-[450px] items-center px-4 md:px-8 backdrop-filter backdrop-blur-md bg-opacity-10",
                       category.bgColor,
+                      index === 2 ? "md:col-span-2" : "col-span-1",
                     )}
                   >
                     {/* <div className=" h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 ">
@@ -202,7 +203,7 @@ export default function Home() {
                     </div>
                     <div
                       className={cn(
-                        " absolute w-full h-full md:w-[500px] rounded-md md:h-[500px] md:right-[-20%] md:top-[10%] hidden 2xl:block ",
+                        "  w-full h-full md:w-[500px] rounded-md md:h-[500px] md:right-[-20%] md:top-[10%] hidden 2xl:block ",
                       )}
                     >
                       {/* <Image
@@ -211,15 +212,15 @@ export default function Home() {
                         fill
                         className="object-cover "
                       /> */}
-                      <img src={category.img} alt={category.label} className="object-cover" />
+                      <img
+                        src={category.img}
+                        alt={category.label}
+                        className="object-cover"
+                      />
                     </div>
                   </Link>
                 ),
               )}
-              {/* <Link href="/products?category=wood_frame">
-                {" "}
-                <div className="    rounded-md col-span-1 row-span-1"></div>{" "}
-              </Link> */}
             </div>
           </div>
         </section>

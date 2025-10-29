@@ -45,7 +45,6 @@ const Navbar = async () => {
               </div>
 
               <div className="ml-auto flex items-center">
-             
                 <div className="block lg:hidden">
                   <CreateOwnFrameButton />
                 </div>
