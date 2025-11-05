@@ -38,7 +38,7 @@ const ImageSlider = ({ urls }: ImageSliderProps) => {
   const inactiveStyles = "hidden text-gray-400";
 
   return (
-    <div className="group relative bg-zinc-100 w-full h-full  max-w-[595px] max-h-[842px]  aspect-square overflow-hidden rounded-xl">
+    <div className="group relative bg-zinc-100 w-full h-full   overflow-hidden rounded-xl">
       <div className="absolute z-10 inset-0 opacity-0 group-hover:opacity-100 transition">
         <button
           onClick={(e) => {
@@ -84,14 +84,15 @@ const ImageSlider = ({ urls }: ImageSliderProps) => {
       >
         {urls.map((url, i) => (
           <SwiperSlide key={i} className="-z-10 relative h-full w-full">
-            <Image
+            {/* <Image
               fill
               loading="eager"
               priority
-              className="-z-10  object-center"
+              className="-z-10   object-center"
               src={url}
               alt="Product image"
-            />
+            /> */}
+            <img src={url} alt="product image" className="object-cover" />
           </SwiperSlide>
         ))}
       </Swiper>

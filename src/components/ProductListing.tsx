@@ -9,7 +9,7 @@ import { PRODUCT_CATEGORIES } from "@/config";
 import ImageSlider from "./ImageSlider";
 
 interface ProductListingProps {
-  product: Product | null;
+  product: any | null;
   index: number;
 }
 
@@ -30,9 +30,16 @@ const ProductListing = ({ product, index }: ProductListingProps) => {
     ({ value }) => value === product.category,
   )?.label;
 
-  const validUrls = product.images
-    .map(({ image }) => (typeof image === "string" ? image : image.url))
-    .filter(Boolean) as string[];
+  // const validUrls = product.images
+  //   .map(({ image }) => (typeof image === "string" ? image : image.url))
+  //   .filter(Boolean) as string[];
+
+  const validUrls = [
+    product.images[0]?.image!!.url,
+    product.images[1]?.image?.url,
+  ];
+
+  console.log("here is the validUrls data", validUrls);
 
   if (isVisible && product) {
     return (
@@ -42,9 +49,10 @@ const ProductListing = ({ product, index }: ProductListingProps) => {
         })}
         href={`/product/${product.id}`}
       >
-        <div className="flex flex-col w-full">
+        <div className="h-fit">
           <ImageSlider urls={validUrls} />
-
+        </div>
+        <div className="flex flex-col w-full">
           <h3 className="mt-4 font-medium text-sm text-gray-700">
             {product.name}
           </h3>

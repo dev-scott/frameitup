@@ -85,9 +85,14 @@ const ProductReel = (props: ProductReelProps) => {
             ))} */}
             {products &&
               products.map((product: any, i) => (
-                <div key={`product-${i}`}>
-                  <img src={product.images[0].image.url} alt="" />
-                </div>
+                <motion.div key={`product-${i}`} variants={itemVariants}>
+                  {/* <img src={product.images[0].image.url} alt="" /> */}
+                  <ProductListing
+                    key={`product-${i}`}
+                    product={product}
+                    index={i}
+                  />
+                </motion.div>
               ))}
           </motion.div>
         </div>
