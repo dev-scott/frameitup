@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { TQueryValidator } from "@/lib/validators/query-validator";
@@ -32,15 +33,15 @@ const ProductReel = (props: ProductReelProps) => {
 
   const products = queryResults?.pages.flatMap((page) => page.items);
 
-  let map: (Product | null)[] = [];
-  if (products && products.length) {
-    //@ts-ignore
-    map = products;
-  } else if (isLoading) {
-    map = new Array<null>(query.limit ?? FALLBACK_LIMIT).fill(null);
-  }
+  // let map: (Product | null)[] = [];
+  // if (products && products.length) {
+  //   //@ts-ignore
+  //   map = products;
+  // } else if (isLoading) {
+  //   map = new Array<null>(query.limit ?? FALLBACK_LIMIT).fill(null);
+  // }
 
-  console.log("list of all my products", map);
+  console.log("list of all my products", products);
   return (
     <section className="py-12 h-fit">
       <div className="md:flex md:items-center md:justify-between mb-4">
@@ -73,7 +74,7 @@ const ProductReel = (props: ProductReelProps) => {
             animate="show"
             className="w-full grid grid-cols-2 h-full gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-10 lg:gap-x-8"
           >
-            {map.map((product, i) => (
+            {/* {products?.map((product, i) => (
               <motion.div key={`product-${i}`} variants={itemVariants}>
                 <ProductListing
                   key={`product-${i}`}
@@ -81,7 +82,13 @@ const ProductReel = (props: ProductReelProps) => {
                   index={i}
                 />
               </motion.div>
-            ))}
+            ))} */}
+            {products &&
+              products.map((product: any, i) => (
+                <div key={`product-${i}`}>
+                  <img src={product.images[0].image.url} alt="" />
+                </div>
+              ))}
           </motion.div>
         </div>
       </div>
