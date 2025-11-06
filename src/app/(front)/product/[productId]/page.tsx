@@ -41,6 +41,7 @@ const Page = async ({ params }: PageProps) => {
   });
 
   const [product] = products;
+  console.log("product data in product page", product);
 
   if (!product) return notFound();
 
@@ -91,9 +92,19 @@ const Page = async ({ params }: PageProps) => {
 
             <section className="mt-4">
               <div className="flex items-center">
-                <p className="font-medium text-gray-900">
-                  {formatPrice(product.price)}
-                </p>
+                <div>
+                  {product.variants.map((variant) => (
+                    <div
+                      key={variant.id}
+                      className="flex items-center gap-x-5 mt-4"
+                    >
+                      <p className="font-medium text-gray-900">
+                        {formatPrice(variant.price)}
+                      </p>
+                      <p>{variant.size}</p>
+                    </div>
+                  ))}
+                </div>
 
                 <div className="ml-4 border-l text-muted-foreground border-gray-300 pl-4">
                   {label}
@@ -120,7 +131,7 @@ const Page = async ({ params }: PageProps) => {
 
           {/* Product images */}
           <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-            <div className="aspect-square rounded-lg">
+            <div className="h-fit">
               <ImageSlider urls={validUrls} />
             </div>
           </div>
