@@ -1,3 +1,4 @@
+// src/server.ts
 import express from 'express'
 import { getPayloadClient } from './get-payload'
 import { nextApp, nextHandler } from './next-utils'
@@ -85,6 +86,8 @@ const start = async () => {
   })
 
   app.use('/cart', cartRouter)
+  
+  // IMPORTANT: Ajouter tRPC avant nextHandler
   app.use(
     '/api/trpc',
     trpcExpress.createExpressMiddleware({
@@ -93,6 +96,19 @@ const start = async () => {
     })
   )
 
+  // CRITIQUE: Ne pas intercepter les routes API Next.js
+  // Laisser Next.js gérer ses propres routes API
+  app.use((req, res, next) => {
+    // Si c'est une route API Next.js (cloudinary, uploadthing, etc.)
+    // laisser Next.js la gérer
+    if (req.path.startsWith('/api/') && !req.path.startsWith('/api/trpc')) {
+      console.log('🔀 Routing to Next.js API:', req.path);
+      return nextHandler(req, res);
+    }
+    next();
+  });
+
+  // Pour toutes les autres routes, utiliser nextHandler
   app.use((req, res) => nextHandler(req, res))
 
   nextApp.prepare().then(() => {

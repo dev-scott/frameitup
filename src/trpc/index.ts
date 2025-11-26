@@ -6,6 +6,7 @@ import { getPayloadClient } from "../get-payload";
 import { paymentRouter } from "./payment-router";
 import { orderRouter } from "./order-router";
 import { Resend } from "resend";
+import { customFrameRouter } from "./custom-frame-router";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -13,6 +14,7 @@ export const appRouter = router({
   auth: authRouter,
   payment: paymentRouter,
   order: orderRouter,
+  customFrame: customFrameRouter,
 
   getInfiniteProducts: publicProcedure
     .input(
