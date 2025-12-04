@@ -7,6 +7,7 @@ import { paymentRouter } from "./payment-router";
 import { orderRouter } from "./order-router";
 import { Resend } from "resend";
 import { customFrameRouter } from "./custom-frame-router";
+import { uploadRouter } from "./upload-router";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -15,6 +16,7 @@ export const appRouter = router({
   payment: paymentRouter,
   order: orderRouter,
   customFrame: customFrameRouter,
+  upload: uploadRouter,
 
   getInfiniteProducts: publicProcedure
     .input(

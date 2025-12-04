@@ -49,7 +49,7 @@ function CustomFrameCheckoutContent() {
     };
     
     if (!configData.originalUrl || !configData.publicId) {
-      router.push('/custom-frame/upload');
+      router.push('/configure/upload');
       return;
     }
     

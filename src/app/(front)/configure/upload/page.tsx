@@ -3,15 +3,15 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
-import { Upload, Loader2, ImageIcon } from "lucide-react";
+import { Upload, Loader2, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-
-export default function CustomFrameUploadPage() {
+import { trpc } from "@/trpc/client";
+import { motion, AnimatePresence } from "motion/react";
+export default function CustomFrameUploadPageTRPC() {
   const router = useRouter();
-  const [isUploading, setIsUploading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<{
     url: string;
     publicId: string;
@@ -19,92 +19,63 @@ export default function CustomFrameUploadPage() {
     height: number;
   } | null>(null);
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    if (!file) {
-      console.log("❌ No file selected");
-      return;
-    }
+  const { data: configTest } = trpc.upload.testConfig.useQuery();
 
-    console.log("📁 File selected:", {
-      name: file.name,
-      size: file.size,
-      type: file.type,
+  const { mutate: uploadImage, isLoading: isUploading } =
+    trpc.upload.uploadImage.useMutation({
+      onSuccess: (data) => {
+        console.log("✅ Upload successful:", data);
+        setUploadedImage({
+          url: data.url,
+          publicId: data.publicId,
+          width: data.width,
+          height: data.height,
+        });
+        toast.success("Image uploadée avec succès !");
+      },
+      onError: (error) => {
+        console.error("❌ Upload error:", error);
+        toast.error(`Erreur: ${error.message}`);
+      },
     });
 
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("L'image ne doit pas dépasser 10MB");
-      console.error("❌ File too large:", file.size);
-      return;
-    }
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
-    if (!file.type.startsWith("image/")) {
-      toast.error("Veuillez uploader une image");
-      console.error("❌ Invalid file type:", file.type);
-      return;
-    }
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      if (!file) return;
 
-    setIsUploading(true);
-    console.log("🚀 Starting upload...");
-
-    try {
-      // Test de la route d'abord
-      console.log("🧪 Testing Cloudinary route...");
-      const testResponse = await fetch("/api/cloudinary/upload", {
-        method: "GET",
-      });
-
-      if (testResponse.ok) {
-        const testData = await testResponse.json();
-        console.log("✅ Route test successful:", testData);
-      } else {
-        console.error("❌ Route test failed:", testResponse.status);
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("L'image ne doit pas dépasser 10MB");
+        return;
       }
 
-      // Préparer le FormData
-      const formData = new FormData();
-      formData.append("file", file);
-
-      console.log("📤 Sending POST request to /api/cloudinary/upload");
-
-      const response = await fetch("/api/cloudinary/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      console.log("📥 Response status:", response.status);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("❌ Upload failed:", errorText);
-        throw new Error(`Upload failed: ${response.status}`);
+      if (!file.type.startsWith("image/")) {
+        toast.error("Veuillez uploader une image");
+        return;
       }
 
-      const data = await response.json();
-      console.log("✅ Upload successful:", data);
-
-      setUploadedImage({
-        url: data.url,
-        publicId: data.publicId,
-        width: data.width,
-        height: data.height,
-      });
-
-      toast.success("Image uploadée avec succès !");
-    } catch (error: any) {
-      console.error("💥 Upload error:", error);
-      toast.error(`Erreur: ${error.message}`);
-    } finally {
-      setIsUploading(false);
-      console.log("🏁 Upload process finished");
-    }
-  }, []);
+      try {
+        const base64Image = await convertToBase64(file);
+        uploadImage({ base64Image, fileName: file.name });
+      } catch (error) {
+        toast.error("Erreur lors de la préparation du fichier");
+      }
+    },
+    [uploadImage],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".webp"],
-    },
+    accept: { "image/*": [".png", ".jpg", ".jpeg", ".webp"] },
     maxFiles: 1,
     disabled: isUploading,
   });
@@ -117,42 +88,52 @@ export default function CustomFrameUploadPage() {
         width: uploadedImage.width.toString(),
         height: uploadedImage.height.toString(),
       });
-      router.push(`/custom-frame/edit?${params.toString()}`);
+      router.push(`/configure/edit?${params.toString()}`);
     }
   };
 
   return (
     <MaxWidthWrapper>
-      <div className="min-h-screen py-20">
+      <div className="min-h-screen py-10">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          {/* <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">
               Créez votre cadre personnalisé
             </h1>
             <p className="text-muted-foreground text-lg">
               Uploadez votre photo et personnalisez-la à votre goût
             </p>
-          </div>
 
-          {/* Bouton de test */}
-          <div className="mb-4 text-center">
-            <Button
-              variant="outline"
-              onClick={async () => {
-                try {
-                  const response = await fetch("/api/cloudinary/upload");
-                  const data = await response.json();
-                  console.log("Test result:", data);
-                  toast.success("Route is accessible!");
-                } catch (error) {
-                  console.error("Test error:", error);
-                  toast.error("Route is NOT accessible!");
-                }
-              }}
+            {configTest && (
+              <div className="mt-4 p-4 bg-gray-100 rounded-lg text-sm text-left max-w-md mx-auto">
+                <p className="font-semibold mb-2">Configuration Cloudinary:</p>
+                <p>Status: {configTest.status}</p>
+                <p>Cloud Name: {configTest.cloudName}</p>
+                <p>API Key: {configTest.hasApiKey ? "✅" : "❌"}</p>
+                <p>API Secret: {configTest.hasApiSecret ? "✅" : "❌"}</p>
+              </div>
+            )}
+          </div> */}
+          {/* 
+          <div className="text-center mb-12">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="inline-block mb-4"
             >
-              🧪 Test Cloudinary Route
-            </Button>
-          </div>
+              <div className="bg-primary/10 p-4 rounded-full">
+                <Upload className="h-12 w-12 text-primary" />
+              </div>
+            </motion.div>
+            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-[#92400e] to-[#ea580c] bg-clip-text text-transparent">
+              Upload Your Photo
+            </h1>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Start creating your custom frame by uploading your favorite photo.
+              High-resolution images work best!
+            </p>
+          </div> */}
 
           {!uploadedImage ? (
             <div
@@ -171,9 +152,8 @@ export default function CustomFrameUploadPage() {
                 {isUploading ? (
                   <>
                     <Loader2 className="w-16 h-16 animate-spin text-primary" />
-                    <p className="text-lg font-medium">Upload en cours...</p>
-                    <p className="text-sm text-muted-foreground">
-                      Vérifiez la console pour les détails
+                    <p className="text-lg font-medium">
+                      Upload en cours via tRPC...
                     </p>
                   </>
                 ) : (
@@ -186,7 +166,7 @@ export default function CustomFrameUploadPage() {
                           : "Glissez-déposez votre image ici"}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        ou cliquez pour sélectionner un fichier
+                        ou cliquez pour sélectionner
                       </p>
                     </div>
                     <p className="text-xs text-muted-foreground">
@@ -205,7 +185,6 @@ export default function CustomFrameUploadPage() {
                   className="w-full h-full object-contain"
                 />
               </div>
-
               <div className="flex gap-4 justify-center">
                 <Button
                   variant="outline"
@@ -222,24 +201,24 @@ export default function CustomFrameUploadPage() {
 
           <div className="grid md:grid-cols-3 gap-6 mt-12">
             <div className="p-6 border rounded-lg text-center">
-              <ImageIcon className="w-8 h-8 mx-auto mb-3 text-primary" />
+              <Image className="w-8 h-8 mx-auto mb-3 text-primary" />
               <h3 className="font-semibold mb-2">Haute qualité</h3>
               <p className="text-sm text-muted-foreground">
-                Vos photos seront imprimées en haute définition
+                Photos en haute définition
               </p>
             </div>
             <div className="p-6 border rounded-lg text-center">
               <Upload className="w-8 h-8 mx-auto mb-3 text-primary" />
               <h3 className="font-semibold mb-2">Upload sécurisé</h3>
               <p className="text-sm text-muted-foreground">
-                Vos images sont stockées en toute sécurité
+                Images stockées en sécurité
               </p>
             </div>
             <div className="p-6 border rounded-lg text-center">
               <Loader2 className="w-8 h-8 mx-auto mb-3 text-primary" />
               <h3 className="font-semibold mb-2">Livraison rapide</h3>
               <p className="text-sm text-muted-foreground">
-                Recevez votre cadre sous 7-10 jours
+                Cadre sous 7-10 jours
               </p>
             </div>
           </div>

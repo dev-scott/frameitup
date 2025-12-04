@@ -66,7 +66,7 @@ function CustomFrameEditContent() {
       setPublicId(pid);
       setPreviewUrl(url);
     } else {
-      router.push("/custom-frame/upload");
+      router.push("/configure/upload");
     }
   }, [searchParams, router]);
 
