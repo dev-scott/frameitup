@@ -45,6 +45,7 @@ const CreateOwnFrameButton = () => {
     return `${whatsappUrl}${countryCode}${phoneNumber}?text=${encodedMessage}`;
   };
 
+
   const handleOpenWhatsapp = () => {
     window.open(openWhatsap(), "_blank");
   };
