@@ -14,7 +14,7 @@ export default function HomePage() {
         </h1>
         <p className="mb-10 max-w-xl text-lg text-frame-warm">
           Upload any photo. Choose your frame. We craft and deliver a museum-quality framed print to
-          your door in days.
+          your door in days..
         </p>
         <div className="flex flex-col gap-4 sm:flex-row">
           <Button size="lg" asChild>
