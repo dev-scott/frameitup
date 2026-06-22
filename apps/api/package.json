@@ -1,0 +1,48 @@
+{
+  "name": "@frameitup/api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "node dist/main",
+    "lint": "eslint src/",
+    "type-check": "tsc --noEmit",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.12.2",
+    "@as-integrations/express5": "^1.1.2",
+    "@clerk/clerk-sdk-node": "^5.1.6",
+    "@frameitup/database": "workspace:*",
+    "@frameitup/types": "workspace:*",
+    "@frameitup/utils": "workspace:*",
+    "@nestjs/apollo": "^13.4.2",
+    "@nestjs/common": "^11.1.3",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.3",
+    "@nestjs/graphql": "^13.1.0",
+    "@nestjs/mapped-types": "^2.1.0",
+    "@nestjs/platform-express": "^11.1.3",
+    "apollo-server-express": "^3.13.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "graphql": "^16.10.0",
+    "reflect-metadata": "^0.2.2",
+    "resend": "^4.6.0",
+    "rxjs": "^7.8.2",
+    "stripe": "^17.7.0"
+  },
+  "devDependencies": {
+    "@frameitup/config-typescript": "workspace:*",
+    "@graphql-codegen/cli": "^5.0.6",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-resolvers": "^6.0.2",
+    "@nestjs/cli": "^11.0.7",
+    "@nestjs/schematics": "^11.0.5",
+    "@nestjs/testing": "^11.1.3",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.15.29",
+    "typescript": "^5.8.3"
+  }
+}

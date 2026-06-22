@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  CUSTOMER
+  ARTIST
+  ADMIN
+  FINANCE
+}
+
+enum OrderStatus {
+  PENDING
+  PAYMENT_CONFIRMED
+  IN_PRODUCTION
+  QUALITY_CHECK
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum FrameMaterial {
+  WOOD
+  METAL
+  ACRYLIC
+  COMPOSITE
+}
+
+enum GlasingType {
+  STANDARD
+  UV_PROTECTIVE
+  ANTI_REFLECTIVE
+  MUSEUM_GLASS
+}
+
+enum ArtworkEdition {
+  OPEN
+  LIMITED
+  ONE_OF_ONE
+}
+
+enum RevenueSource {
+  SAAS_FRAME
+  MARKETPLACE
+  SUBSCRIPTION
+  CORPORATE
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+model User {
+  id          String    @id @default(cuid())
+  clerkId     String    @unique
+  email       String    @unique
+  firstName   String
+  lastName    String
+  avatarUrl   String?
+  role        UserRole  @default(CUSTOMER)
+  orders      Order[]
+  artist      ArtistProfile?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("users")
+}
+
+model Frame {
+  id           String        @id @default(cuid())
+  name         String
+  material     FrameMaterial
+  color        String
+  widthMm      Float
+  heightMm     Float
+  depthMm      Float
+  priceUsd     Decimal       @db.Decimal(10, 2)
+  thumbnailUrl String
+  available    Boolean       @default(true)
+  orderItems   OrderItem[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("frames")
+}
+
+model Order {
+  id                    String      @id @default(cuid())
+  userId                String
+  user                  User        @relation(fields: [userId], references: [id])
+  status                OrderStatus @default(PENDING)
+  items                 OrderItem[]
+  shippingLine1         String
+  shippingLine2         String?
+  shippingCity          String
+  shippingState         String
+  shippingPostalCode    String
+  shippingCountry       String
+  totalUsd              Decimal     @db.Decimal(10, 2)
+  stripePaymentIntentId String?     @unique
+  trackingNumber        String?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id           String      @id @default(cuid())
+  orderId      String
+  order        Order       @relation(fields: [orderId], references: [id])
+  frameId      String
+  frame        Frame       @relation(fields: [frameId], references: [id])
+  imageUrl     String
+  matColor     String?
+  glasingType  GlasingType @default(STANDARD)
+  widthPx      Int
+  heightPx     Int
+  cropData     Json?
+  quantity     Int         @default(1)
+  unitPriceUsd Decimal     @db.Decimal(10, 2)
+  createdAt    DateTime    @default(now())
+
+  @@map("order_items")
+}
+
+model ArtistProfile {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id])
+  bio              String
+  portfolioUrl     String?
+  country          String
+  stripeConnectId  String?  @unique
+  royaltyPercent   Decimal  @default(70) @db.Decimal(5, 2)
+  verified         Boolean  @default(false)
+  artworks         Artwork[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("artist_profiles")
+}
+
+model Artwork {
+  id             String         @id @default(cuid())
+  artistId       String
+  artist         ArtistProfile  @relation(fields: [artistId], references: [id])
+  title          String
+  description    String
+  imageUrl       String
+  priceUsd       Decimal        @db.Decimal(10, 2)
+  edition        ArtworkEdition @default(OPEN)
+  tags           String[]
+  availableCount Int            @default(-1) // -1 = unlimited
+  soldCount      Int            @default(0)
+  published      Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@map("artworks")
+}
+
+model RevenueEntry {
+  id         String        @id @default(cuid())
+  source     RevenueSource
+  amountUsd  Decimal       @db.Decimal(10, 2)
+  cogsUsd    Decimal       @db.Decimal(10, 2)
+  profitUsd  Decimal       @db.Decimal(10, 2)
+  orderId    String?
+  period     String        // YYYY-MM
+  recordedAt DateTime      @default(now())
+
+  @@index([period])
+  @@index([source])
+  @@map("revenue_entries")
+}
+
+model Subscription {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  stripeSubscriptionId String   @unique
+  stripePriceId        String
+  status               String
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@map("subscriptions")
+}

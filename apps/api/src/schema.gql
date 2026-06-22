@@ -1,0 +1,84 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+enum ArtworkEdition {
+  LIMITED
+  ONE_OF_ONE
+  OPEN
+}
+
+type ArtworkModel {
+  artistId: String!
+  availableCount: Int!
+  createdAt: DateTime!
+  description: String!
+  edition: ArtworkEdition!
+  id: ID!
+  imageUrl: String!
+  priceUsd: Float!
+  soldCount: Int!
+  tags: [String!]!
+  title: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type FinanceSummary {
+  margin: Float!
+  totalCogs: Float!
+  totalProfit: Float!
+  totalRevenue: Float!
+}
+
+type FrameModel {
+  available: Boolean!
+  color: String!
+  createdAt: DateTime!
+  depthMm: Float!
+  heightMm: Float!
+  id: ID!
+  material: String!
+  name: String!
+  priceUsd: Float!
+  thumbnailUrl: String!
+  widthMm: Float!
+}
+
+type HealthCheck {
+  status: String!
+}
+
+type OrderModel {
+  createdAt: DateTime!
+  id: ID!
+  status: OrderStatus!
+  totalUsd: Float!
+  trackingNumber: String
+  updatedAt: DateTime!
+  userId: String!
+}
+
+enum OrderStatus {
+  CANCELLED
+  DELIVERED
+  IN_PRODUCTION
+  PAYMENT_CONFIRMED
+  PENDING
+  QUALITY_CHECK
+  REFUNDED
+  SHIPPED
+}
+
+type Query {
+  artwork(id: ID!): ArtworkModel
+  artworks(tags: [String!]): [ArtworkModel!]!
+  financeSummary: FinanceSummary!
+  frame(id: ID!): FrameModel
+  frames: [FrameModel!]!
+  health: HealthCheck!
+  myOrders(userId: ID!): [OrderModel!]!
+}

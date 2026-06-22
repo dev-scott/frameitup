@@ -1,0 +1,12 @@
+{
+  "name": "@frameitup/utils",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "devDependencies": {
+    "@frameitup/config-typescript": "workspace:*",
+    "@frameitup/types": "workspace:*",
+    "typescript": "^5.8.3"
+  }
+}

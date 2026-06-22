@@ -1,0 +1,5 @@
+{
+  "extends": "@frameitup/config-typescript/nestjs.json",
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

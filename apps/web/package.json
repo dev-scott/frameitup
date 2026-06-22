@@ -1,0 +1,49 @@
+{
+  "name": "@frameitup/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev -p 3000",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "start": "next start -p 3000"
+  },
+  "dependencies": {
+    "@frameitup/ui": "workspace:*",
+    "@frameitup/types": "workspace:*",
+    "@frameitup/utils": "workspace:*",
+    "@clerk/nextjs": "^6.22.0",
+    "@apollo/client": "^3.13.8",
+    "graphql": "^16.10.0",
+    "next": "^15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "convex": "^1.24.0",
+    "stripe": "^17.7.0",
+    "@stripe/stripe-js": "^7.4.0",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "three": "^0.177.0",
+    "@react-three/fiber": "^9.1.2",
+    "@react-three/drei": "^10.3.2",
+    "zustand": "^5.0.5",
+    "react-hook-form": "^7.56.4",
+    "zod": "^3.25.56",
+    "@hookform/resolvers": "^5.0.1",
+    "framer-motion": "^12.15.0",
+    "sonner": "^2.0.5"
+  },
+  "devDependencies": {
+    "@frameitup/config-typescript": "workspace:*",
+    "@frameitup/config-eslint": "workspace:*",
+    "@types/node": "^22.15.29",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "@types/three": "^0.177.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.4",
+    "prettier-plugin-tailwindcss": "^0.6.12",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
+  }
+}
