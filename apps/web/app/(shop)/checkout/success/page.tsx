@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import { useFrameStore } from '@/store/use-frame-store';
 import { Button } from '@frameitup/ui';
 
+export const dynamic = 'force-dynamic';
+
 // ─── Zero-Dependency Canvas Confetti Engine ────────────────────────
 function ConfettiCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
