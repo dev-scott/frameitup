@@ -65,8 +65,8 @@ function NavLink({ href, label, external, active }: {
     <Link
       {...props}
       className={`relative text-sm font-medium transition-colors duration-200 group ${active
-          ? 'text-[var(--brand-500)]'
-          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+        ? 'text-[var(--brand-500)]'
+        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
         }`}
     >
       {label}
@@ -105,8 +105,8 @@ export function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-            ? 'py-3 bg-[var(--glass-bg)] backdrop-blur-2xl border-b border-[var(--border)]'
-            : 'py-5 bg-transparent'
+          ? 'py-3 bg-[var(--glass-bg)] backdrop-blur-2xl border-b border-[var(--border)]'
+          : 'py-5 bg-transparent'
           }`}
         style={{
           boxShadow: scrolled ? '0 4px 32px rgba(28,25,23,0.08)' : 'none',
@@ -114,33 +114,38 @@ export function Navbar() {
       >
         <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative ">
-              {/* <div className="absolute inset-0 bg-[var(--brand-500)] rounded-lg rotate-12 group-hover:rotate-6 transition-transform duration-300" />
+          <div className='flex items-center gap-2.5 '>
+
+            <Link href="/" className="group">
+              <div className="relative transition-transform duration-300 group-hover:rotate-6 ">
+                {/* <div className="absolute inset-0 bg-[var(--brand-500)] rounded-lg rotate-12 group-hover:rotate-6 transition-transform duration-300" />
               <div className="absolute inset-1 bg-[var(--bg-primary)] rounded-md flex items-center justify-center">
                 <div className="w-3 h-3 border-2 border-[var(--brand-500)] rounded-sm" />
               </div> */}
-              {/* add frame it up logo here */}
-              <Image src="/frameitup_logo.svg" alt="Frame It Up" width={50} height={50} />
+                {/* add frame it up logo here */}
+                <Image src="/frameitup_logo.svg" alt="Frame It Up" width={150} height={150} />
 
-            </div>
-            {/* <span className="font-display text-xl font-bold tracking-tight text-[var(--text-primary)]">
+              </div>
+              {/* <span className="font-display text-xl font-bold tracking-tight text-[var(--text-primary)]">
               Frame<span className="text-[var(--brand-500)]">ItUp</span>
             </span> */}
-          </Link>
-
-          {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.href}
-                href={link.href}
-                label={link.label}
-                external={link.external}
-                active={pathname === link.href}
-              />
-            ))}
+            </Link>
+            {/* Desktop nav */}
+            <div className="hidden lg:flex items-center gap-8 pl-[32px]">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.href}
+                  href={link.href}
+                  label={link.label}
+                  external={link.external}
+                  active={pathname === link.href}
+                />
+              ))}
+            </div>
           </div>
+
+
+
 
           {/* Right actions */}
           <div className="flex items-center gap-3">
@@ -267,8 +272,8 @@ export function Navbar() {
                         onClick={() => setMobileOpen(false)}
                         target={link.external ? '_blank' : undefined}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${pathname === link.href
-                            ? 'bg-[var(--brand-50)] text-[var(--brand-600)] dark:bg-[rgba(217,141,46,0.1)] dark:text-[var(--brand-400)]'
-                            : 'text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'
+                          ? 'bg-[var(--brand-50)] text-[var(--brand-600)] dark:bg-[rgba(217,141,46,0.1)] dark:text-[var(--brand-400)]'
+                          : 'text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'
                           }`}
                       >
                         {link.label}
