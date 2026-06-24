@@ -9,11 +9,11 @@ import Link from 'next/link';
 
 /* ─── Frame artwork data ─────────────────────────────── */
 const frames = [
-  { position: [-2.8, 0.8, -1] as [number, number, number],  rotation: [-0.05, 0.3, 0.05]  as [number, number, number], scale: 0.9, color: '#8B6914', img: '/frame-1.jpg' },
-  { position: [2.6,  0.4, -0.5] as [number, number, number], rotation: [0.05, -0.25, -0.04] as [number, number, number], scale: 1.0, color: '#2C2016', img: '/frame-2.jpg' },
-  { position: [-0.2, -1.5, 0.5] as [number, number, number], rotation: [0.1, 0.1, -0.08]   as [number, number, number], scale: 0.8, color: '#5C4A2A', img: '/frame-3.jpg' },
-  { position: [0.8,  1.8, -2]   as [number, number, number], rotation: [-0.08, 0.15, 0.03]  as [number, number, number], scale: 1.1, color: '#3D2B1A', img: '/frame-4.jpg' },
-  { position: [-1.8, -1.0, -1.5] as [number, number, number],rotation: [0.06, -0.2, 0.07]  as [number, number, number], scale: 0.75, color: '#6B4F2C', img: '/frame-5.jpg' },
+  { position: [-2.8, 0.8, -1] as [number, number, number], rotation: [-0.05, 0.3, 0.05] as [number, number, number], scale: 0.9, color: '#8B6914', img: '/frame-1.jpg' },
+  { position: [2.6, 0.4, -0.5] as [number, number, number], rotation: [0.05, -0.25, -0.04] as [number, number, number], scale: 1.0, color: '#2C2016', img: '/frame-2.jpg' },
+  { position: [-0.2, -1.5, 0.5] as [number, number, number], rotation: [0.1, 0.1, -0.08] as [number, number, number], scale: 0.8, color: '#5C4A2A', img: '/frame-3.jpg' },
+  { position: [0.8, 1.8, -2] as [number, number, number], rotation: [-0.08, 0.15, 0.03] as [number, number, number], scale: 1.1, color: '#3D2B1A', img: '/frame-4.jpg' },
+  { position: [-1.8, -1.0, -1.5] as [number, number, number], rotation: [0.06, -0.2, 0.07] as [number, number, number], scale: 0.75, color: '#6B4F2C', img: '/frame-5.jpg' },
 ];
 
 /* ─── Color palettes for procedural frames ───────────── */
@@ -344,7 +344,7 @@ export function HeroSection() {
                   className="w-8 h-8 rounded-full border-2 border-[var(--bg-primary)] flex items-center justify-center text-white text-xs font-bold"
                   style={{ backgroundColor: c }}
                 >
-                  {['A','B','C','D'][i]}
+                  {['A', 'B', 'C', 'D'][i]}
                 </div>
               ))}
             </div>

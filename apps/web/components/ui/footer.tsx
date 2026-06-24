@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const links = {
   product: [
@@ -40,11 +41,14 @@ export function Footer() {
           <div className="lg:col-span-2">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 mb-6 group w-fit">
-              <div className="relative w-8 h-8">
-                <div className="absolute inset-0 bg-[var(--brand-500)] rounded-lg rotate-12 group-hover:rotate-6 transition-transform duration-300" />
+              <div className="relative ">
+                {/* <div className="absolute inset-0 bg-[var(--brand-500)] rounded-lg rotate-12 group-hover:rotate-6 transition-transform duration-300" />
                 <div className="absolute inset-1 bg-[var(--frame-dark)] rounded-md flex items-center justify-center">
                   <div className="w-3 h-3 border-2 border-[var(--brand-500)] rounded-sm" />
-                </div>
+                </div> */}
+                              <Image src="/frameitup_logo.svg" alt="Frame It Up" width={50} height={50} />
+                
+                
               </div>
               <span className="font-display text-xl font-bold">
                 Frame<span className="text-[var(--brand-500)]">ItUp</span>
@@ -58,22 +62,28 @@ export function Footer() {
             {/* Social icons */}
             <div className="flex gap-3">
               {[
-                { label: 'Instagram', icon: (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/>
-                    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
-                  </svg>
-                )},
-                { label: 'Twitter', icon: (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
-                  </svg>
-                )},
-                { label: 'Pinterest', icon: (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.19-.77 1.26-5.33 1.26-5.33s-.32-.64-.32-1.59c0-1.49.87-2.61 1.94-2.61.92 0 1.36.69 1.36 1.52 0 .93-.59 2.31-.9 3.59-.25 1.07.54 1.95 1.59 1.95 1.91 0 3.19-2.46 3.19-5.37 0-2.21-1.49-3.77-4.11-3.77-2.97 0-4.77 2.22-4.77 4.64 0 .83.24 1.41.61 1.85.17.2.19.28.13.51-.04.17-.14.57-.18.73-.06.23-.24.32-.45.23-1.66-.68-2.43-2.5-2.43-4.54 0-3.33 2.78-7.25 8.33-7.25 4.45 0 7.38 3.22 7.38 6.68 0 4.54-2.52 7.94-6.25 7.94-1.24 0-2.41-.67-2.81-1.43l-.76 2.96c-.28 1.04-1.01 2.35-1.51 3.15.95.29 1.96.45 3 .45 5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
-                  </svg>
-                )},
+                {
+                  label: 'Instagram', icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" />
+                      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+                    </svg>
+                  )
+                },
+                {
+                  label: 'Twitter', icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                    </svg>
+                  )
+                },
+                {
+                  label: 'Pinterest', icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.19-.77 1.26-5.33 1.26-5.33s-.32-.64-.32-1.59c0-1.49.87-2.61 1.94-2.61.92 0 1.36.69 1.36 1.52 0 .93-.59 2.31-.9 3.59-.25 1.07.54 1.95 1.59 1.95 1.91 0 3.19-2.46 3.19-5.37 0-2.21-1.49-3.77-4.11-3.77-2.97 0-4.77 2.22-4.77 4.64 0 .83.24 1.41.61 1.85.17.2.19.28.13.51-.04.17-.14.57-.18.73-.06.23-.24.32-.45.23-1.66-.68-2.43-2.5-2.43-4.54 0-3.33 2.78-7.25 8.33-7.25 4.45 0 7.38 3.22 7.38 6.68 0 4.54-2.52 7.94-6.25 7.94-1.24 0-2.41-.67-2.81-1.43l-.76 2.96c-.28 1.04-1.01 2.35-1.51 3.15.95.29 1.96.45 3 .45 5.52 0 10-4.48 10-10S17.52 2 12 2z" />
+                    </svg>
+                  )
+                },
               ].map((social) => (
                 <button
                   key={social.label}

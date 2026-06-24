@@ -6,16 +6,17 @@ import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import Image from 'next/image';
 
 /* ─── Icons ─────────────────────────────────────────── */
 function SunIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="5"/>
-      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
     </svg>
   );
 }
@@ -23,7 +24,7 @@ function SunIcon() {
 function MoonIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
     </svg>
   );
 }
@@ -31,7 +32,7 @@ function MoonIcon() {
 function MenuIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
     </svg>
   );
 }
@@ -39,16 +40,16 @@ function MenuIcon() {
 function CloseIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
     </svg>
   );
 }
 
 /* ─── Nav links ─────────────────────────────────────── */
 const navLinks = [
-  { href: '/frames',      label: 'Browse Frames'  },
-  { href: '/configure',   label: 'Design Yours'   },
-  { href: '/orders',      label: 'My Orders', authRequired: true },
+  // { href: '/frames',      label: 'Browse Frames'  },
+  { href: '/configure', label: 'Design Yours' },
+  { href: '/orders', label: 'My Orders', authRequired: true },
   { href: 'http://localhost:3001', label: 'Marketplace', external: true },
 ];
 
@@ -63,19 +64,17 @@ function NavLink({ href, label, external, active }: {
   return (
     <Link
       {...props}
-      className={`relative text-sm font-medium transition-colors duration-200 group ${
-        active
+      className={`relative text-sm font-medium transition-colors duration-200 group ${active
           ? 'text-[var(--brand-500)]'
           : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-      }`}
+        }`}
     >
       {label}
       {external && (
         <span className="ml-1 text-xs opacity-50">↗</span>
       )}
-      <span className={`absolute -bottom-1 left-0 h-px bg-gradient-to-r from-[var(--brand-400)] to-[var(--brand-600)] transition-all duration-300 ${
-        active ? 'w-full' : 'w-0 group-hover:w-full'
-      }`} />
+      <span className={`absolute -bottom-1 left-0 h-px bg-gradient-to-r from-[var(--brand-400)] to-[var(--brand-600)] transition-all duration-300 ${active ? 'w-full' : 'w-0 group-hover:w-full'
+        }`} />
     </Link>
   );
 }
@@ -105,11 +104,10 @@ export function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
             ? 'py-3 bg-[var(--glass-bg)] backdrop-blur-2xl border-b border-[var(--border)]'
             : 'py-5 bg-transparent'
-        }`}
+          }`}
         style={{
           boxShadow: scrolled ? '0 4px 32px rgba(28,25,23,0.08)' : 'none',
         }}
@@ -117,15 +115,18 @@ export function Navbar() {
         <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative w-8 h-8">
-              <div className="absolute inset-0 bg-[var(--brand-500)] rounded-lg rotate-12 group-hover:rotate-6 transition-transform duration-300" />
+            <div className="relative ">
+              {/* <div className="absolute inset-0 bg-[var(--brand-500)] rounded-lg rotate-12 group-hover:rotate-6 transition-transform duration-300" />
               <div className="absolute inset-1 bg-[var(--bg-primary)] rounded-md flex items-center justify-center">
                 <div className="w-3 h-3 border-2 border-[var(--brand-500)] rounded-sm" />
-              </div>
+              </div> */}
+              {/* add frame it up logo here */}
+              <Image src="/frameitup_logo.svg" alt="Frame It Up" width={50} height={50} />
+
             </div>
-            <span className="font-display text-xl font-bold tracking-tight text-[var(--text-primary)]">
+            {/* <span className="font-display text-xl font-bold tracking-tight text-[var(--text-primary)]">
               Frame<span className="text-[var(--brand-500)]">ItUp</span>
-            </span>
+            </span> */}
           </Link>
 
           {/* Desktop nav */}
@@ -265,11 +266,10 @@ export function Navbar() {
                         href={link.href}
                         onClick={() => setMobileOpen(false)}
                         target={link.external ? '_blank' : undefined}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                          pathname === link.href
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${pathname === link.href
                             ? 'bg-[var(--brand-50)] text-[var(--brand-600)] dark:bg-[rgba(217,141,46,0.1)] dark:text-[var(--brand-400)]'
                             : 'text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'
-                        }`}
+                          }`}
                       >
                         {link.label}
                         {link.external && <span className="text-xs opacity-40">↗</span>}

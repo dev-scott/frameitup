@@ -45,7 +45,7 @@ export default function BrowseFramesPage() {
       <div className="max-w-7xl mx-auto">
         {/* Intro */}
         <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -53,7 +53,7 @@ export default function BrowseFramesPage() {
           >
             Artisan Collections
           </motion.span>
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -61,7 +61,7 @@ export default function BrowseFramesPage() {
           >
             Exquisite Handcrafted Frame Profiles
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -78,7 +78,7 @@ export default function BrowseFramesPage() {
             ))}
           </div>
         ) : (
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="show"
@@ -94,9 +94,9 @@ export default function BrowseFramesPage() {
                 {/* Visual frame demo container */}
                 <div className="relative aspect-square w-full rounded-xl bg-[var(--bg-secondary)] flex items-center justify-center p-8 mb-6 overflow-hidden">
                   <div className="absolute inset-0 bg-radial-gradient from-white/10 to-transparent pointer-events-none" />
-                  
+
                   {/* Floating simulated 3D frame item */}
-                  <motion.div 
+                  <motion.div
                     className="relative w-48 h-48 flex items-center justify-center"
                     style={{
                       boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.45)'
@@ -105,9 +105,9 @@ export default function BrowseFramesPage() {
                     transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                   >
                     {/* Outer Frame Bevel */}
-                    <div 
+                    <div
                       className="absolute inset-0 rounded-lg border-8"
-                      style={{ 
+                      style={{
                         borderColor: frame.color,
                         boxShadow: 'inset 0 0 10px rgba(0,0,0,0.6)'
                       }}
@@ -157,7 +157,7 @@ export default function BrowseFramesPage() {
                     </div>
                   </div>
 
-                  <Button 
+                  <Button
                     onClick={() => handleSelect(frame)}
                     className="w-full bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-medium rounded-xl py-2.5 transition-colors duration-200 shadow-sm flex items-center justify-center gap-2"
                   >
