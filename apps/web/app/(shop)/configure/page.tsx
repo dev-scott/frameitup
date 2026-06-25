@@ -7,6 +7,23 @@ import { getSeedFrames } from '@/app/actions';
 import { useFrameStore, FrameOption, GlasingType } from '@/store/use-frame-store';
 import FramePreview3D from '@/components/configure/frame-preview-3d';
 import { Button } from '@frameitup/ui';
+import { useLanguageStore } from '@/store/use-language-store';
+
+const translateMaterial = (mat: string, lang: string) => {
+  if (lang === 'fr') {
+    switch (mat.toLowerCase()) {
+      case 'oak': return 'Chêne';
+      case 'wood': return 'Bois';
+      case 'aluminum': return 'Aluminium';
+      case 'walnut': return 'Noyer';
+      case 'pine': return 'Pin';
+      case 'resin': return 'Résine';
+      case 'clay': return 'Argile';
+      default: return mat;
+    }
+  }
+  return mat;
+};
 
 // Lucide Icons mocks/components for zero-dependency reliability
 function UploadIcon() {
@@ -42,6 +59,14 @@ const MAT_COLORS = [
 export default function ConfigurePage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t, language } = useLanguageStore();
+
+  const localizedMatColors = [
+    { name: language === 'fr' ? 'Blanc coton' : 'Cotton White', hex: '#FAFAF9', desc: language === 'fr' ? 'Finition galerie propre et lumineuse' : 'Clean and bright gallery finish' },
+    { name: language === 'fr' ? 'Crème chaleureuse' : 'Warm Cream', hex: '#F5EFEB', desc: language === 'fr' ? 'Style classique et doux pour tirages historiques' : 'Soft classic look for historic prints' },
+    { name: language === 'fr' ? 'Noir charbon' : 'Charcoal Black', hex: '#292524', desc: language === 'fr' ? 'Accentue les ombres sombres et les contrastes élevés' : 'Dramatize dark shadows and high contrast' },
+    { name: language === 'fr' ? 'Vert forêt' : 'Forest Green', hex: '#1C3F3A', desc: language === 'fr' ? 'Ton organique riche pour les paysages' : 'Rich organic tone for landscapes' },
+  ];
   
   // Zustand Store values
   const {
@@ -212,19 +237,19 @@ export default function ConfigurePage() {
                 {uploading ? (
                   <div className="py-8 flex flex-col items-center space-y-4">
                     <LoaderIcon />
-                    <p className="text-sm font-semibold text-[var(--text-secondary)]">Analyzing layout & detail...</p>
+                    <p className="text-sm font-semibold text-[var(--text-secondary)]">{t.configurePage.analyzing}</p>
                   </div>
                 ) : (
                   <>
                     <UploadIcon />
                     <h3 className="font-display text-2xl font-bold mb-2 text-[var(--text-primary)]">
-                      Upload Your Custom Design
+                      {t.configurePage.uploadTitle}
                     </h3>
                     <p className="text-[var(--text-secondary)] text-sm mb-6 max-w-sm">
-                      Drag & drop your artwork or high-resolution picture. We support PNG, JPEG, and WebP formats.
+                      {t.configurePage.uploadDesc}
                     </p>
                     <Button className="bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white shadow-brand font-semibold px-6 py-2.5 rounded-xl transition-all">
-                      Choose file
+                      {t.configurePage.chooseFile}
                     </Button>
                   </>
                 )}
@@ -256,7 +281,7 @@ export default function ConfigurePage() {
                         : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                     }`}
                   >
-                    2D Detailed View
+                    {t.configurePage.preview2d}
                   </button>
                   <button
                     onClick={() => setPreviewMode('3D')}
@@ -266,7 +291,7 @@ export default function ConfigurePage() {
                         : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                     }`}
                   >
-                    Realistic 3D Preview
+                    {t.configurePage.preview3d}
                   </button>
                 </div>
 
@@ -281,7 +306,7 @@ export default function ConfigurePage() {
                         : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
                     }`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${isHighRes ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                      {isHighRes ? 'Ultra HD Resolution' : 'Standard Resolution'}
+                      {isHighRes ? t.configurePage.resolutionHD : t.configurePage.resolutionStandard}
                     </span>
                   </div>
 
@@ -326,7 +351,7 @@ export default function ConfigurePage() {
 
                       {/* Dimension labels overlay */}
                       <div className="absolute bottom-4 text-center text-xs text-[var(--text-secondary)] font-semibold flex flex-col items-center">
-                        <span className="text-[10px] text-[var(--text-subtle)] uppercase">Total Frame Outer Dimensions</span>
+                        <span className="text-[10px] text-[var(--text-subtle)] uppercase">{t.configurePage.totalDimensions}</span>
                         <span className="text-[var(--brand-600)]">
                           {artworkWidthMm + (hasMat ? matWidthMm * 2 : 0) + (selectedFrame.widthMm * 2)} mm × {artworkHeightMm + (hasMat ? matWidthMm * 2 : 0) + (selectedFrame.heightMm * 2)} mm
                         </span>
@@ -339,14 +364,14 @@ export default function ConfigurePage() {
                 {imagePalette.length > 0 && (
                   <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <h4 className="text-xs font-bold text-[var(--text-primary)]">Smart Color Palette suggestions</h4>
-                      <p className="text-[10px] text-[var(--text-muted)]">Extracted matching shades from your design</p>
+                      <h4 className="text-xs font-bold text-[var(--text-primary)]">{t.configurePage.suggestionsTitle}</h4>
+                      <p className="text-[10px] text-[var(--text-muted)]">{t.configurePage.suggestionsDesc}</p>
                     </div>
                     <div className="flex gap-2.5">
                       {imagePalette.map((color, idx) => (
                         <button
                           key={idx}
-                          onClick={() => setMat(true, color, `Extracted Palette ${idx+1}`)}
+                          onClick={() => setMat(true, color, language === 'fr' ? `Palette extraite ${idx+1}` : `Extracted Palette ${idx+1}`)}
                           className="w-8 h-8 rounded-full border border-stone-300 shadow-sm relative group"
                           style={{ backgroundColor: color }}
                         >
@@ -367,20 +392,20 @@ export default function ConfigurePage() {
                   {/* Title info */}
                   <div className="flex justify-between items-center mb-8">
                     <div>
-                      <h2 className="text-xl font-bold font-display text-[var(--text-primary)]">Configure Artwork</h2>
+                      <h2 className="text-xl font-bold font-display text-[var(--text-primary)]">{t.configurePage.title}</h2>
                       <span className="text-[10px] font-mono text-[var(--text-muted)]">{fileName}</span>
                     </div>
                     <button
                       onClick={reset}
                       className="text-xs text-rose-500 hover:text-rose-700 font-semibold"
                     >
-                      Delete
+                      {t.configurePage.delete}
                     </button>
                   </div>
 
                   {/* Wizard Stepper Header */}
                   <div className="grid grid-cols-4 gap-2 mb-8 border-b border-[var(--border)] pb-4 text-center text-xs">
-                    {['Size', 'Frame', 'Matting', 'Glass'].map((label, idx) => (
+                    {[t.configurePage.steps.size, t.configurePage.steps.frame, t.configurePage.steps.matting, t.configurePage.steps.glass].map((label, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveStep(idx)}
@@ -407,7 +432,7 @@ export default function ConfigurePage() {
                       >
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-3">
-                            Preset standard dimensions
+                            {t.configurePage.presetDimensions}
                           </label>
                           <div className="grid grid-cols-2 gap-3">
                             {PRESET_SIZES.map((size) => (
@@ -428,11 +453,11 @@ export default function ConfigurePage() {
 
                         <div className="space-y-4">
                           <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                            Custom size inputs (in mm)
+                            {t.configurePage.customInputs}
                           </label>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <span className="text-[10px] text-[var(--text-muted)] block mb-1">Width (mm)</span>
+                              <span className="text-[10px] text-[var(--text-muted)] block mb-1">{t.configurePage.width}</span>
                               <input
                                 type="number"
                                 min={150}
@@ -443,7 +468,7 @@ export default function ConfigurePage() {
                               />
                             </div>
                             <div>
-                              <span className="text-[10px] text-[var(--text-muted)] block mb-1">Height (mm)</span>
+                              <span className="text-[10px] text-[var(--text-muted)] block mb-1">{t.configurePage.height}</span>
                               <input
                                 type="number"
                                 min={150}
@@ -466,7 +491,7 @@ export default function ConfigurePage() {
                         className="space-y-4"
                       >
                         <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                          Select frame profile material
+                          {t.configurePage.selectProfile}
                         </label>
                         <div className="grid grid-cols-1 gap-3">
                           {frames.map((frame) => (
@@ -489,7 +514,7 @@ export default function ConfigurePage() {
                                     {frame.name}
                                   </span>
                                   <span className="text-[10px] text-[var(--text-muted)] uppercase">
-                                    {frame.material} • {frame.widthMm}mm profile width
+                                    {language === 'fr' ? `${t.framesPage.profile} ${translateMaterial(frame.material, language)}` : `${frame.material} ${t.framesPage.profile}`} • {frame.widthMm}mm {language === 'fr' ? 'largeur de profil' : 'profile width'}
                                   </span>
                                 </div>
                               </div>
@@ -511,8 +536,8 @@ export default function ConfigurePage() {
                       >
                         <div className="flex justify-between items-center bg-[var(--bg-secondary)] p-4 rounded-xl">
                           <div>
-                            <span className="block text-sm font-bold text-[var(--text-primary)]">Add passe-partout matting</span>
-                            <span className="text-[10px] text-[var(--text-muted)]">Adds classic borders and dimensions</span>
+                            <span className="block text-sm font-bold text-[var(--text-primary)]">{t.configurePage.addPassePartout}</span>
+                            <span className="text-[10px] text-[var(--text-muted)]">{t.configurePage.passePartoutDesc}</span>
                           </div>
                           <input
                             type="checkbox"
@@ -527,7 +552,7 @@ export default function ConfigurePage() {
                             {/* Width Slider */}
                             <div>
                               <div className="flex justify-between text-xs font-bold uppercase mb-2">
-                                <span className="text-[var(--text-muted)]">Mat Width</span>
+                                <span className="text-[var(--text-muted)]">{t.configurePage.matWidth}</span>
                                 <span className="text-[var(--brand-600)]">{matWidthMm} mm</span>
                               </div>
                               <input
@@ -543,9 +568,9 @@ export default function ConfigurePage() {
 
                             {/* Color options */}
                             <div>
-                              <span className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-3">Mat Board Color</span>
+                              <span className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-3">{t.configurePage.matColor}</span>
                               <div className="grid grid-cols-2 gap-3">
-                                {MAT_COLORS.map((col) => (
+                                {localizedMatColors.map((col) => (
                                   <button
                                     key={col.name}
                                     onClick={() => setMat(true, col.hex, col.name)}
@@ -579,13 +604,13 @@ export default function ConfigurePage() {
                         className="space-y-3"
                       >
                         <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-                          Select glazing type (protective glass)
+                          {t.configurePage.selectGlazing}
                         </label>
                         {[
-                          { type: 'STANDARD', title: 'Standard Acrylic', price: '+$0.00', desc: 'Shatter-resistant, lightweight, basic safety' },
-                          { type: 'UV_PROTECTIVE', title: 'UV Protective', price: '+$15.00 Base', desc: 'Blocks 99% UV radiation, prevents fading' },
-                          { type: 'ANTI_REFLECTIVE', title: 'Anti-Reflective', price: '+$25.00 Base', desc: 'Matte reflection reduction for high glare rooms' },
-                          { type: 'MUSEUM_GLASS', title: 'Museum Quality', price: '+$45.00 Base', desc: 'Ultra-clear, maximum UV blocking & reflection reduction' },
+                          { type: 'STANDARD', title: t.configurePage.glazingTypes.standard, price: '+$0.00', desc: t.configurePage.glazingTypes.standardDesc },
+                          { type: 'UV_PROTECTIVE', title: t.configurePage.glazingTypes.uv, price: language === 'fr' ? '+$15.00 de base' : '+$15.00 Base', desc: t.configurePage.glazingTypes.uvDesc },
+                          { type: 'ANTI_REFLECTIVE', title: t.configurePage.glazingTypes.antiReflective, price: language === 'fr' ? '+$25.00 de base' : '+$25.00 Base', desc: t.configurePage.glazingTypes.antiReflectiveDesc },
+                          { type: 'MUSEUM_GLASS', title: t.configurePage.glazingTypes.museum, price: language === 'fr' ? '+$45.00 de base' : '+$45.00 Base', desc: t.configurePage.glazingTypes.museumDesc },
                         ].map((gl) => (
                           <button
                             key={gl.type}
@@ -614,18 +639,18 @@ export default function ConfigurePage() {
                   {/* Breakdown details */}
                   <div className="space-y-2 text-xs text-[var(--text-secondary)]">
                     <div className="flex justify-between">
-                      <span>{selectedFrame.name} Frame Profile</span>
+                      <span>{selectedFrame.name} {language === 'fr' ? t.framesPage.profile : `${t.framesPage.profile} Profile`}</span>
                       <span>${prices.baseFrame.toFixed(2)}</span>
                     </div>
                     {hasMat && (
                       <div className="flex justify-between">
-                        <span>Passe-partout Mat ({matColorName})</span>
+                        <span>{language === 'fr' ? `Passe-partout (${matColorName})` : `Passe-partout Mat (${matColorName})`}</span>
                         <span>${prices.matPrice.toFixed(2)}</span>
                       </div>
                     )}
                     {glasingType !== 'STANDARD' && (
                       <div className="flex justify-between">
-                        <span>Glazing Treatment ({glasingType.replace('_', ' ')})</span>
+                        <span>{language === 'fr' ? `Traitement de verre (${glasingType === 'STANDARD' ? 'Standard' : glasingType === 'UV_PROTECTIVE' ? 'Protection UV' : glasingType === 'ANTI_REFLECTIVE' ? 'Anti-reflet' : 'Qualité Muséale'})` : `Glazing Treatment (${glasingType.replace('_', ' ')})`}</span>
                         <span>${prices.glassPrice.toFixed(2)}</span>
                       </div>
                     )}
@@ -634,7 +659,7 @@ export default function ConfigurePage() {
                   {/* Quantity & Total */}
                   <div className="flex items-center justify-between border-t border-[var(--border)] pt-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-[var(--text-muted)]">Qty:</span>
+                      <span className="text-xs font-semibold text-[var(--text-muted)]">{t.configurePage.qty}</span>
                       <div className="flex items-center border border-[var(--border)] rounded-lg">
                         <button
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -653,7 +678,7 @@ export default function ConfigurePage() {
                     </div>
                     
                     <div className="text-right">
-                      <span className="text-[10px] text-[var(--text-subtle)] block uppercase font-bold">Total price</span>
+                      <span className="text-[10px] text-[var(--text-subtle)] block uppercase font-bold">{t.configurePage.totalPrice}</span>
                       <span className="text-2xl font-black text-[var(--text-primary)] font-display">
                         ${prices.total.toFixed(2)}
                       </span>
@@ -665,7 +690,7 @@ export default function ConfigurePage() {
                     onClick={() => router.push('/checkout')}
                     className="w-full bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-bold rounded-xl py-3 shadow-brand hover:shadow-brand-lg hover:-translate-y-0.5 transition-all text-center flex items-center justify-center gap-2"
                   >
-                    Proceed to Checkout
+                    {t.configurePage.checkoutBtn}
                     <span className="text-sm">→</span>
                   </Button>
                 </div>

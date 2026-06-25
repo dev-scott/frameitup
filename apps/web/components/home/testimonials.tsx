@@ -2,50 +2,47 @@
 
 import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { useLanguageStore } from '@/store/use-language-store';
 
-const testimonials = [
+interface TestimonialType {
+  id: number;
+  name: string;
+  role: string;
+  avatar: string;
+  avatarColor: string;
+  rating: number;
+  text: string;
+  frame: string;
+  frameColor: string;
+}
+
+const testimonialsInfo = [
   {
     id: 1,
-    name: 'Sophie Marceau',
-    role: 'Interior Designer, Paris',
     avatar: 'SM',
     avatarColor: '#8B6914',
     rating: 5,
-    text: "I've ordered from FrameItUp three times now. Every single time the quality exceeded my expectations. The oak frame I chose for my living room gets compliments from every guest.",
-    frame: 'Oslo Classic',
     frameColor: '#8B6914',
   },
   {
     id: 2,
-    name: 'Marcus Chen',
-    role: 'Photographer, New York',
     avatar: 'MC',
     avatarColor: '#2C5F8A',
     rating: 5,
-    text: "As a professional photographer, I'm extremely picky about print quality. FrameItUp uses museum-grade archival paper and the color accuracy is stunning. These are the frames I use for my gallery shows.",
-    frame: 'Noir Élégant',
     frameColor: '#1a1a1a',
   },
   {
     id: 3,
-    name: 'Emma Johansson',
-    role: 'Art Collector, Stockholm',
     avatar: 'EJ',
     avatarColor: '#5C4A8A',
     rating: 5,
-    text: "The Galerie Gold frame is absolutely breathtaking. It transformed my artwork into something that belongs in a museum. Delivery was incredibly fast — I ordered on Monday and it arrived Wednesday!",
-    frame: 'Galerie Gold',
     frameColor: '#B8860B',
   },
   {
     id: 4,
-    name: 'Luca Rossi',
-    role: 'Architect, Milan',
     avatar: 'LR',
     avatarColor: '#C4622D',
     rating: 5,
-    text: "The Terra Antica frame perfectly complements my apartment's design aesthetic. The craftsmanship is impeccable — you can feel the quality. FrameItUp is the only place I'll ever order frames from.",
-    frame: 'Terra Antica',
     frameColor: '#C4622D',
   },
 ];
@@ -62,7 +59,7 @@ function Stars({ count }: { count: number }) {
 }
 
 /* ─── Testimonial card ───────────────────────────────── */
-function TestimonialCard({ t, active }: { t: typeof testimonials[0]; active: boolean }) {
+function TestimonialCard({ t, active }: { t: TestimonialType; active: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -117,6 +114,12 @@ export function TestimonialsSection() {
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const { t } = useLanguageStore();
+
+  const testimonials = t.testimonials.items.map((item, idx) => ({
+    ...item,
+    ...testimonialsInfo[idx],
+  })) as TestimonialType[];
 
   const prev = () => setActive((a) => (a - 1 + testimonials.length) % testimonials.length);
   const next = () => setActive((a) => (a + 1) % testimonials.length);
@@ -135,10 +138,10 @@ export function TestimonialsSection() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <p className="section-label mb-4">Testimonials</p>
+          <p className="section-label mb-4">{t.testimonials.sectionLabel}</p>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
-            What our customers{' '}
-            <span className="gradient-text">love</span>
+            {t.testimonials.title}{' '}
+            <span className="gradient-text">{t.testimonials.titleHighlight}</span>
           </h2>
         </motion.div>
 

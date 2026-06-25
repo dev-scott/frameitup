@@ -7,6 +7,7 @@ import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
+import { useLanguageStore } from '@/store/use-language-store';
 
 /* ─── Icons ─────────────────────────────────────────── */
 function SunIcon() {
@@ -46,12 +47,7 @@ function CloseIcon() {
 }
 
 /* ─── Nav links ─────────────────────────────────────── */
-const navLinks = [
-  // { href: '/frames',      label: 'Browse Frames'  },
-  { href: '/configure', label: 'Design Yours' },
-  { href: '/orders', label: 'My Orders', authRequired: true },
-  { href: 'http://localhost:3001', label: 'Marketplace', external: true },
-];
+// Moved dynamically inside the Navbar component
 
 /* ─── NavLink component ─────────────────────────────── */
 function NavLink({ href, label, external, active }: {
@@ -86,6 +82,13 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const { t } = useLanguageStore();
+
+  const navLinks = [
+    { href: '/configure', label: t.nav.design },
+    { href: '/orders', label: t.nav.myOrders, authRequired: true },
+    { href: 'http://localhost:3001', label: t.nav.marketplace, external: true },
+  ];
 
   useEffect(() => {
     setMounted(true);
@@ -193,7 +196,7 @@ export function Navbar() {
                     id="navbar-signin-btn"
                     className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-xl hover:bg-[var(--bg-tertiary)] transition-all duration-200"
                   >
-                    Sign In
+                    {t.nav.signIn}
                   </Link>
                 </SignedOut>
               </>
@@ -205,7 +208,7 @@ export function Navbar() {
               id="navbar-cta-btn"
               className="hidden sm:flex items-center gap-2 px-5 py-2 bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-brand hover:shadow-brand-lg hover:-translate-y-0.5"
             >
-              Start Designing
+              {t.nav.startDesigning}
               <span className="text-xs opacity-80">→</span>
             </Link>
 
@@ -299,7 +302,7 @@ export function Navbar() {
                             onClick={() => setMobileOpen(false)}
                             className="text-sm font-medium text-[var(--text-primary)]"
                           >
-                            My Account
+                            {t.nav.myAccount}
                           </Link>
                         </div>
                       </SignedIn>
@@ -309,7 +312,7 @@ export function Navbar() {
                           onClick={() => setMobileOpen(false)}
                           className="flex items-center justify-center gap-2 px-5 py-3 border border-[var(--border)] text-[var(--text-primary)] text-sm font-semibold rounded-xl transition-all duration-200 hover:bg-[var(--bg-secondary)]"
                         >
-                          Sign In
+                          {t.nav.signIn}
                         </Link>
                       </SignedOut>
                     </>
@@ -319,7 +322,7 @@ export function Navbar() {
                     onClick={() => setMobileOpen(false)}
                     className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white text-sm font-semibold rounded-xl transition-all duration-200"
                   >
-                    Start Designing →
+                    {t.nav.startDesigning} →
                   </Link>
                 </div>
               </div>

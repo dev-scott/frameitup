@@ -2,8 +2,11 @@
 
 import { UserProfile } from '@clerk/nextjs';
 import { motion } from 'framer-motion';
+import { useLanguageStore } from '@/store/use-language-store';
 
 export default function AccountPage() {
+  const { t } = useLanguageStore();
+
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] pt-32 pb-24 px-6 md:px-12">
       <div className="max-w-5xl mx-auto">
@@ -15,13 +18,13 @@ export default function AccountPage() {
           className="mb-10 space-y-2"
         >
           <span className="text-xs font-semibold tracking-widest text-[var(--brand-500)] uppercase">
-            My Profile
+            {t.accountPage.badge}
           </span>
           <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--text-primary)]">
-            Account Settings
+            {t.accountPage.title}
           </h1>
           <p className="text-[var(--text-secondary)] text-sm">
-            Manage your personal information, security, and connected accounts.
+            {t.accountPage.subtitle}
           </p>
         </motion.div>
 

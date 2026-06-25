@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useLanguageStore } from '@/store/use-language-store';
 
 /* ─── Counter Hook ───────────────────────────────────── */
 function useCounter(target: number, duration = 2000, inView = false) {
@@ -61,17 +62,20 @@ function StatItem({
   );
 }
 
-const stats = [
-  { value: 52000, suffix: '+', label: 'Frames Crafted', description: 'Orders fulfilled with care across 40+ countries.', delay: 0 },
-  { value: 4, suffix: '.9★', label: 'Average Rating', description: 'Based on 8,400+ verified customer reviews.', delay: 0.15 },
-  { value: 3, suffix: ' days', label: 'Average Delivery', description: 'From your upload to your door, worldwide.', delay: 0.3 },
-  { value: 100, suffix: '%', label: 'Archival Quality', description: 'Museum-grade materials guaranteed to last a lifetime.', delay: 0.45 },
-];
+// Moved dynamically inside the StatsSection component
 
 /* ─── Main section ───────────────────────────────────── */
 export function StatsSection() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
+  const { t, language } = useLanguageStore();
+
+  const stats = [
+    { value: 52000, suffix: '+', label: t.stats.items[0]?.label ?? '', description: t.stats.items[0]?.description ?? '', delay: 0 },
+    { value: 4, suffix: '.9★', label: t.stats.items[1]?.label ?? '', description: t.stats.items[1]?.description ?? '', delay: 0.15 },
+    { value: 3, suffix: language === 'fr' ? ' jours' : ' days', label: t.stats.items[2]?.label ?? '', description: t.stats.items[2]?.description ?? '', delay: 0.3 },
+    { value: 100, suffix: '%', label: t.stats.items[3]?.label ?? '', description: t.stats.items[3]?.description ?? '', delay: 0.45 },
+  ];
 
   return (
     <section ref={ref} id="stats" className="section-padding relative overflow-hidden">
@@ -93,10 +97,10 @@ export function StatsSection() {
           transition={{ duration: 0.7 }}
           className="text-center mb-20"
         >
-          <p className="section-label mb-4 text-[var(--brand-400)]">By the numbers</p>
+          <p className="section-label mb-4 text-[var(--brand-400)]">{t.stats.sectionLabel}</p>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-5">
-            Trusted by thousands of{' '}
-            <span className="shimmer-text">art lovers</span>
+            {t.stats.title}{' '}
+            <span className="shimmer-text">{t.stats.titleHighlight}</span>
           </h2>
         </motion.div>
 

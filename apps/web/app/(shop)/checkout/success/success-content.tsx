@@ -5,8 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useFrameStore } from '@/store/use-frame-store';
 import { Button } from '@frameitup/ui';
-
-
+import { useLanguageStore } from '@/store/use-language-store';
 
 // ─── Zero-Dependency Canvas Confetti Engine ────────────────────────
 function ConfettiCanvas() {
@@ -104,6 +103,7 @@ export default function SuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const resetStore = useFrameStore((state) => state.reset);
+  const { t, language } = useLanguageStore();
 
   const orderId = searchParams.get('orderId') ?? 'ORDER-ID';
   const trackingNumber = searchParams.get('tracking') ?? 'FRM-000000';
@@ -121,8 +121,8 @@ export default function SuccessContent() {
     // Calculate delivery date estimation (7 days out)
     const date = new Date();
     date.setDate(date.getDate() + 7);
-    setDateStr(date.toLocaleDateString('fr-FR', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }));
-  }, [resetStore]);
+    setDateStr(date.toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }));
+  }, [resetStore, language]);
 
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] pt-32 pb-24 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
@@ -140,42 +140,44 @@ export default function SuccessContent() {
 
         {/* Messaging */}
         <div className="space-y-3">
-          <span className="text-xs font-semibold tracking-widest text-[var(--brand-500)] uppercase">Order Confirmed</span>
+          <span className="text-xs font-semibold tracking-widest text-[var(--brand-500)] uppercase">{t.successPage.badge}</span>
           <h1 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
-            Thank You for Your Order!
+            {t.successPage.title}
           </h1>
           <p className="text-sm text-[var(--text-secondary)]">
-            Your premium custom frame is officially in queue. Our artisans are reviewing your resolution specs to begin handcrafting.
+            {t.successPage.desc}
           </p>
         </div>
 
         {/* Details Box */}
         <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-2xl p-6 text-left space-y-4">
           <div className="flex justify-between border-b border-[var(--border)] pb-3 text-xs">
-            <span className="font-bold text-[var(--text-muted)]">Order ID</span>
+            <span className="font-bold text-[var(--text-muted)]">{t.successPage.orderId}</span>
             <span className="font-semibold text-stone-700 dark:text-stone-300 select-all font-mono">{orderId}</span>
           </div>
 
           <div className="flex justify-between border-b border-[var(--border)] pb-3 text-xs">
-            <span className="font-bold text-[var(--text-muted)]">Tracking Number</span>
+            <span className="font-bold text-[var(--text-muted)]">{t.successPage.tracking}</span>
             <span className="font-semibold text-[var(--brand-600)] select-all font-mono">{trackingNumber}</span>
           </div>
 
           <div className="flex justify-between border-b border-[var(--border)] pb-3 text-xs">
-            <span className="font-bold text-[var(--text-muted)]">Payment Mode</span>
+            <span className="font-bold text-[var(--text-muted)]">{t.successPage.paymentMode}</span>
             <span className="font-bold text-stone-700 dark:text-stone-300 font-mono">
-              {isCod ? 'Pay on Delivery (COD)' : 'Paid Online (CinetPay)'}
+              {isCod 
+                ? (language === 'fr' ? 'Paiement à la livraison (COD)' : 'Pay on Delivery (COD)') 
+                : (language === 'fr' ? 'Payé en ligne (CinetPay)' : 'Paid Online (CinetPay)')}
             </span>
           </div>
 
           <div className="flex justify-between border-b border-[var(--border)] pb-3 text-xs">
-            <span className="font-bold text-[var(--text-muted)]">Total Amount</span>
+            <span className="font-bold text-[var(--text-muted)]">{t.successPage.totalAmount}</span>
             <span className="font-bold text-stone-700 dark:text-stone-300 font-mono">${Number(total).toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between text-xs pt-1">
-            <span className="font-bold text-[var(--text-muted)]">Estimated Delivery</span>
-            <span className="font-semibold text-emerald-700 dark:text-emerald-400">{dateStr || 'Calculating...'}</span>
+            <span className="font-bold text-[var(--text-muted)]">{t.successPage.estimatedDelivery}</span>
+            <span className="font-semibold text-emerald-700 dark:text-emerald-400">{dateStr || t.successPage.calculating}</span>
           </div>
         </div>
 
@@ -183,15 +185,15 @@ export default function SuccessContent() {
         <div className="text-xs text-[var(--text-muted)] border-t border-[var(--border)] pt-6 space-y-2">
           {isCod ? (
             <p className="text-amber-600 dark:text-amber-400 font-semibold">
-              ⚠️ Please prepare the cash payment of ${Number(total).toFixed(2)} to hand over to the delivery agent.
+              ⚠️ {t.successPage.codWarning.replace('{total}', `$${Number(total).toFixed(2)}`)}
             </p>
           ) : (
             <p className="text-emerald-600 dark:text-emerald-500 font-semibold">
-              ✓ Transaction successfully settled online via MTN/Orange wallet.
+              ✓ {t.successPage.onlineSuccess}
             </p>
           )}
-          <p>We sent a secure order validation invoice to your registered email address.</p>
-          <p>You can follow the live status of your frame’s construction on your dashboard.</p>
+          <p>{t.successPage.invoiceSent}</p>
+          <p>{t.successPage.statusTrack}</p>
         </div>
 
         {/* CTA buttons */}
@@ -200,13 +202,13 @@ export default function SuccessContent() {
             onClick={() => router.push('/orders')}
             className="flex-1 bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-bold rounded-xl py-3 shadow-brand hover:shadow-brand-lg"
           >
-            Track in My Orders
+            {t.successPage.trackBtn}
           </Button>
           <Button
             onClick={() => router.push('/configure')}
             className="flex-1 border border-[var(--border)] hover:bg-[var(--bg-secondary)] text-[var(--text-primary)] font-bold rounded-xl py-3"
           >
-            Design Another Frame
+            {t.successPage.designAnother}
           </Button>
         </div>
 

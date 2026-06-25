@@ -2,8 +2,9 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useLanguageStore } from '@/store/use-language-store';
 
-const steps = [
+const stepMetadata = [
   {
     number: '01',
     icon: (
@@ -12,8 +13,6 @@ const steps = [
         <polyline points="21 15 16 10 5 21" />
       </svg>
     ),
-    title: 'Upload Your Photo',
-    description: 'Start with any image — a cherished memory, a fine art print, or your favorite snapshot. We support all major formats in full resolution.',
     color: 'from-amber-400/20 to-orange-400/20',
     accent: '#d98d2e',
   },
@@ -24,8 +23,6 @@ const steps = [
         <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
       </svg>
     ),
-    title: 'Choose Your Frame',
-    description: 'Browse our curated collection of premium frames — from sleek minimalist wood to ornate gilded designs. Preview in real-time 3D.',
     color: 'from-stone-400/20 to-amber-400/20',
     accent: '#8B6914',
   },
@@ -36,8 +33,6 @@ const steps = [
         <path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
       </svg>
     ),
-    title: 'We Craft & Deliver',
-    description: 'Our master craftsmen produce your frame using archival materials. Delivered to your door in 3–5 days, ready to hang.',
     color: 'from-green-400/10 to-amber-400/15',
     accent: '#5C8A3A',
   },
@@ -61,6 +56,12 @@ const cardVariants = {
 export function HowItWorksSection() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
+  const { t } = useLanguageStore();
+
+  const steps = t.howItWorks.steps.map((step, index) => ({
+    ...step,
+    ...stepMetadata[index],
+  }));
 
   return (
     <section ref={ref} id="how-it-works" className="section-padding relative overflow-hidden">
@@ -76,13 +77,13 @@ export function HowItWorksSection() {
           transition={{ duration: 0.7 }}
           className="text-center mb-20"
         >
-          <p className="section-label mb-4">The Process</p>
+          <p className="section-label mb-4">{t.howItWorks.sectionLabel}</p>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-5">
-            Framing made{' '}
-            <span className="gradient-text">effortless</span>
+            {t.howItWorks.title}{' '}
+            <span className="gradient-text">{t.howItWorks.titleHighlight}</span>
           </h2>
           <p className="text-lg text-[var(--text-muted)] max-w-2xl mx-auto">
-            Three simple steps between you and a museum-quality piece on your wall.
+            {t.howItWorks.subtitle}
           </p>
         </motion.div>
 
@@ -154,7 +155,7 @@ export function HowItWorksSection() {
             id="how-it-works-cta-btn"
             className="inline-flex items-center gap-2 text-[var(--brand-500)] hover:text-[var(--brand-600)] font-semibold transition-colors duration-200 group"
           >
-            Start your first frame
+            {t.howItWorks.cta}
             <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
           </a>
         </motion.div>

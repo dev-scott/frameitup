@@ -3,12 +3,27 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { useLanguageStore } from '@/store/use-language-store';
 
 export function CtaSection() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
+
+  const { t } = useLanguageStore();
+
+  const staticGuarantees = [
+    { icon: '🎨' },
+    { icon: '🚀' },
+    { icon: '♻️' },
+    { icon: '💯' },
+  ];
+
+  const guarantees = t.cta.guarantees.map((item, idx) => ({
+    ...item,
+    ...staticGuarantees[idx],
+  }));
 
   return (
     <section ref={ref} id="cta" className="section-padding relative overflow-hidden">
@@ -47,7 +62,7 @@ export function CtaSection() {
         >
           <span className="badge-premium">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-500)]" />
-            Free shipping on first order
+            {t.cta.badge}
           </span>
         </motion.div>
 
@@ -58,11 +73,11 @@ export function CtaSection() {
           transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-[var(--text-primary)] mb-6 leading-tight"
         >
-          Your wall deserves{' '}
+          {t.cta.title}{' '}
           <span className="relative inline-block">
-            <span className="shimmer-text">something</span>
+            <span className="shimmer-text">{t.cta.titleShimmer}</span>
             <br />
-            <span className="gradient-text">extraordinary.</span>
+            <span className="gradient-text">{t.cta.titleGradient}</span>
           </span>
         </motion.h2>
 
@@ -73,8 +88,7 @@ export function CtaSection() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="text-lg md:text-xl text-[var(--text-muted)] mb-12 max-w-2xl mx-auto"
         >
-          Join over 50,000 customers who have transformed their spaces with FrameItUp.
-          Premium quality, crafted with love, delivered to your door.
+          {t.cta.subtitle}
         </motion.p>
 
         {/* CTAs */}
@@ -89,7 +103,7 @@ export function CtaSection() {
             id="cta-start-designing-btn"
             className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-bold rounded-2xl text-lg shadow-brand hover:shadow-brand-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
           >
-            <span className="relative z-10">Start Designing Now</span>
+            <span className="relative z-10">{t.cta.startDesigning}</span>
             <motion.span
               className="relative z-10 text-xl"
               animate={{ x: [0, 5, 0] }}
@@ -106,7 +120,7 @@ export function CtaSection() {
             id="cta-browse-btn"
             className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-[var(--bg-card)] dark:bg-[var(--bg-tertiary)] border border-[var(--border-strong)] text-[var(--text-primary)] font-semibold rounded-2xl text-lg hover:border-[var(--brand-400)] hover:bg-[var(--bg-secondary)] transition-all duration-300 hover:-translate-y-1"
           >
-            Browse Collection
+            {t.cta.browseCollection}
           </Link>
         </motion.div>
 
@@ -117,12 +131,7 @@ export function CtaSection() {
           transition={{ delay: 0.8, duration: 0.7 }}
           className="flex flex-wrap items-center justify-center gap-6 mt-14"
         >
-          {[
-            { icon: '🎨', label: 'Archival quality' },
-            { icon: '🚀', label: '3-day delivery' },
-            { icon: '♻️', label: 'Eco materials' },
-            { icon: '💯', label: '30-day guarantee' },
-          ].map((item) => (
+          {guarantees.map((item) => (
             <div key={item.label} className="flex items-center gap-2 text-[var(--text-muted)]">
               <span className="text-base">{item.icon}</span>
               <span className="text-sm font-medium">{item.label}</span>

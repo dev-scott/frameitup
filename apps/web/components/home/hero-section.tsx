@@ -6,6 +6,7 @@ import { Float, Environment, useTexture, RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
+import { useLanguageStore } from '@/store/use-language-store';
 
 /* ─── Frame artwork data ─────────────────────────────── */
 const frames = [
@@ -191,15 +192,16 @@ const wordVariants = {
   },
 };
 
-const titleWords1 = ['Your', 'memories,'];
-const titleWords2 = ['perfectly', 'framed.'];
-
 /* ─── Main Hero ──────────────────────────────────────── */
 export function HeroSection() {
   const containerRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 600], [0, 80]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const { t } = useLanguageStore();
+
+  const titleWords1 = t.hero.line1;
+  const titleWords2 = t.hero.line2;
 
   return (
     <section
@@ -253,7 +255,7 @@ export function HeroSection() {
           >
             <span className="badge-premium">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand-500)] animate-pulse" />
-              Museum-Quality Framing
+              {t.hero.badge}
             </span>
           </motion.div>
 
@@ -292,9 +294,9 @@ export function HeroSection() {
             transition={{ delay: 0.8, duration: 0.7 }}
             className="text-lg md:text-xl text-[var(--text-muted)] mb-10 leading-relaxed max-w-lg"
           >
-            Upload any photo. Choose your frame. We craft and deliver a{' '}
-            <span className="text-[var(--text-secondary)] font-medium">museum-quality</span>{' '}
-            framed print to your door in days.
+            {t.hero.subtitle}{' '}
+            <span className="text-[var(--text-secondary)] font-medium">{t.hero.subtitleHighlight}</span>{' '}
+            {t.hero.subtitleEnd}
           </motion.p>
 
           {/* CTAs */}
@@ -309,7 +311,7 @@ export function HeroSection() {
               id="hero-start-designing-btn"
               className="group relative inline-flex items-center gap-3 px-8 py-4 bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-semibold rounded-2xl text-base shadow-brand hover:shadow-brand-lg transition-all duration-300 hover:-translate-y-1"
             >
-              <span>Start Designing</span>
+              <span>{t.hero.cta}</span>
               <motion.span
                 className="text-lg"
                 animate={{ x: [0, 4, 0] }}
@@ -326,7 +328,7 @@ export function HeroSection() {
               id="hero-browse-frames-btn"
               className="inline-flex items-center gap-3 px-8 py-4 bg-[var(--bg-card)] dark:bg-[var(--bg-tertiary)] border border-[var(--border-strong)] text-[var(--text-primary)] font-semibold rounded-2xl text-base hover:border-[var(--brand-400)] hover:bg-[var(--bg-secondary)] transition-all duration-300 hover:-translate-y-1"
             >
-              Browse Frames
+              {t.hero.ctaBrowse}
             </Link>
           </motion.div>
 
@@ -353,7 +355,7 @@ export function HeroSection() {
                 {'★★★★★'.split('').map((s, i) => <span key={i} className="text-sm">{s}</span>)}
               </div>
               <p className="text-xs text-[var(--text-muted)]">
-                <span className="font-semibold text-[var(--text-secondary)]">4.9/5</span> from 2,400+ customers
+                <span className="font-semibold text-[var(--text-secondary)]">{t.hero.trustRating}</span> {t.hero.trustReviews}
               </p>
             </div>
           </motion.div>
@@ -368,7 +370,7 @@ export function HeroSection() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
       >
         <span className="text-xs font-medium tracking-widest uppercase text-[var(--text-subtle)]">
-          Scroll
+          {t.hero.scroll}
         </span>
         <div className="w-px h-12 bg-gradient-to-b from-[var(--brand-500)] to-transparent animate-pulse" />
       </motion.div>

@@ -3,17 +3,18 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useLanguageStore } from '@/store/use-language-store';
 
 /* ─── Frame data ─────────────────────────────────────── */
 const frameCollection = [
   {
     id: 'oslo',
     name: 'Oslo Classic',
-    material: 'Solid Oak',
+    material: { en: 'Solid Oak', fr: 'Chêne massif' },
     price: '$89',
     color: '#8B6914',
     bg: 'from-amber-50 to-stone-100 dark:from-amber-950/30 dark:to-stone-900/30',
-    badge: 'Best Seller',
+    badgeKey: 'bestSeller' as const,
     badgeColor: 'text-amber-700 bg-amber-100 dark:text-amber-400 dark:bg-amber-950/50',
     artColors: ['#E8D5B7', '#C4A882', '#d98d2e'],
     dimensions: '20×24"',
@@ -21,11 +22,11 @@ const frameCollection = [
   {
     id: 'noir',
     name: 'Noir Élégant',
-    material: 'Matte Black Aluminum',
+    material: { en: 'Matte Black Aluminum', fr: 'Aluminium noir mat' },
     price: '$65',
     color: '#1a1a1a',
     bg: 'from-stone-100 to-slate-100 dark:from-stone-900/40 dark:to-slate-900/40',
-    badge: 'Modern',
+    badgeKey: 'modern' as const,
     badgeColor: 'text-slate-700 bg-slate-100 dark:text-slate-300 dark:bg-slate-900/50',
     artColors: ['#c8c8c8', '#888', '#333'],
     dimensions: '16×20"',
@@ -33,11 +34,11 @@ const frameCollection = [
   {
     id: 'galerie',
     name: 'Galerie Gold',
-    material: 'Gilded Walnut',
+    material: { en: 'Gilded Walnut', fr: 'Noyer doré' },
     price: '$145',
     color: '#B8860B',
     bg: 'from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/30',
-    badge: 'Premium',
+    badgeKey: 'premium' as const,
     badgeColor: 'text-yellow-700 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-950/50',
     artColors: ['#f5e6c8', '#d4b060', '#8B6914'],
     dimensions: '24×30"',
@@ -45,11 +46,11 @@ const frameCollection = [
   {
     id: 'natura',
     name: 'Natura Verte',
-    material: 'Reclaimed Pine',
+    material: { en: 'Reclaimed Pine', fr: 'Pin recyclé' },
     price: '$75',
     color: '#4A6B3A',
     bg: 'from-green-50 to-stone-50 dark:from-green-950/20 dark:to-stone-900/30',
-    badge: 'Eco',
+    badgeKey: 'eco' as const,
     badgeColor: 'text-green-700 bg-green-100 dark:text-green-400 dark:bg-green-950/50',
     artColors: ['#d4e8c4', '#8BA870', '#4A6B3A'],
     dimensions: '18×24"',
@@ -57,11 +58,11 @@ const frameCollection = [
   {
     id: 'marbre',
     name: 'Marbre Blanc',
-    material: 'Resin & Marble',
+    material: { en: 'Resin & Marble', fr: 'Résine & marbre' },
     price: '$119',
     color: '#C0C0C0',
     bg: 'from-gray-50 to-slate-100 dark:from-gray-900/30 dark:to-slate-900/30',
-    badge: 'Luxury',
+    badgeKey: 'luxury' as const,
     badgeColor: 'text-gray-600 bg-gray-100 dark:text-gray-300 dark:bg-gray-900/50',
     artColors: ['#f0f0f0', '#d0d0d0', '#a0a0a0'],
     dimensions: '20×20"',
@@ -69,11 +70,11 @@ const frameCollection = [
   {
     id: 'terracotta',
     name: 'Terra Antica',
-    material: 'Terracotta Clay',
+    material: { en: 'Terracotta Clay', fr: 'Argile cuite' },
     price: '$99',
     color: '#C4622D',
     bg: 'from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20',
-    badge: 'New',
+    badgeKey: 'new' as const,
     badgeColor: 'text-orange-700 bg-orange-100 dark:text-orange-400 dark:bg-orange-950/50',
     artColors: ['#f5d4b8', '#d4856a', '#C4622D'],
     dimensions: '16×16"',
@@ -85,6 +86,7 @@ function FrameCard({ frame, index }: { frame: typeof frameCollection[0]; index: 
   const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
   const [hovered, setHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const { t, language } = useLanguageStore();
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -122,7 +124,7 @@ function FrameCard({ frame, index }: { frame: typeof frameCollection[0]; index: 
         {/* Badge */}
         <div className="flex items-start justify-between mb-5">
           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${frame.badgeColor}`}>
-            {frame.badge}
+            {t.showcase.badges[frame.badgeKey]}
           </span>
           <span className="text-xs text-[var(--text-subtle)]">{frame.dimensions}</span>
         </div>
@@ -187,7 +189,7 @@ function FrameCard({ frame, index }: { frame: typeof frameCollection[0]; index: 
           <h3 className="font-display text-xl font-semibold text-[var(--text-primary)] mb-1">
             {frame.name}
           </h3>
-          <p className="text-sm text-[var(--text-muted)] mb-4">{frame.material}</p>
+          <p className="text-sm text-[var(--text-muted)] mb-4">{frame.material[language as 'en' | 'fr']}</p>
           <div className="flex items-center justify-between">
             <span className="text-2xl font-bold text-[var(--text-primary)]">{frame.price}</span>
             <Link
@@ -196,7 +198,7 @@ function FrameCard({ frame, index }: { frame: typeof frameCollection[0]; index: 
               className="flex items-center gap-1.5 text-sm font-semibold text-[var(--brand-500)] hover:text-[var(--brand-600)] transition-colors duration-200 group/link"
               onClick={(e) => e.stopPropagation()}
             >
-              <span>Preview</span>
+              <span>{t.showcase.preview}</span>
               <span className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
             </Link>
           </div>
@@ -220,6 +222,7 @@ function FrameCard({ frame, index }: { frame: typeof frameCollection[0]; index: 
 export function FrameShowcaseSection() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
+  const { t } = useLanguageStore();
 
   return (
     <section ref={ref} id="frames-showcase" className="section-padding relative overflow-hidden">
@@ -237,10 +240,10 @@ export function FrameShowcaseSection() {
           className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
         >
           <div>
-            <p className="section-label mb-4">Our Collection</p>
+            <p className="section-label mb-4">{t.showcase.sectionLabel}</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
-              Find your perfect{' '}
-              <span className="gradient-text">frame</span>
+              {t.showcase.title}{' '}
+              <span className="gradient-text">{t.showcase.titleHighlight}</span>
             </h2>
           </div>
           <Link
@@ -248,7 +251,7 @@ export function FrameShowcaseSection() {
             id="showcase-view-all-btn"
             className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 border border-[var(--border-strong)] rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--brand-400)] hover:text-[var(--brand-500)] transition-all duration-200"
           >
-            View all frames →
+            {t.showcase.viewAll}
           </Link>
         </motion.div>
 

@@ -6,12 +6,30 @@ import { motion } from 'framer-motion';
 import { getSeedFrames } from '@/app/actions';
 import { useFrameStore, FrameOption } from '@/store/use-frame-store';
 import { Button } from '@frameitup/ui';
+import { useLanguageStore } from '@/store/use-language-store';
+
+const translateMaterial = (mat: string, lang: string) => {
+  if (lang === 'fr') {
+    switch (mat.toLowerCase()) {
+      case 'oak': return 'Chêne';
+      case 'wood': return 'Bois';
+      case 'aluminum': return 'Aluminium';
+      case 'walnut': return 'Noyer';
+      case 'pine': return 'Pin';
+      case 'resin': return 'Résine';
+      case 'clay': return 'Argile';
+      default: return mat;
+    }
+  }
+  return mat;
+};
 
 export default function BrowseFramesPage() {
   const router = useRouter();
   const setSelectedFrame = useFrameStore((state) => state.setSelectedFrame);
   const [frames, setFrames] = useState<FrameOption[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t, language } = useLanguageStore();
 
   useEffect(() => {
     async function load() {
@@ -51,7 +69,7 @@ export default function BrowseFramesPage() {
             transition={{ duration: 0.5 }}
             className="text-xs font-semibold tracking-widest text-[var(--brand-500)] uppercase"
           >
-            Artisan Collections
+            {t.framesPage.sectionLabel}
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -59,7 +77,7 @@ export default function BrowseFramesPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)]"
           >
-            Exquisite Handcrafted Frame Profiles
+            {t.framesPage.title}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -67,7 +85,7 @@ export default function BrowseFramesPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-[var(--text-secondary)] text-lg"
           >
-            Select from our premium curation of materials, hand-finished colorways, and sizes to elevate your artwork or photography.
+            {t.framesPage.subtitle}
           </motion.p>
         </div>
 
@@ -130,29 +148,29 @@ export default function BrowseFramesPage() {
                         {frame.name}
                       </h3>
                       <p className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">
-                        {frame.material} Profile
+                        {language === 'fr' ? `${t.framesPage.profile} ${translateMaterial(frame.material, language)}` : `${frame.material} ${t.framesPage.profile}`}
                       </p>
                     </div>
                     <div className="text-right">
                       <span className="text-lg font-bold text-[var(--brand-500)]">
                         ${frame.priceUsd.toFixed(2)}
                       </span>
-                      <p className="text-[10px] text-[var(--text-subtle)]">per linear meter</p>
+                      <p className="text-[10px] text-[var(--text-subtle)]">{t.framesPage.perLinearMeter}</p>
                     </div>
                   </div>
 
                   {/* Material Specs */}
                   <div className="grid grid-cols-3 gap-2 py-3 border-y border-[var(--border)] text-xs text-[var(--text-secondary)]">
                     <div>
-                      <span className="block text-[10px] text-[var(--text-subtle)] uppercase">Width</span>
+                      <span className="block text-[10px] text-[var(--text-subtle)] uppercase">{t.framesPage.width}</span>
                       <span className="font-semibold">{frame.widthMm} mm</span>
                     </div>
                     <div>
-                      <span className="block text-[10px] text-[var(--text-subtle)] uppercase">Height</span>
+                      <span className="block text-[10px] text-[var(--text-subtle)] uppercase">{t.framesPage.height}</span>
                       <span className="font-semibold">{frame.heightMm} mm</span>
                     </div>
                     <div>
-                      <span className="block text-[10px] text-[var(--text-subtle)] uppercase">Depth</span>
+                      <span className="block text-[10px] text-[var(--text-subtle)] uppercase">{t.framesPage.depth}</span>
                       <span className="font-semibold">{frame.depthMm} mm</span>
                     </div>
                   </div>
@@ -161,7 +179,7 @@ export default function BrowseFramesPage() {
                     onClick={() => handleSelect(frame)}
                     className="w-full bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-medium rounded-xl py-2.5 transition-colors duration-200 shadow-sm flex items-center justify-center gap-2"
                   >
-                    Design With This Frame
+                    {t.framesPage.designWith}
                     <span className="text-xs group-hover:translate-x-1 transition-transform">→</span>
                   </Button>
                 </div>

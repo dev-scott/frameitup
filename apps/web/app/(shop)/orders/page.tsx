@@ -4,20 +4,22 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getUserOrders } from '@/app/actions';
 import { Button } from '@frameitup/ui';
-
-// Define status flow values
-const STATUS_STEPS = [
-  { status: 'PENDING', label: 'Order Registered' },
-  { status: 'PAYMENT_CONFIRMED', label: 'Payment Confirmed' },
-  { status: 'IN_PRODUCTION', label: 'In Production' },
-  { status: 'QUALITY_CHECK', label: 'Quality Check' },
-  { status: 'SHIPPED', label: 'Shipped' },
-  { status: 'DELIVERED', label: 'Delivered' }
-];
+import { useLanguageStore } from '@/store/use-language-store';
 
 export default function MyOrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { t, language } = useLanguageStore();
+
+  // Define status flow values dynamically inside the component
+  const statusSteps = [
+    { status: 'PENDING', label: t.ordersPage.steps.pending },
+    { status: 'PAYMENT_CONFIRMED', label: t.ordersPage.steps.payment },
+    { status: 'IN_PRODUCTION', label: t.ordersPage.steps.production },
+    { status: 'QUALITY_CHECK', label: t.ordersPage.steps.quality },
+    { status: 'SHIPPED', label: t.ordersPage.steps.shipped },
+    { status: 'DELIVERED', label: t.ordersPage.steps.delivered }
+  ];
 
   // Load user order history
   useEffect(() => {
@@ -30,7 +32,7 @@ export default function MyOrdersPage() {
   }, []);
 
   const getStatusIndex = (status: string) => {
-    return STATUS_STEPS.findIndex((s) => s.status === status);
+    return statusSteps.findIndex((s) => s.status === status);
   };
 
   return (
@@ -39,12 +41,12 @@ export default function MyOrdersPage() {
         
         {/* Title */}
         <div className="space-y-2">
-          <span className="text-xs font-semibold tracking-widest text-[var(--brand-500)] uppercase">Dashboard</span>
+          <span className="text-xs font-semibold tracking-widest text-[var(--brand-500)] uppercase">{t.ordersPage.dashboard}</span>
           <h1 className="font-display text-4xl font-bold tracking-tight text-[var(--text-primary)]">
-            My Orders & Tracking
+            {t.ordersPage.title}
           </h1>
           <p className="text-[var(--text-secondary)] text-sm">
-            Trace the handcrafting progress and shipping status of your custom frame collections.
+            {t.ordersPage.subtitle}
           </p>
         </div>
 
@@ -59,15 +61,15 @@ export default function MyOrdersPage() {
             <svg className="w-16 h-16 text-[var(--text-subtle)]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
             </svg>
-            <h3 className="font-display text-xl font-bold">No Orders Placed Yet</h3>
+            <h3 className="font-display text-xl font-bold">{t.ordersPage.emptyTitle}</h3>
             <p className="text-sm text-[var(--text-secondary)] max-w-sm">
-              Design a gorgeous custom frame for your artwork to begin tracking its progress.
+              {t.ordersPage.emptyDesc}
             </p>
             <Button
               onClick={() => window.location.href = '/configure'}
               className="bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-semibold rounded-xl px-6 py-2.5 shadow-brand mt-4"
             >
-              Start Designing
+              {t.ordersPage.startDesigning}
             </Button>
           </div>
         ) : (
@@ -84,25 +86,25 @@ export default function MyOrdersPage() {
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-4 text-xs">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-8">
                       <div>
-                        <span className="block text-[10px] text-[var(--text-subtle)] uppercase">Order Placed</span>
+                        <span className="block text-[10px] text-[var(--text-subtle)] uppercase">{t.ordersPage.orderPlaced}</span>
                         <span className="font-semibold text-stone-700 dark:text-stone-300">
-                          {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          {new Date(order.createdAt).toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </span>
                       </div>
                       <div>
-                        <span className="block text-[10px] text-[var(--text-subtle)] uppercase">Total Cost</span>
+                        <span className="block text-[10px] text-[var(--text-subtle)] uppercase">{t.ordersPage.totalCost}</span>
                         <span className="font-bold text-stone-700 dark:text-stone-300">
                           ${order.totalUsd.toFixed(2)}
                         </span>
                       </div>
                       <div>
-                        <span className="block text-[10px] text-[var(--text-subtle)] uppercase">Ship to</span>
+                        <span className="block text-[10px] text-[var(--text-subtle)] uppercase">{t.ordersPage.shipTo}</span>
                         <span className="font-semibold text-stone-700 dark:text-stone-300 truncate max-w-[120px] block" title={`${order.shippingLine1}, ${order.shippingCity}`}>
                           {order.shippingCity}, {order.shippingCountry}
                         </span>
                       </div>
                       <div>
-                        <span className="block text-[10px] text-[var(--text-subtle)] uppercase">Tracking Ref</span>
+                        <span className="block text-[10px] text-[var(--text-subtle)] uppercase">{t.ordersPage.trackingRef}</span>
                         <span className="font-mono font-bold text-[var(--brand-600)] uppercase select-all">
                           {order.trackingNumber}
                         </span>
@@ -110,7 +112,9 @@ export default function MyOrdersPage() {
                     </div>
 
                     <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-800 dark:bg-amber-950/20 dark:text-amber-300 border border-amber-200">
-                      {order.status.replace('_', ' ')}
+                      {language === 'fr' 
+                        ? (order.status === 'PENDING' ? 'Enregistrée' : order.status === 'PAYMENT_CONFIRMED' ? 'Payée' : order.status === 'IN_PRODUCTION' ? 'En production' : order.status === 'QUALITY_CHECK' ? 'Contrôle' : order.status === 'SHIPPED' ? 'Expédiée' : 'Livrée')
+                        : order.status.replace('_', ' ')}
                     </span>
                   </div>
 
@@ -131,9 +135,11 @@ export default function MyOrdersPage() {
                           <img src={item.imageUrl} alt="Framed Artwork" className="w-full h-full object-contain" />
                         </div>
                         <div>
-                          <h4 className="font-bold text-sm text-[var(--text-primary)]">Custom {item.frameName} Frame</h4>
+                          <h4 className="font-bold text-sm text-[var(--text-primary)]">
+                            {t.ordersPage.customFrame.replace('{name}', item.frameName)}
+                          </h4>
                           <p className="text-[10px] text-[var(--text-muted)] uppercase font-semibold">
-                            Glass: {item.glasingType.replace('_', ' ')} • Qty: {item.quantity}
+                            {t.ordersPage.glass}: {language === 'fr' ? (item.glasingType === 'STANDARD' ? 'Standard' : item.glasingType === 'UV_PROTECTIVE' ? 'Protection UV' : item.glasingType === 'ANTI_REFLECTIVE' ? 'Anti-reflet' : 'Qualité Muséale') : item.glasingType.replace('_', ' ')} • {t.ordersPage.qty}: {item.quantity}
                           </p>
                         </div>
                       </div>
@@ -150,13 +156,13 @@ export default function MyOrdersPage() {
                       <div 
                         className="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-[var(--brand-400)] to-[var(--brand-600)] -translate-y-1/2 rounded-full transition-all duration-500"
                         style={{
-                          width: `${(currentStepIdx / (STATUS_STEPS.length - 1)) * 100}%`
+                          width: `${(currentStepIdx / (statusSteps.length - 1)) * 100}%`
                         }}
                       />
 
                       {/* Timeline Nodes */}
                       <div className="relative flex justify-between">
-                        {STATUS_STEPS.map((step, idx) => {
+                        {statusSteps.map((step, idx) => {
                           const isActive = idx <= currentStepIdx;
                           const isCurrent = idx === currentStepIdx;
                           
