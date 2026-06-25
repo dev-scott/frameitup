@@ -1,6 +1,11 @@
+'use client';
+
 import { SignIn } from '@clerk/nextjs';
+import { useLanguageStore } from '@/store/use-language-store';
 
 export default function SignInPage() {
+  const { t } = useLanguageStore();
+
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center px-6 pt-24 pb-16 relative overflow-hidden">
       {/* Decorative background blobs */}
@@ -22,10 +27,10 @@ export default function SignInPage() {
             </span>
           </div>
           <h1 className="font-display text-3xl font-bold text-[var(--text-primary)]">
-            Welcome back
+            {t.authPage.signInTitle}
           </h1>
           <p className="text-sm text-[var(--text-secondary)]">
-            Sign in to manage your custom frame orders
+            {t.authPage.signInSubtitle}
           </p>
         </div>
 

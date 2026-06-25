@@ -172,7 +172,7 @@ export default function SuccessContent() {
 
           <div className="flex justify-between border-b border-[var(--border)] pb-3 text-xs">
             <span className="font-bold text-[var(--text-muted)]">{t.successPage.totalAmount}</span>
-            <span className="font-bold text-stone-700 dark:text-stone-300 font-mono">${Number(total).toFixed(2)}</span>
+            <span className="font-bold text-stone-700 dark:text-stone-300 font-mono">{Number(total).toLocaleString('fr-FR')} FCFA</span>
           </div>
 
           <div className="flex justify-between text-xs pt-1">
@@ -185,7 +185,7 @@ export default function SuccessContent() {
         <div className="text-xs text-[var(--text-muted)] border-t border-[var(--border)] pt-6 space-y-2">
           {isCod ? (
             <p className="text-amber-600 dark:text-amber-400 font-semibold">
-              ⚠️ {t.successPage.codWarning.replace('{total}', `$${Number(total).toFixed(2)}`)}
+              ⚠️ {t.successPage.codWarning.replace('{total}', `${Number(total).toLocaleString('fr-FR')} FCFA`)}
             </p>
           ) : (
             <p className="text-emerald-600 dark:text-emerald-500 font-semibold">

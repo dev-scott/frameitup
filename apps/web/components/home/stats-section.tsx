@@ -71,9 +71,9 @@ export function StatsSection() {
   const { t, language } = useLanguageStore();
 
   const stats = [
-    { value: 52000, suffix: '+', label: t.stats.items[0]?.label ?? '', description: t.stats.items[0]?.description ?? '', delay: 0 },
-    { value: 4, suffix: '.9★', label: t.stats.items[1]?.label ?? '', description: t.stats.items[1]?.description ?? '', delay: 0.15 },
-    { value: 3, suffix: language === 'fr' ? ' jours' : ' days', label: t.stats.items[2]?.label ?? '', description: t.stats.items[2]?.description ?? '', delay: 0.3 },
+    { value: 250, suffix: '+', label: t.stats.items[0]?.label ?? '', description: t.stats.items[0]?.description ?? '', delay: 0 },
+    { value: 4, suffix: '.5★', label: t.stats.items[1]?.label ?? '', description: t.stats.items[1]?.description ?? '', delay: 0.15 },
+    { value: 5, suffix: language === 'fr' ? ' jours' : ' days', label: t.stats.items[2]?.label ?? '', description: t.stats.items[2]?.description ?? '', delay: 0.3 },
     { value: 100, suffix: '%', label: t.stats.items[3]?.label ?? '', description: t.stats.items[3]?.description ?? '', delay: 0.45 },
   ];
 

@@ -37,7 +37,7 @@ export default function MyOrdersPage() {
 
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] pt-32 pb-24 px-6 md:px-12 flex justify-center">
-      <div className="max-w-5xl w-full space-y-12">
+      <div className="max-w-7xl px-6 w-full space-y-12">
         
         {/* Title */}
         <div className="space-y-2">
@@ -94,7 +94,7 @@ export default function MyOrdersPage() {
                       <div>
                         <span className="block text-[10px] text-[var(--text-subtle)] uppercase">{t.ordersPage.totalCost}</span>
                         <span className="font-bold text-stone-700 dark:text-stone-300">
-                          ${order.totalUsd.toFixed(2)}
+                          {order.totalUsd.toLocaleString('fr-FR')} FCFA
                         </span>
                       </div>
                       <div>

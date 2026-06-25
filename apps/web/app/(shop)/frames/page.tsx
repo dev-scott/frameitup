@@ -153,7 +153,7 @@ export default function BrowseFramesPage() {
                     </div>
                     <div className="text-right">
                       <span className="text-lg font-bold text-[var(--brand-500)]">
-                        ${frame.priceUsd.toFixed(2)}
+                        {frame.priceUsd.toLocaleString('fr-FR')} FCFA
                       </span>
                       <p className="text-[10px] text-[var(--text-subtle)]">{t.framesPage.perLinearMeter}</p>
                     </div>

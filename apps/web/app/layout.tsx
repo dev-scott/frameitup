@@ -5,6 +5,7 @@ import { Toaster } from 'sonner';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Navbar } from '@/components/ui/navbar';
 import { Footer } from '@/components/ui/footer';
+import { WhatsAppButton } from '@/components/ui/whatsapp-button';
 import './globals.css';
 
 // reduit la taille de la police
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Navbar />
             {children}
             <Footer />
+            <WhatsAppButton />
             <Toaster richColors position="top-right" />
           </ClerkProvider>
         </ThemeProvider>

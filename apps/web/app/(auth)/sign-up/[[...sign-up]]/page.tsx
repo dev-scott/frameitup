@@ -1,6 +1,11 @@
+'use client';
+
 import { SignUp } from '@clerk/nextjs';
+import { useLanguageStore } from '@/store/use-language-store';
 
 export default function SignUpPage() {
+  const { t } = useLanguageStore();
+
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center px-6 pt-24 pb-16 relative overflow-hidden">
       {/* Decorative background blobs */}
@@ -22,10 +27,10 @@ export default function SignUpPage() {
             </span>
           </div>
           <h1 className="font-display text-3xl font-bold text-[var(--text-primary)]">
-            Create your account
+            {t.authPage.signUpTitle}
           </h1>
           <p className="text-sm text-[var(--text-secondary)]">
-            Start ordering premium custom frames for your artwork
+            {t.authPage.signUpSubtitle}
           </p>
         </div>
 

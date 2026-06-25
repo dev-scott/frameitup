@@ -7,11 +7,12 @@ import { useFrameStore } from '@/store/use-frame-store';
 import { createOrder } from '@/app/actions';
 import { Button } from '@frameitup/ui';
 import { useLanguageStore } from '@/store/use-language-store';
+import { buildWhatsAppUrl, WA_MESSAGES } from '@/lib/whatsapp';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { t, language } = useLanguageStore();
-  
+
   // Zustand Store
   const {
     imageSrc,
@@ -38,9 +39,10 @@ export default function CheckoutPage() {
     firstName: '',
     lastName: '',
     email: '',
+    whatsapp: '',
     line1: '',
     line2: '',
-    city: 'Douala', // default Cameroon cities for localization
+    city: 'Douala',
     state: 'Littoral',
     postalCode: '00237',
     country: 'Cameroon',
@@ -50,7 +52,7 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<'CASH_ON_DELIVERY' | 'MOBILE_MONEY'>('MOBILE_MONEY');
   const [carrier, setCarrier] = useState<'MTN' | 'ORANGE'>('MTN');
   const [momoNumber, setMomoNumber] = useState<string>('');
-  
+
   // CinetPay Portal Simulation States
   const [showCinetPay, setShowCinetPay] = useState<boolean>(false);
   const [cinetPayStep, setCinetPayStep] = useState<'INIT' | 'USSD_PUSH' | 'PIN_ENTER' | 'SUCCESS'>('INIT');
@@ -70,7 +72,7 @@ export default function CheckoutPage() {
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) errs.email = t.checkoutPage.errors.invalidEmail;
     if (!formData.line1) errs.line1 = t.checkoutPage.errors.required;
     if (!formData.city) errs.city = t.checkoutPage.errors.required;
-    
+
     if (paymentMethod === 'MOBILE_MONEY') {
       const pureNum = momoNumber.replace(/\D/g, '');
       if (pureNum.length < 9) {
@@ -125,8 +127,8 @@ export default function CheckoutPage() {
     setProcessing(true);
     setShipping(formData);
 
-    const transactionId = method === 'CASH_ON_DELIVERY' 
-      ? undefined 
+    const transactionId = method === 'CASH_ON_DELIVERY'
+      ? undefined
       : `CP-TX-${Math.floor(100000 + Math.random() * 900000)}`;
 
     const res = await createOrder({
@@ -140,6 +142,7 @@ export default function CheckoutPage() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
+        whatsapp: formData.whatsapp,
       },
       items: [
         {
@@ -160,6 +163,15 @@ export default function CheckoutPage() {
 
     setProcessing(false);
     if (res.success && res.order) {
+      // Build WhatsApp confirmation message
+      const waMsg = WA_MESSAGES.orderConfirm(
+        res.order.trackingNumber ?? 'N/A',
+        res.order.totalUsd.toLocaleString('fr-FR')
+      );
+      const waUrl = buildWhatsAppUrl(waMsg);
+      // Open WhatsApp in a new tab
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+      // Navigate to success page in current tab
       router.push(`/checkout/success?orderId=${res.order.id}&tracking=${res.order.trackingNumber}&total=${res.order.totalUsd}&method=${method}`);
     } else {
       alert(res.error || 'Failed to place order.');
@@ -169,10 +181,10 @@ export default function CheckoutPage() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] pt-32 pb-24 px-6 md:px-12 flex justify-center relative">
       <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-10">
-        
+
         {/* LEFT COLUMN: SHIPPING AND METHOD */}
         <form onSubmit={handlePaymentInitiate} className="lg:col-span-7 space-y-8">
-          
+
           {/* Shipping Details */}
           <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-3xl p-6 shadow-md space-y-6">
             <h2 className="text-xl font-bold font-display text-[var(--text-primary)] border-b border-[var(--border)] pb-3">
@@ -202,15 +214,28 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">{t.checkoutPage.email}</label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className={`w-full px-3 py-2.5 border rounded-xl bg-transparent text-sm font-medium ${errors.email ? 'border-rose-500' : 'border-[var(--border)]'}`}
-              />
+            <div className='grid grid-cols-2 gap-4'>
+              <div>
+
+                <label className="block text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">{t.checkoutPage.email}</label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className={`w-full px-3 py-2.5 border rounded-xl bg-transparent text-sm font-medium ${errors.email ? 'border-rose-500' : 'border-[var(--border)]'}`}
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">{t.checkoutPage.whatsapp}</label>
+                <input
+                  type="tel"
+                  required
+                  value={formData.whatsapp}
+                  onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                  className={`w-full px-3 py-2.5 border rounded-xl bg-transparent text-sm font-medium ${errors.phone ? 'border-rose-500' : 'border-[var(--border)]'}`}
+                />
+              </div>
             </div>
 
             <div>
@@ -292,11 +317,10 @@ export default function CheckoutPage() {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('MOBILE_MONEY')}
-                className={`p-5 rounded-2xl border text-left flex flex-col justify-between h-36 transition-all ${
-                  paymentMethod === 'MOBILE_MONEY'
-                    ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
-                    : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
-                }`}
+                className={`p-5 rounded-2xl border text-left flex flex-col justify-between h-36 transition-all ${paymentMethod === 'MOBILE_MONEY'
+                  ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
+                  : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
+                  }`}
               >
                 <div className="flex justify-between items-center w-full">
                   <span className="font-bold text-sm text-[var(--text-primary)]">{t.checkoutPage.momo}</span>
@@ -317,11 +341,10 @@ export default function CheckoutPage() {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('CASH_ON_DELIVERY')}
-                className={`p-5 rounded-2xl border text-left flex flex-col justify-between h-36 transition-all ${
-                  paymentMethod === 'CASH_ON_DELIVERY'
-                    ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
-                    : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
-                }`}
+                className={`p-5 rounded-2xl border text-left flex flex-col justify-between h-36 transition-all ${paymentMethod === 'CASH_ON_DELIVERY'
+                  ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
+                  : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
+                  }`}
               >
                 <div className="flex justify-between items-center w-full">
                   <span className="font-bold text-sm text-[var(--text-primary)]">{t.checkoutPage.cod}</span>
@@ -333,8 +356,8 @@ export default function CheckoutPage() {
                   />
                 </div>
                 <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                  {language === 'fr' 
-                    ? 'Réglez vos achats en espèces lors de la réception à Douala / Yaoundé.' 
+                  {language === 'fr'
+                    ? 'Réglez vos achats en espèces lors de la réception à Douala / Yaoundé.'
                     : 'Pay physically with raw cash directly to our delivery courier upon arrival in Douala / Yaoundé.'}
                 </p>
               </button>
@@ -393,7 +416,7 @@ export default function CheckoutPage() {
 
             {imageSrc && (
               <div className="flex gap-4">
-                <div 
+                <div
                   className="w-20 h-20 flex items-center justify-center relative flex-shrink-0"
                   style={{
                     border: `3px solid ${selectedFrame.color}`,
@@ -429,18 +452,18 @@ export default function CheckoutPage() {
             <div className="space-y-3 pt-6 border-t border-[var(--border)] text-xs text-[var(--text-secondary)]">
               <div className="flex justify-between">
                 <span>{language === 'fr' ? 'Profil de cadre personnalisé' : 'Custom Frame Profile'}</span>
-                <span>${prices.baseFrame.toFixed(2)}</span>
+                <span>{prices.baseFrame.toLocaleString('fr-FR')} FCFA</span>
               </div>
               {hasMat && (
                 <div className="flex justify-between">
                   <span>{language === 'fr' ? 'Bordure passe-partout' : 'Mat Board Border'}</span>
-                  <span>${prices.matPrice.toFixed(2)}</span>
+                  <span>{prices.matPrice.toLocaleString('fr-FR')} FCFA</span>
                 </div>
               )}
               {glasingType !== 'STANDARD' && (
                 <div className="flex justify-between">
                   <span>{language === 'fr' ? 'Verre protecteur' : 'Glazing Treatment'}</span>
-                  <span>${prices.glassPrice.toFixed(2)}</span>
+                  <span>{prices.glassPrice.toLocaleString('fr-FR')} FCFA</span>
                 </div>
               )}
               <div className="flex justify-between">
@@ -452,7 +475,7 @@ export default function CheckoutPage() {
             <div className="border-t border-[var(--border)] pt-4 flex justify-between items-end">
               <span className="text-xs uppercase font-bold text-[var(--text-muted)]">{t.checkoutPage.total}</span>
               <span className="text-2xl font-black font-display text-[var(--text-primary)]">
-                ${prices.total.toFixed(2)}
+                {prices.total.toLocaleString('fr-FR')} FCFA
               </span>
             </div>
 
@@ -461,8 +484,8 @@ export default function CheckoutPage() {
               onClick={handlePaymentInitiate}
               className="w-full bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-bold rounded-xl py-3.5 shadow-brand hover:shadow-brand-lg mt-8 transition-all duration-200 flex items-center justify-center gap-2"
             >
-              {paymentMethod === 'MOBILE_MONEY' 
-                ? (language === 'fr' ? 'Payer en ligne (CinetPay)' : 'Pay Online (CinetPay)') 
+              {paymentMethod === 'MOBILE_MONEY'
+                ? (language === 'fr' ? 'Payer en ligne (CinetPay)' : 'Pay Online (CinetPay)')
                 : (language === 'fr' ? 'Confirmer la commande & Livrer' : 'Confirm Order & Deliver')}
             </Button>
           </div>
@@ -502,13 +525,13 @@ export default function CheckoutPage() {
 
               {/* Body */}
               <div className="p-6 space-y-6">
-                
+
                 {cinetPayStep === 'INIT' && (
                   <div className="space-y-5 text-center">
                     <div>
                       <span className="text-[10px] text-stone-400 uppercase block tracking-wider">{language === 'fr' ? 'Transaction de paiement pour' : 'Payment Transaction for'}</span>
                       <h4 className="font-bold text-lg text-amber-500">FrameItUp Custom Framing</h4>
-                      <p className="text-2xl font-black font-mono mt-1">${prices.total.toFixed(2)}</p>
+                      <p className="text-2xl font-black font-mono mt-1">{prices.total.toLocaleString('fr-FR')} FCFA</p>
                     </div>
 
                     <div className="bg-slate-800/50 p-4 border border-slate-700 rounded-xl space-y-1 text-xs text-left">
@@ -538,10 +561,10 @@ export default function CheckoutPage() {
                       <h4 className="font-bold text-sm">{language === 'fr' ? 'Envoi du chargement réseau mobile...' : 'Sending Mobile Network Payload...'}</h4>
                       <p className="text-xs text-stone-400">{language === 'fr' ? 'Demande de session push USSD (+237)...' : 'Requesting USSD push session code (+237)...'}</p>
                     </div>
-                    
+
                     {/* Progress Bar */}
                     <div className="w-full h-1 bg-stone-800 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className="h-full bg-amber-500 transition-all duration-300"
                         style={{ width: `${ussdProgress}%` }}
                       />
@@ -561,11 +584,10 @@ export default function CheckoutPage() {
                       {[0, 1, 2, 3].map((i) => (
                         <div
                           key={i}
-                          className={`w-3.5 h-3.5 rounded-full border-2 transition-all ${
-                            mockPin.length > i 
-                              ? 'bg-amber-400 border-amber-400 scale-110 shadow-lg shadow-amber-400/40' 
-                              : 'border-stone-500'
-                          }`}
+                          className={`w-3.5 h-3.5 rounded-full border-2 transition-all ${mockPin.length > i
+                            ? 'bg-amber-400 border-amber-400 scale-110 shadow-lg shadow-amber-400/40'
+                            : 'border-stone-500'
+                            }`}
                         />
                       ))}
                     </div>
@@ -631,7 +653,7 @@ export default function CheckoutPage() {
       {/* SECURE LOADING SCREEN OVERLAY */}
       <AnimatePresence>
         {processing && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

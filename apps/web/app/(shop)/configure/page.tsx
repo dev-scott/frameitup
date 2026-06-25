@@ -43,10 +43,10 @@ function LoaderIcon() {
 }
 
 const PRESET_SIZES = [
-  { label: 'S (20x30 cm)', w: 200, h: 300 },
-  { label: 'M (30x40 cm)', w: 300, h: 400 },
-  { label: 'L (50x70 cm)', w: 500, h: 700 },
-  { label: 'XL (70x100 cm)', w: 700, h: 1000 },
+  { label: 'A2 (420×594 mm)', w: 420, h: 594 },
+  { label: 'A3 (297×420 mm)', w: 297, h: 420 },
+  { label: 'A4 (210×297 mm)', w: 210, h: 297 },
+  { label: 'A5 (148×210 mm)', w: 148, h: 210 },
 ];
 
 const MAT_COLORS = [
@@ -451,7 +451,7 @@ export default function ConfigurePage() {
                           </div>
                         </div>
 
-                        <div className="space-y-4">
+                        {/* <div className="space-y-4">
                           <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
                             {t.configurePage.customInputs}
                           </label>
@@ -479,7 +479,7 @@ export default function ConfigurePage() {
                               />
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </motion.div>
                     )}
 
@@ -519,7 +519,7 @@ export default function ConfigurePage() {
                                 </div>
                               </div>
                               <span className="text-xs font-bold text-[var(--brand-600)]">
-                                ${frame.priceUsd.toFixed(2)} /m
+                                {frame.priceUsd.toLocaleString('fr-FR')} FCFA/m
                               </span>
                             </button>
                           ))}
@@ -527,76 +527,44 @@ export default function ConfigurePage() {
                       </motion.div>
                     )}
 
-                    {/* STEP 3: MATTING (PASSE-PARTOUT) */}
+                    {/* STEP 3: MATTING (PASSE-PARTOUT) — Désactivé temporairement */}
                     {activeStep === 2 && (
                       <motion.div 
                         initial={{ opacity: 0 }} 
                         animate={{ opacity: 1 }} 
                         className="space-y-6"
                       >
-                        <div className="flex justify-between items-center bg-[var(--bg-secondary)] p-4 rounded-xl">
+                        <div className="flex justify-between items-center bg-[var(--bg-secondary)] p-4 rounded-xl opacity-60 cursor-not-allowed">
                           <div>
                             <span className="block text-sm font-bold text-[var(--text-primary)]">{t.configurePage.addPassePartout}</span>
                             <span className="text-[10px] text-[var(--text-muted)]">{t.configurePage.passePartoutDesc}</span>
                           </div>
-                          <input
-                            type="checkbox"
-                            checked={hasMat}
-                            onChange={(e) => setMat(e.target.checked)}
-                            className="w-5 h-5 accent-[var(--brand-500)]"
-                          />
+                          <div className="flex items-center gap-2">
+                            <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[var(--brand-100)] text-[var(--brand-600)]">
+                              {language === 'fr' ? 'Bientôt' : 'Soon'}
+                            </span>
+                            <input
+                              type="checkbox"
+                              checked={false}
+                              disabled
+                              className="w-5 h-5 accent-[var(--brand-500)] cursor-not-allowed"
+                            />
+                          </div>
                         </div>
 
-                        {hasMat && (
-                          <div className="space-y-5">
-                            {/* Width Slider */}
-                            <div>
-                              <div className="flex justify-between text-xs font-bold uppercase mb-2">
-                                <span className="text-[var(--text-muted)]">{t.configurePage.matWidth}</span>
-                                <span className="text-[var(--brand-600)]">{matWidthMm} mm</span>
-                              </div>
-                              <input
-                                type="range"
-                                min={10}
-                                max={80}
-                                step={5}
-                                value={matWidthMm}
-                                onChange={(e) => setMat(true, undefined, undefined, parseInt(e.target.value))}
-                                className="w-full accent-[var(--brand-500)]"
-                              />
-                            </div>
-
-                            {/* Color options */}
-                            <div>
-                              <span className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-3">{t.configurePage.matColor}</span>
-                              <div className="grid grid-cols-2 gap-3">
-                                {localizedMatColors.map((col) => (
-                                  <button
-                                    key={col.name}
-                                    onClick={() => setMat(true, col.hex, col.name)}
-                                    className={`p-3 rounded-xl border flex items-center gap-2.5 transition-all text-left ${
-                                      matColor === col.hex
-                                        ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
-                                        : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
-                                    }`}
-                                  >
-                                    <span
-                                      className="w-4 h-4 rounded-full border border-stone-300"
-                                      style={{ backgroundColor: col.hex }}
-                                    />
-                                    <div>
-                                      <span className="block text-xs font-bold">{col.name}</span>
-                                    </div>
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        )}
+                        {/* Informational note */}
+                        <div className="flex items-start gap-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+                          <span className="text-amber-500 text-lg flex-shrink-0">ℹ️</span>
+                          <p className="text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
+                            {language === 'fr'
+                              ? 'Le passe-partout sera disponible prochainement. Contactez-nous sur WhatsApp pour des options personnalisées.'
+                              : 'Matting will be available soon. Contact us on WhatsApp for custom options.'}
+                          </p>
+                        </div>
                       </motion.div>
                     )}
 
-                    {/* STEP 4: GLAZING & PROTECTION */}
+                    {/* STEP 4: GLAZING & PROTECTION — Standard uniquement */}
                     {activeStep === 3 && (
                       <motion.div 
                         initial={{ opacity: 0 }} 
@@ -606,28 +574,51 @@ export default function ConfigurePage() {
                         <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
                           {t.configurePage.selectGlazing}
                         </label>
+
+                        {/* Standard — actif et sélectionné */}
+                        <button
+                          onClick={() => setGlasing('STANDARD' as GlasingType)}
+                          className="p-4 rounded-2xl border text-left flex justify-between items-center w-full transition-all border-[var(--brand-500)] bg-[var(--brand-50)]/50"
+                        >
+                          <div>
+                            <span className="block font-bold text-sm text-[var(--text-primary)]">{t.configurePage.glazingTypes.standard}</span>
+                            <span className="text-[10px] text-[var(--text-muted)]">{t.configurePage.glazingTypes.standardDesc}</span>
+                          </div>
+                          <span className="text-xs font-bold text-[var(--brand-600)]">0 FCFA</span>
+                        </button>
+
+                        {/* Options désactivées */}
                         {[
-                          { type: 'STANDARD', title: t.configurePage.glazingTypes.standard, price: '+$0.00', desc: t.configurePage.glazingTypes.standardDesc },
-                          { type: 'UV_PROTECTIVE', title: t.configurePage.glazingTypes.uv, price: language === 'fr' ? '+$15.00 de base' : '+$15.00 Base', desc: t.configurePage.glazingTypes.uvDesc },
-                          { type: 'ANTI_REFLECTIVE', title: t.configurePage.glazingTypes.antiReflective, price: language === 'fr' ? '+$25.00 de base' : '+$25.00 Base', desc: t.configurePage.glazingTypes.antiReflectiveDesc },
-                          { type: 'MUSEUM_GLASS', title: t.configurePage.glazingTypes.museum, price: language === 'fr' ? '+$45.00 de base' : '+$45.00 Base', desc: t.configurePage.glazingTypes.museumDesc },
+                          { title: t.configurePage.glazingTypes.uv, desc: t.configurePage.glazingTypes.uvDesc, price: '15 000 FCFA' },
+                          { title: t.configurePage.glazingTypes.antiReflective, desc: t.configurePage.glazingTypes.antiReflectiveDesc, price: '25 000 FCFA' },
+                          { title: t.configurePage.glazingTypes.museum, desc: t.configurePage.glazingTypes.museumDesc, price: '45 000 FCFA' },
                         ].map((gl) => (
-                          <button
-                            key={gl.type}
-                            onClick={() => setGlasing(gl.type as GlasingType)}
-                            className={`p-4 rounded-2xl border text-left flex justify-between items-center w-full transition-all ${
-                              glasingType === gl.type
-                                ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
-                                : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
-                            }`}
+                          <div
+                            key={gl.title}
+                            className="p-4 rounded-2xl border border-[var(--border)] text-left flex justify-between items-center w-full opacity-45 cursor-not-allowed"
                           >
                             <div>
-                              <span className="block font-bold text-sm text-[var(--text-primary)]">{gl.title}</span>
+                              <div className="flex items-center gap-2">
+                                <span className="block font-bold text-sm text-[var(--text-primary)]">{gl.title}</span>
+                                <span className="text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[var(--bg-secondary)] text-[var(--text-muted)] border border-[var(--border)]">
+                                  {language === 'fr' ? 'Bientôt' : 'Soon'}
+                                </span>
+                              </div>
                               <span className="text-[10px] text-[var(--text-muted)]">{gl.desc}</span>
                             </div>
-                            <span className="text-xs font-bold text-[var(--brand-600)]">{gl.price}</span>
-                          </button>
+                            <span className="text-xs font-bold text-[var(--text-muted)]">{gl.price}</span>
+                          </div>
                         ))}
+
+                        {/* Note WhatsApp */}
+                        <div className="flex items-start gap-3 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-3 mt-2">
+                          <span className="text-base flex-shrink-0">💬</span>
+                          <p className="text-[11px] text-emerald-700 dark:text-emerald-300 leading-relaxed">
+                            {language === 'fr'
+                              ? 'Besoin de verre antireflet ou museale ? Contactez-nous sur WhatsApp.'
+                              : 'Need UV or museum glass? Contact us on WhatsApp.'}
+                          </p>
+                        </div>
                       </motion.div>
                     )}
                   </div>
@@ -640,18 +631,18 @@ export default function ConfigurePage() {
                   <div className="space-y-2 text-xs text-[var(--text-secondary)]">
                     <div className="flex justify-between">
                       <span>{selectedFrame.name} {language === 'fr' ? t.framesPage.profile : `${t.framesPage.profile} Profile`}</span>
-                      <span>${prices.baseFrame.toFixed(2)}</span>
+                      <span>{prices.baseFrame.toLocaleString('fr-FR')} FCFA</span>
                     </div>
                     {hasMat && (
                       <div className="flex justify-between">
                         <span>{language === 'fr' ? `Passe-partout (${matColorName})` : `Passe-partout Mat (${matColorName})`}</span>
-                        <span>${prices.matPrice.toFixed(2)}</span>
+                        <span>{prices.matPrice.toLocaleString('fr-FR')} FCFA</span>
                       </div>
                     )}
                     {glasingType !== 'STANDARD' && (
                       <div className="flex justify-between">
                         <span>{language === 'fr' ? `Traitement de verre (${glasingType === 'STANDARD' ? 'Standard' : glasingType === 'UV_PROTECTIVE' ? 'Protection UV' : glasingType === 'ANTI_REFLECTIVE' ? 'Anti-reflet' : 'Qualité Muséale'})` : `Glazing Treatment (${glasingType.replace('_', ' ')})`}</span>
-                        <span>${prices.glassPrice.toFixed(2)}</span>
+                        <span>{prices.glassPrice.toLocaleString('fr-FR')} FCFA</span>
                       </div>
                     )}
                   </div>
@@ -680,7 +671,7 @@ export default function ConfigurePage() {
                     <div className="text-right">
                       <span className="text-[10px] text-[var(--text-subtle)] block uppercase font-bold">{t.configurePage.totalPrice}</span>
                       <span className="text-2xl font-black text-[var(--text-primary)] font-display">
-                        ${prices.total.toFixed(2)}
+                        {prices.total.toLocaleString('fr-FR')} FCFA
                       </span>
                     </div>
                   </div>
