@@ -11,7 +11,7 @@ const frameCollection = [
     id: 'oslo',
     name: 'Oslo Classic',
     material: { en: 'Solid Oak', fr: 'Chêne massif' },
-    price: '$89',
+    price: '$5000',
     color: '#8B6914',
     bg: 'from-amber-50 to-stone-100 dark:from-amber-950/30 dark:to-stone-900/30',
     badgeKey: 'bestSeller' as const,
@@ -192,7 +192,7 @@ function FrameCard({ frame, index }: { frame: typeof frameCollection[0]; index: 
           <p className="text-sm text-[var(--text-muted)] mb-4">{frame.material[language as 'en' | 'fr']}</p>
           <div className="flex items-center justify-between">
             <span className="text-2xl font-bold text-[var(--text-primary)]">{frame.price}</span>
-            <Link
+            {/* <Link
               href={`/frames/${frame.id}`}
               id={`frame-card-${frame.id}-btn`}
               className="flex items-center gap-1.5 text-sm font-semibold text-[var(--brand-500)] hover:text-[var(--brand-600)] transition-colors duration-200 group/link"
@@ -200,7 +200,7 @@ function FrameCard({ frame, index }: { frame: typeof frameCollection[0]; index: 
             >
               <span>{t.showcase.preview}</span>
               <span className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
-            </Link>
+            </Link> */}
           </div>
         </div>
 
