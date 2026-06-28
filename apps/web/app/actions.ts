@@ -6,43 +6,15 @@ import { Resend } from 'resend';
 
 // ─── User Syncing Helper ──────────────────────────────────────────
 async function getOrCreateDbUser() {
-  const guestUser = {
-    id: 'usr_guest',
-    clerkId: 'clerk_guest',
-    email: 'guest@frameitup.com',
-    firstName: 'Guest',
-    lastName: 'Customer',
-    role: 'CUSTOMER' as const,
-    avatarUrl: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    artist: null,
-    orders: [],
-  };
-
   let clerkUser = null;
   try {
     clerkUser = await currentUser();
   } catch (_e) {
-    // Clerk not configured or called outside middleware context — use guest
-    console.warn('[actions] currentUser() unavailable, falling back to guest user.');
+    console.warn('[actions] currentUser() unavailable, will use guest user in DB.');
   }
 
-  try {
-    if (!clerkUser) {
-      return await db.user.upsert({
-        where: { email: 'guest@frameitup.com' },
-        update: {},
-        create: {
-          id: 'usr_guest',
-          clerkId: 'clerk_guest',
-          email: 'guest@frameitup.com',
-          firstName: 'Guest',
-          lastName: 'Customer',
-        },
-      });
-    }
-
+  // ── Authenticated user path ──
+  if (clerkUser) {
     const email = clerkUser.emailAddresses[0]?.emailAddress ?? '';
     return await db.user.upsert({
       where: { clerkId: clerkUser.id },
@@ -59,11 +31,28 @@ async function getOrCreateDbUser() {
         avatarUrl: clerkUser.imageUrl,
       },
     });
-  } catch (dbError) {
-    console.error('[actions] DB upsert failed, using in-memory guest:', dbError);
-    return guestUser;
   }
+
+  // ── Guest user path — ensure it really exists in DB ──
+  // We use findFirst + create instead of upsert to avoid
+  // the P2002 unique constraint race condition on 'email'.
+  const existing = await db.user.findFirst({
+    where: { email: 'guest@frameitup.com' },
+  });
+
+  if (existing) return existing;
+
+  return await db.user.create({
+    data: {
+      id: 'usr_guest',
+      clerkId: 'clerk_guest',
+      email: 'guest@frameitup.com',
+      firstName: 'Guest',
+      lastName: 'Customer',
+    },
+  });
 }
+
 
 // ─── Fetch All Available Frames ────────────────────────────────────
 export async function getSeedFrames() {
@@ -71,48 +60,49 @@ export async function getSeedFrames() {
     const frames = await db.frame.findMany({
       where: { available: true },
     });
-    
+    console.log("frame i get from the server", frames)
+
     // In case DB is not seeded yet, return nice defaults
-    if (frames.length === 0) {
-      return [
-        {
-          id: 'frame-bois',
-          name: 'Cadre en Bois',
-          material: FrameMaterial.WOOD,
-          color: '#8B6914',
-          widthMm: 25,
-          heightMm: 25,
-          depthMm: 12,
-          priceUsd: 3500,
-          thumbnailUrl: '/frames/bois.webp',
-          available: true,
-        },
-        {
-          id: 'frame-plexiglas',
-          name: 'Cadre Plexiglas',
-          material: FrameMaterial.METAL,
-          color: '#CBD5E1',
-          widthMm: 20,
-          heightMm: 20,
-          depthMm: 8,
-          priceUsd: 4500,
-          thumbnailUrl: '/frames/plexiglas.webp',
-          available: true,
-        },
-        {
-          id: 'frame-vitre',
-          name: 'Cadre Vitré',
-          material: FrameMaterial.WOOD,
-          color: '#1A1A2E',
-          widthMm: 30,
-          heightMm: 30,
-          depthMm: 15,
-          priceUsd: 5500,
-          thumbnailUrl: '/frames/vitre.webp',
-          available: true,
-        }
-      ];
-    }
+    // if (frames.length === 0) {
+    //   return [
+    //     {
+    //       id: 'frame-bois',
+    //       name: 'Cadre en Bois',
+    //       material: FrameMaterial.WOOD,
+    //       color: '#8B6914',
+    //       widthMm: 25,
+    //       heightMm: 25,
+    //       depthMm: 12,
+    //       priceUsd: 3500,
+    //       thumbnailUrl: '/frames/bois.webp',
+    //       available: true,
+    //     },
+    //     {
+    //       id: 'frame-plexiglas',
+    //       name: 'Cadre Plexiglas',
+    //       material: FrameMaterial.METAL,
+    //       color: '#CBD5E1',
+    //       widthMm: 20,
+    //       heightMm: 20,
+    //       depthMm: 8,
+    //       priceUsd: 4500,
+    //       thumbnailUrl: '/frames/plexiglas.webp',
+    //       available: true,
+    //     },
+    //     {
+    //       id: 'frame-vitre',
+    //       name: 'Cadre Vitré',
+    //       material: FrameMaterial.WOOD,
+    //       color: '#1A1A2E',
+    //       widthMm: 30,
+    //       heightMm: 30,
+    //       depthMm: 15,
+    //       priceUsd: 5500,
+    //       thumbnailUrl: '/frames/vitre.webp',
+    //       available: true,
+    //     }
+    //   ];
+    // }
 
     // Convert decimal numbers to numbers for next compatibility
     return frames.map((f: any) => ({
@@ -128,10 +118,10 @@ export async function getSeedFrames() {
         name: 'Cadre en Bois',
         material: 'WOOD',
         color: '#8B6914',
-        widthMm: 25,
-        heightMm: 25,
+        widthMm: 210,
+        heightMm: 297,
         depthMm: 12,
-        priceUsd: 3500,
+        priceUsd: 5000,
         thumbnailUrl: '/frames/bois.webp',
         available: true,
       },
@@ -140,10 +130,10 @@ export async function getSeedFrames() {
         name: 'Cadre Plexiglas',
         material: 'METAL',
         color: '#CBD5E1',
-        widthMm: 20,
-        heightMm: 20,
+        widthMm: 210,
+        heightMm: 297,
         depthMm: 8,
-        priceUsd: 4500,
+        priceUsd: 7000,
         thumbnailUrl: '/frames/plexiglas.webp',
         available: true,
       },
@@ -152,10 +142,10 @@ export async function getSeedFrames() {
         name: 'Cadre Vitré',
         material: 'WOOD',
         color: '#1A1A2E',
-        widthMm: 30,
-        heightMm: 30,
+        widthMm: 210,
+        heightMm: 297,
         depthMm: 15,
-        priceUsd: 5500,
+        priceUsd: 5000,
         thumbnailUrl: '/frames/vitre.webp',
         available: true,
       }
@@ -175,7 +165,7 @@ export interface CreateOrderParams {
     firstName: string;
     lastName: string;
     email: string;
-    whatsapp:string;
+    whatsapp: string;
   };
   items: Array<{
     frameId: string;
@@ -195,14 +185,14 @@ export interface CreateOrderParams {
 export async function createOrder(params: CreateOrderParams) {
   try {
     const user = await getOrCreateDbUser();
-    
+
     // Generate simple readable tracking number: FRM-XXXXXX
     const randomSuffix = Math.floor(100000 + Math.random() * 900000);
     const trackingNumber = `FRM-${randomSuffix}`;
 
     // COD is PENDING, Mobile Money is PAYMENT_CONFIRMED (since CinetPay is approved)
-    const orderStatus = params.paymentMethod === 'CASH_ON_DELIVERY' 
-      ? OrderStatus.PENDING 
+    const orderStatus = params.paymentMethod === 'CASH_ON_DELIVERY'
+      ? OrderStatus.PENDING
       : OrderStatus.PAYMENT_CONFIRMED;
 
     // Use transaction ID or COD stamp for stripePaymentIntentId (existing unique DB field)
@@ -218,6 +208,7 @@ export async function createOrder(params: CreateOrderParams) {
         shippingState: params.shipping.state,
         shippingPostalCode: params.shipping.postalCode,
         shippingCountry: params.shipping.country,
+        whatsapp: params.shipping.whatsapp,
         totalUsd: params.totalUsd,
         stripePaymentIntentId: payToken,
         trackingNumber: trackingNumber,
@@ -327,10 +318,10 @@ export async function getUserOrders() {
 async function sendInvoiceEmail(order: any, clientEmail: string) {
   const { orderId, trackingNumber, totalUsd, shipping, items, paymentMethod, createdAt } = order;
   const isCod = paymentMethod === 'CASH_ON_DELIVERY';
-  const paymentMethodLabel = isCod 
-    ? 'Paiement à la livraison (Cash on Delivery)' 
-    : paymentMethod === 'MTN_MOMO' 
-      ? 'MTN Mobile Money' 
+  const paymentMethodLabel = isCod
+    ? 'Paiement à la livraison (Cash on Delivery)'
+    : paymentMethod === 'MTN_MOMO'
+      ? 'MTN Mobile Money'
       : 'Orange Money';
 
   const itemsHtml = items.map((item: any) => `
@@ -404,9 +395,9 @@ async function sendInvoiceEmail(order: any, clientEmail: string) {
       <div style="border-top: 2px solid #EDE8E3; padding-top: 15px; text-align: right; margin-bottom: 30px;">
         <span style="font-size: 12px; text-transform: uppercase; color: #78716C;">Montant total :</span>
         <h3 style="font-size: 24px; font-weight: 900; margin: 5px 0 0 0; color: #d98d2e;">$${totalUsd.toFixed(2)}</h3>
-        ${isCod 
-          ? '<span style="font-size: 11px; color: #e4a44a; font-weight: bold;">À payer en espèces au livreur lors de la livraison</span>' 
-          : '<span style="font-size: 11px; color: #10B981; font-weight: bold;">Réglé en ligne avec succès via CinetPay</span>'}
+        ${isCod
+      ? '<span style="font-size: 11px; color: #e4a44a; font-weight: bold;">À payer en espèces au livreur lors de la livraison</span>'
+      : '<span style="font-size: 11px; color: #10B981; font-weight: bold;">Réglé en ligne avec succès via CinetPay</span>'}
       </div>
 
       <div style="text-align: center; font-size: 11px; color: #A8A29E; border-top: 1px solid #EDE8E3; padding-top: 20px;">

@@ -126,27 +126,29 @@ export function Navbar() {
                 <div className="w-3 h-3 border-2 border-[var(--brand-500)] rounded-sm" />
               </div> */}
                 {/* add frame it up logo here */}
-                <Image src="/frameitup_logo.svg" alt="Frame It Up" width={150} height={150} />
+                <Image src={resolvedTheme === "dark" ? "/frameitup_logo_white.svg" : "/frameitup_logo_black.svg"} alt="Frame It Up" width={150} height={150} />
 
               </div>
               {/* <span className="font-display text-xl font-bold tracking-tight text-[var(--text-primary)]">
               Frame<span className="text-[var(--brand-500)]">ItUp</span>
             </span> */}
             </Link>
-            {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-8 pl-[32px]">
-              {navLinks.map((link) => (
-                <NavLink
-                  key={link.href}
-                  href={link.href}
-                  label={link.label}
-                  external={link.external}
-                  active={pathname === link.href}
-                />
-              ))}
-            </div>
+
           </div>
 
+
+          {/* Desktop nav */}
+          <div className="hidden lg:flex items-center gap-8 pl-[32px]">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.href}
+                href={link.href}
+                label={link.label}
+                external={link.external}
+                active={pathname === link.href}
+              />
+            ))}
+          </div>
 
 
 

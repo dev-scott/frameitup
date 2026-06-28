@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${inter.variable} ${playfair.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <body className="antialiased">
-        <ThemeProvider>
+        <ThemeProvider >
           <ClerkProvider>
             <Navbar />
             {children}

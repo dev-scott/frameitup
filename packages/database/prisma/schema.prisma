@@ -102,6 +102,7 @@ model Order {
   shippingState         String
   shippingPostalCode    String
   shippingCountry       String
+  whatsapp              String?
   totalUsd              Decimal     @db.Decimal(10, 2)
   stripePaymentIntentId String?     @unique
   trackingNumber        String?

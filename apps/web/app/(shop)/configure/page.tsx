@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getSeedFrames } from '@/app/actions';
 import { useFrameStore, FrameOption, GlasingType } from '@/store/use-frame-store';
+import { getAvailableSizes, getFramePrice, getSizeLabel } from '@/lib/frame-pricing';
 import FramePreview3D from '@/components/configure/frame-preview-3d';
 import { Button } from '@frameitup/ui';
 import { useLanguageStore } from '@/store/use-language-store';
@@ -322,16 +323,27 @@ export default function ConfigurePage() {
                       matColor={matColor}
                       matWidthMm={matWidthMm}
                       glasingType={glasingType}
+                      frameId={selectedFrame.id}
                     />
                   ) : (
                     /* 2D Realistic Styled CSS frame with Guidelines */
-                    <div className="relative flex flex-col items-center justify-center w-full h-full p-12">
+                    <div className="relative flex flex-col items-center justify-center w-full h-full p-12 select-none">
                       <div
                         className="relative transition-all duration-300 flex items-center justify-center"
                         style={{
-                          // Dynamic border size and colors representing frame profile
-                          border: `${selectedFrame.widthMm / 3.5}px solid ${selectedFrame.color}`,
-                          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0,0,0,0.5)',
+                          // Dynamic border size and colors representing wood, metal, or glass
+                          borderWidth: `${selectedFrame.widthMm / 3.5}px`,
+                          borderStyle: 'solid',
+                          borderColor: selectedFrame.color,
+                          // Wood effect
+                          borderImage: selectedFrame.id === 'frame-bois' 
+                            ? 'linear-gradient(to right, #4a3319, #8B6914, #4a3319, #5c4033, #8B6914) 1'
+                            : selectedFrame.id === 'frame-plexiglas'
+                            ? 'linear-gradient(135deg, #111, #333, #111, #444, #111) 1'
+                            : 'linear-gradient(to right, rgba(240,253,250,0.8), rgba(224,242,254,0.4), rgba(240,253,250,0.8)) 1',
+                          boxShadow: selectedFrame.id === 'frame-vitre'
+                            ? '0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 0 15px rgba(255,255,255,0.7), 0 0 0 1px rgba(0,0,0,0.05)'
+                            : '0 30px 60px -15px rgba(0, 0, 0, 0.45), inset 0 0 12px rgba(0,0,0,0.55)',
                           // Dynamic mat padding
                           padding: hasMat ? `${matWidthMm / 3.5}px` : '0px',
                           backgroundColor: hasMat ? matColor : 'transparent',
@@ -340,13 +352,38 @@ export default function ConfigurePage() {
                         {/* Artwork display */}
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={imageSrc}
+                          src={imageSrc ?? undefined}
                           alt="Custom layout preview"
-                          className="max-h-[300px] object-contain transition-all"
+                          className="max-h-[300px] object-contain transition-all relative z-0"
                           style={{
                             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
                           }}
                         />
+
+                        {/* Reflections sheet for Glass and Plexiglass */}
+                        {(selectedFrame.id === 'frame-vitre' || selectedFrame.id === 'frame-plexiglas') && (
+                          <div 
+                            className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-tr from-white/0 via-white/5 to-white/30"
+                            style={{
+                              mixBlendMode: 'overlay',
+                            }}
+                          />
+                        )}
+
+                        {/* Beveled edge border glow overlay for Vitre (Glass) */}
+                        {selectedFrame.id === 'frame-vitre' && (
+                          <div className="absolute inset-0 pointer-events-none border border-white/40 z-20" />
+                        )}
+
+                        {/* 4 corner metallic clips for Clip-Frame Vitre */}
+                        {selectedFrame.id === 'frame-vitre' && (
+                          <>
+                            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-4 h-3 bg-stone-300 border border-stone-400 rounded-sm shadow-md z-30" />
+                            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-3 bg-stone-300 border border-stone-400 rounded-sm shadow-md z-30" />
+                            <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-4 bg-stone-300 border border-stone-400 rounded-sm shadow-md z-30" />
+                            <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-4 bg-stone-300 border border-stone-400 rounded-sm shadow-md z-30" />
+                          </>
+                        )}
                       </div>
 
                       {/* Dimension labels overlay */}
@@ -360,29 +397,7 @@ export default function ConfigurePage() {
                   )}
                 </div>
 
-                {/* Dominant Palette Colors (Suggested Mats) */}
-                {imagePalette.length > 0 && (
-                  <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                      <h4 className="text-xs font-bold text-[var(--text-primary)]">{t.configurePage.suggestionsTitle}</h4>
-                      <p className="text-[10px] text-[var(--text-muted)]">{t.configurePage.suggestionsDesc}</p>
-                    </div>
-                    <div className="flex gap-2.5">
-                      {imagePalette.map((color, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => setMat(true, color, language === 'fr' ? `Palette extraite ${idx+1}` : `Extracted Palette ${idx+1}`)}
-                          className="w-8 h-8 rounded-full border border-stone-300 shadow-sm relative group"
-                          style={{ backgroundColor: color }}
-                        >
-                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block bg-stone-900 text-[8px] text-white px-1.5 py-0.5 rounded font-mono">
-                            {color}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+
               </div>
 
               {/* RIGHT COLUMN: EDITOR SIDE PANEL */}
@@ -435,19 +450,34 @@ export default function ConfigurePage() {
                             {t.configurePage.presetDimensions}
                           </label>
                           <div className="grid grid-cols-2 gap-3">
-                            {PRESET_SIZES.map((size) => (
-                              <button
-                                key={size.label}
-                                onClick={() => setDimensions(size.w, size.h)}
-                                className={`p-3 rounded-xl border text-xs font-semibold text-center transition-all ${
-                                  artworkWidthMm === size.w && artworkHeightMm === size.h
-                                    ? 'border-[var(--brand-500)] bg-[var(--brand-50)] text-[var(--brand-600)]'
-                                    : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
-                                }`}
-                              >
-                                {size.label}
-                              </button>
-                            ))}
+                            {PRESET_SIZES.map((size) => {
+                              const sLbl = size.label.split(' ')[0]; // 'A2', 'A3', etc.
+                              const avail = getAvailableSizes(selectedFrame.id);
+                              const isAvail = avail.includes(sLbl!);
+                              const isSelected = artworkWidthMm === size.w && artworkHeightMm === size.h;
+                              const sizePrice = getFramePrice(selectedFrame.id, sLbl!);
+                              return (
+                                <button
+                                  key={size.label}
+                                  onClick={() => isAvail && setDimensions(size.w, size.h)}
+                                  disabled={!isAvail}
+                                  className={`p-3 rounded-xl border text-xs font-semibold text-center transition-all flex flex-col items-center gap-0.5 ${
+                                    !isAvail
+                                      ? 'border-[var(--border)] opacity-35 cursor-not-allowed'
+                                      : isSelected
+                                        ? 'border-[var(--brand-500)] bg-[var(--brand-50)] text-[var(--brand-600)]'
+                                        : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
+                                  }`}
+                                >
+                                  <span>{size.label}</span>
+                                  {isAvail && sizePrice !== null ? (
+                                    <span className="text-[9px] font-bold text-[var(--brand-500)]">{sizePrice.toLocaleString('fr-FR')} F</span>
+                                  ) : (
+                                    <span className="text-[9px] text-[var(--text-muted)]">{language === 'fr' ? 'N/D' : 'N/A'}</span>
+                                  )}
+                                </button>
+                              );
+                            })}
                           </div>
                         </div>
 
@@ -494,35 +524,42 @@ export default function ConfigurePage() {
                           {t.configurePage.selectProfile}
                         </label>
                         <div className="grid grid-cols-1 gap-3">
-                          {frames.map((frame) => (
-                            <button
-                              key={frame.id}
-                              onClick={() => setSelectedFrame(frame)}
-                              className={`p-4 rounded-2xl border flex items-center justify-between text-left transition-all ${
-                                selectedFrame.id === frame.id
-                                  ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
-                                  : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
-                              }`}
-                            >
-                              <div className="flex items-center gap-3">
-                                <span
-                                  className="w-6 h-6 rounded-full border border-stone-300 shadow-inner"
-                                  style={{ backgroundColor: frame.color }}
-                                />
-                                <div>
-                                  <span className="block font-bold text-sm text-[var(--text-primary)]">
-                                    {frame.name}
-                                  </span>
-                                  <span className="text-[10px] text-[var(--text-muted)] uppercase">
-                                    {language === 'fr' ? `${t.framesPage.profile} ${translateMaterial(frame.material, language)}` : `${frame.material} ${t.framesPage.profile}`} • {frame.widthMm}mm {language === 'fr' ? 'largeur de profil' : 'profile width'}
-                                  </span>
+                          {frames.map((frame) => {
+                            const avail = getAvailableSizes(frame.id);
+                            const currentSizeLabel = getSizeLabel(artworkWidthMm, artworkHeightMm);
+                            const priceForCurrent = currentSizeLabel ? getFramePrice(frame.id, currentSizeLabel) : null;
+                            return (
+                              <button
+                                key={frame.id}
+                                onClick={() => setSelectedFrame(frame)}
+                                className={`p-4 rounded-2xl border flex items-center justify-between text-left transition-all ${
+                                  selectedFrame.id === frame.id
+                                    ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
+                                    : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
+                                }`}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <span
+                                    className="w-6 h-6 rounded-full border border-stone-300 shadow-inner"
+                                    style={{ backgroundColor: frame.color }}
+                                  />
+                                  <div>
+                                    <span className="block font-bold text-sm text-[var(--text-primary)]">
+                                      {frame.name}
+                                    </span>
+                                    <span className="text-[10px] text-[var(--text-muted)] uppercase">
+                                      {language === 'fr' ? 'Tailles : ' : 'Sizes: '}{avail.join(', ')}
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                              <span className="text-xs font-bold text-[var(--brand-600)]">
-                                {frame.priceUsd.toLocaleString('fr-FR')} FCFA/m
-                              </span>
-                            </button>
-                          ))}
+                                <span className="text-xs font-bold text-[var(--brand-600)]">
+                                  {priceForCurrent !== null
+                                    ? `${priceForCurrent.toLocaleString('fr-FR')} FCFA`
+                                    : (language === 'fr' ? 'Voir tailles' : 'See sizes')}
+                                </span>
+                              </button>
+                            );
+                          })}
                         </div>
                       </motion.div>
                     )}
@@ -630,22 +667,22 @@ export default function ConfigurePage() {
                   {/* Breakdown details */}
                   <div className="space-y-2 text-xs text-[var(--text-secondary)]">
                     <div className="flex justify-between">
-                      <span>{selectedFrame.name} {language === 'fr' ? t.framesPage.profile : `${t.framesPage.profile} Profile`}</span>
-                      <span>{prices.baseFrame.toLocaleString('fr-FR')} FCFA</span>
+                      <span>{selectedFrame.name} — {prices.sizeLabel ?? (language === 'fr' ? 'Taille non standard' : 'Non-standard size')}</span>
+                      <span>{prices.isAvailable ? `${prices.baseFrame.toLocaleString('fr-FR')} FCFA` : '—'}</span>
                     </div>
-                    {hasMat && (
-                      <div className="flex justify-between">
-                        <span>{language === 'fr' ? `Passe-partout (${matColorName})` : `Passe-partout Mat (${matColorName})`}</span>
-                        <span>{prices.matPrice.toLocaleString('fr-FR')} FCFA</span>
-                      </div>
-                    )}
-                    {glasingType !== 'STANDARD' && (
-                      <div className="flex justify-between">
-                        <span>{language === 'fr' ? `Traitement de verre (${glasingType === 'STANDARD' ? 'Standard' : glasingType === 'UV_PROTECTIVE' ? 'Protection UV' : glasingType === 'ANTI_REFLECTIVE' ? 'Anti-reflet' : 'Qualité Muséale'})` : `Glazing Treatment (${glasingType.replace('_', ' ')})`}</span>
-                        <span>{prices.glassPrice.toLocaleString('fr-FR')} FCFA</span>
-                      </div>
-                    )}
                   </div>
+
+                  {/* Unavailability warning */}
+                  {!prices.isAvailable && (
+                    <div className="flex items-start gap-2 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800 rounded-xl p-3 text-[11px] text-rose-700 dark:text-rose-300">
+                      <span className="flex-shrink-0">⚠️</span>
+                      <p>
+                        {language === 'fr'
+                          ? `Le ${selectedFrame.name} n'est pas disponible en ${prices.sizeLabel ?? 'cette taille'}. Choisissez une autre taille ou un autre type de cadre.`
+                          : `${selectedFrame.name} is not available in ${prices.sizeLabel ?? 'this size'}. Please choose a different size or frame.`}
+                      </p>
+                    </div>
+                  )}
 
                   {/* Quantity & Total */}
                   <div className="flex items-center justify-between border-t border-[var(--border)] pt-4">
@@ -670,19 +707,26 @@ export default function ConfigurePage() {
                     
                     <div className="text-right">
                       <span className="text-[10px] text-[var(--text-subtle)] block uppercase font-bold">{t.configurePage.totalPrice}</span>
-                      <span className="text-2xl font-black text-[var(--text-primary)] font-display">
-                        {prices.total.toLocaleString('fr-FR')} FCFA
+                      <span className={`text-2xl font-black font-display ${
+                        prices.isAvailable ? 'text-[var(--text-primary)]' : 'text-rose-500'
+                      }`}>
+                        {prices.isAvailable ? `${prices.total.toLocaleString('fr-FR')} FCFA` : '—'}
                       </span>
                     </div>
                   </div>
 
                   {/* Checkout Action */}
                   <Button
-                    onClick={() => router.push('/checkout')}
-                    className="w-full bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white font-bold rounded-xl py-3 shadow-brand hover:shadow-brand-lg hover:-translate-y-0.5 transition-all text-center flex items-center justify-center gap-2"
+                    onClick={() => prices.isAvailable && router.push('/checkout')}
+                    disabled={!prices.isAvailable}
+                    className={`w-full font-bold rounded-xl py-3 text-center flex items-center justify-center gap-2 transition-all ${
+                      prices.isAvailable
+                        ? 'bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white shadow-brand hover:shadow-brand-lg hover:-translate-y-0.5'
+                        : 'bg-[var(--bg-secondary)] text-[var(--text-muted)] cursor-not-allowed opacity-60'
+                    }`}
                   >
-                    {t.configurePage.checkoutBtn}
-                    <span className="text-sm">→</span>
+                    {prices.isAvailable ? t.configurePage.checkoutBtn : (language === 'fr' ? 'Combinaison indisponible' : 'Combination unavailable')}
+                    {prices.isAvailable && <span className="text-sm">→</span>}
                   </Button>
                 </div>
               </div>

@@ -34,6 +34,7 @@ export default function BrowseFramesPage() {
   useEffect(() => {
     async function load() {
       const data = await getSeedFrames();
+      console.log("here is my frame data", data)
       setFrames(data as FrameOption[]);
       setLoading(false);
     }

@@ -49,7 +49,7 @@ export default function CheckoutPage() {
   });
 
   // Payment Selection
-  const [paymentMethod, setPaymentMethod] = useState<'CASH_ON_DELIVERY' | 'MOBILE_MONEY'>('MOBILE_MONEY');
+  const [paymentMethod, setPaymentMethod] = useState<'CASH_ON_DELIVERY' | 'MOBILE_MONEY'>('CASH_ON_DELIVERY');
   const [carrier, setCarrier] = useState<'MTN' | 'ORANGE'>('MTN');
   const [momoNumber, setMomoNumber] = useState<string>('');
 
@@ -72,13 +72,6 @@ export default function CheckoutPage() {
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) errs.email = t.checkoutPage.errors.invalidEmail;
     if (!formData.line1) errs.line1 = t.checkoutPage.errors.required;
     if (!formData.city) errs.city = t.checkoutPage.errors.required;
-
-    if (paymentMethod === 'MOBILE_MONEY') {
-      const pureNum = momoNumber.replace(/\D/g, '');
-      if (pureNum.length < 9) {
-        errs.momoNumber = t.checkoutPage.errors.invalidMomo;
-      }
-    }
 
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -306,104 +299,40 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Payment Methods */}
-          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-3xl p-6 shadow-md space-y-6">
-            <h2 className="text-xl font-bold font-display text-[var(--text-primary)] border-b border-[var(--border)] pb-3">
-              {t.checkoutPage.paymentMethod}
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Mobile Money aggregate portal */}
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('MOBILE_MONEY')}
-                className={`p-5 rounded-2xl border text-left flex flex-col justify-between h-36 transition-all ${paymentMethod === 'MOBILE_MONEY'
-                  ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
-                  : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
-                  }`}
-              >
-                <div className="flex justify-between items-center w-full">
-                  <span className="font-bold text-sm text-[var(--text-primary)]">{t.checkoutPage.momo}</span>
-                  <input
-                    type="radio"
-                    checked={paymentMethod === 'MOBILE_MONEY'}
-                    onChange={() => setPaymentMethod('MOBILE_MONEY')}
-                    className="accent-[var(--brand-500)]"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <span className="px-2 py-1 text-[9px] font-bold bg-[#FFCC00] text-black rounded">MTN MoMo</span>
-                  <span className="px-2 py-1 text-[9px] font-bold bg-[#FF6600] text-white rounded">Orange Money</span>
-                </div>
-              </button>
-
-              {/* Cash on delivery */}
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('CASH_ON_DELIVERY')}
-                className={`p-5 rounded-2xl border text-left flex flex-col justify-between h-36 transition-all ${paymentMethod === 'CASH_ON_DELIVERY'
-                  ? 'border-[var(--brand-500)] bg-[var(--brand-50)]/50'
-                  : 'border-[var(--border)] hover:bg-[var(--bg-secondary)]'
-                  }`}
-              >
-                <div className="flex justify-between items-center w-full">
-                  <span className="font-bold text-sm text-[var(--text-primary)]">{t.checkoutPage.cod}</span>
-                  <input
-                    type="radio"
-                    checked={paymentMethod === 'CASH_ON_DELIVERY'}
-                    onChange={() => setPaymentMethod('CASH_ON_DELIVERY')}
-                    className="accent-[var(--brand-500)]"
-                  />
-                </div>
-                <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
-                  {language === 'fr'
-                    ? 'Réglez vos achats en espèces lors de la réception à Douala / Yaoundé.'
-                    : 'Pay physically with raw cash directly to our delivery courier upon arrival in Douala / Yaoundé.'}
-                </p>
-              </button>
+          {/* Paiement à la livraison — seule option active */}
+          <div className="flex flex-col gap-4">
+            <div className="p-5 rounded-2xl border border-[var(--brand-500)] bg-[var(--brand-50)]/50 text-left flex flex-col justify-between gap-3">
+              <div className="flex justify-between items-center w-full">
+                <span className="font-bold text-sm text-[var(--text-primary)]">{t.checkoutPage.cod}</span>
+                <input
+                  type="radio"
+                  checked
+                  readOnly
+                  className="accent-[var(--brand-500)]"
+                />
+              </div>
+              <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
+                {language === 'fr'
+                  ? 'Réglez en espèces directement à notre coursier lors de la réception à Douala / Yaoundé.'
+                  : 'Pay with cash directly to our delivery courier upon arrival in Douala / Yaoundé.'}
+              </p>
             </div>
 
-            {/* Mobile wallet phone input details */}
-            <AnimatePresence>
-              {paymentMethod === 'MOBILE_MONEY' && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="space-y-4 pt-4 border-t border-[var(--border)] overflow-hidden"
-                >
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <span className="block text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">Carrier Network</span>
-                      <select
-                        value={carrier}
-                        onChange={(e) => setCarrier(e.target.value as any)}
-                        className="w-full px-3 py-2 border border-[var(--border)] rounded-xl bg-transparent text-sm font-semibold"
-                      >
-                        <option value="MTN">MTN Cameroon Wallet</option>
-                        <option value="ORANGE">Orange Money Cameroun</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <span className="block text-[10px] uppercase font-bold text-[var(--text-muted)] mb-1">{t.checkoutPage.momoNum}</span>
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-stone-500">+237</span>
-                        <input
-                          type="tel"
-                          required
-                          placeholder={t.checkoutPage.phonePlaceholder}
-                          value={momoNumber}
-                          onChange={(e) => setMomoNumber(e.target.value)}
-                          className={`w-full pl-14 pr-3 py-2 border rounded-xl bg-transparent text-sm font-semibold font-mono ${errors.momoNumber ? 'border-rose-500' : 'border-[var(--border)]'}`}
-                        />
-                      </div>
-                      {errors.momoNumber && <span className="text-[9px] text-rose-500 font-semibold">{errors.momoNumber}</span>}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Mobile Money — désactivé temporairement */}
+            <div className="p-5 rounded-2xl border border-[var(--border)] text-left flex flex-col justify-between gap-3 opacity-45 cursor-not-allowed">
+              <div className="flex justify-between items-center w-full">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-sm text-[var(--text-primary)]">{t.checkoutPage.momo}</span>
+                  <span className="text-[8px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[var(--bg-secondary)] text-[var(--text-muted)] border border-[var(--border)]">
+                    {language === 'fr' ? 'Bientôt' : 'Soon'}
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <span className="px-2 py-1 text-[9px] font-bold bg-[#FFCC00] text-black rounded">MTN MoMo</span>
+                <span className="px-2 py-1 text-[9px] font-bold bg-[#FF6600] text-white rounded">Orange Money</span>
+              </div>
+            </div>
           </div>
         </form>
 
@@ -660,7 +589,7 @@ export default function CheckoutPage() {
             className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center flex-col text-white"
           >
             <div className="w-16 h-16 border-4 border-amber-500/20 border-t-amber-500 rounded-full animate-spin mb-6" />
-            <p className="font-medium text-stone-300">{language === 'fr' ? 'Enregistrement de la commande de cadre personnalisé dans PostgreSQL...' : 'Registering custom frame order into PostgreSQL...'}</p>
+            <p className="font-medium text-stone-300">{language === 'fr' ? 'Enregistrement de la commande de cadre personnalisé...' : 'Registering custom frame order...'}</p>
             <span className="text-[10px] uppercase text-stone-500 font-mono tracking-widest mt-2">SSL Secure 256-Bit TLS</span>
           </motion.div>
         )}
