@@ -10,6 +10,15 @@ import FramePreview3D from '@/components/configure/frame-preview-3d';
 import { Button } from '@frameitup/ui';
 import { useLanguageStore } from '@/store/use-language-store';
 
+import FrameRenderer from '@/components/configure/FrameRenderer';
+
+// mapping de vos ids existants vers le prop material
+const materialMap: Record<string, 'bois' | 'plexiglas' | 'vitre'> = {
+  'frame-bois': 'bois',
+  'frame-plexiglas': 'plexiglas',
+  'frame-vitre': 'vitre',
+};
+
 const translateMaterial = (mat: string, lang: string) => {
   if (lang === 'fr') {
     switch (mat.toLowerCase()) {
@@ -394,6 +403,14 @@ export default function ConfigurePage() {
                         </span>
                       </div>
                     </div>
+//                     <FrameRenderer
+//   imageSrc={imageSrc!}
+//   material={materialMap[selectedFrame.id]}
+//   artWidth={280}
+//   artHeight={artworkHeightMm / artworkWidthMm * 280}
+//   frameWidth={selectedFrame.widthMm / 3.5}
+//   lean
+// />
                   )}
                 </div>
 

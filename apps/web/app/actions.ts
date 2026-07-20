@@ -35,7 +35,7 @@ async function getOrCreateDbUser() {
 
   // ── Guest user path — ensure it really exists in DB ──
   // We use findFirst + create instead of upsert to avoid
-  // the P2002 unique constraint race condition on 'email'.
+
   const existing = await db.user.findFirst({
     where: { email: 'guest@frameitup.com' },
   });
