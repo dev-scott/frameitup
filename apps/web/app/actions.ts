@@ -13,7 +13,6 @@ async function getOrCreateDbUser() {
     console.warn('[actions] currentUser() unavailable, will use guest user in DB.');
   }
 
-  // ── Authenticated user path ──
   if (clerkUser) {
     const email = clerkUser.emailAddresses[0]?.emailAddress ?? '';
     return await db.user.upsert({
@@ -33,8 +32,7 @@ async function getOrCreateDbUser() {
     });
   }
 
-  // ── Guest user path — ensure it really exists in DB ──
-  // We use findFirst + create instead of upsert to avoid
+
 
   const existing = await db.user.findFirst({
     where: { email: 'guest@frameitup.com' },
