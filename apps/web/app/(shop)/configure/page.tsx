@@ -293,15 +293,15 @@ export default function ConfigurePage() {
                   >
                     {t.configurePage.preview2d}
                   </button>
+                  {/* 3D mode — disabled until fully ready */}
                   <button
-                    onClick={() => setPreviewMode('3D')}
-                    className={`px-5 py-2 text-xs font-semibold rounded-lg transition-all ${
-                      previewMode === '3D'
-                        ? 'bg-[var(--bg-card)] text-[var(--text-primary)] shadow-sm'
-                        : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-                    }`}
+                    disabled
+                    className="px-5 py-2 text-xs font-semibold rounded-lg transition-all text-[var(--text-muted)] opacity-40 cursor-not-allowed flex items-center gap-1.5"
                   >
                     {t.configurePage.preview3d}
+                    <span className="text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[var(--brand-100)] text-[var(--brand-500)]">
+                      {language === 'fr' ? 'Bientôt' : 'Soon'}
+                    </span>
                   </button>
                 </div>
 
@@ -335,64 +335,36 @@ export default function ConfigurePage() {
                       frameId={selectedFrame.id}
                     />
                   ) : (
-                    /* 2D Realistic Styled CSS frame with Guidelines */
-                    <div className="relative flex flex-col items-center justify-center w-full h-full p-12 select-none">
-                      <div
-                        className="relative transition-all duration-300 flex items-center justify-center"
-                        style={{
-                          // Dynamic border size and colors representing wood, metal, or glass
-                          borderWidth: `${selectedFrame.widthMm / 3.5}px`,
-                          borderStyle: 'solid',
-                          borderColor: selectedFrame.color,
-                          // Wood effect
-                          borderImage: selectedFrame.id === 'frame-bois' 
-                            ? 'linear-gradient(to right, #4a3319, #8B6914, #4a3319, #5c4033, #8B6914) 1'
-                            : selectedFrame.id === 'frame-plexiglas'
-                            ? 'linear-gradient(135deg, #111, #333, #111, #444, #111) 1'
-                            : 'linear-gradient(to right, rgba(240,253,250,0.8), rgba(224,242,254,0.4), rgba(240,253,250,0.8)) 1',
-                          boxShadow: selectedFrame.id === 'frame-vitre'
-                            ? '0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 0 15px rgba(255,255,255,0.7), 0 0 0 1px rgba(0,0,0,0.05)'
-                            : '0 30px 60px -15px rgba(0, 0, 0, 0.45), inset 0 0 12px rgba(0,0,0,0.55)',
-                          // Dynamic mat padding
-                          padding: hasMat ? `${matWidthMm / 3.5}px` : '0px',
-                          backgroundColor: hasMat ? matColor : 'transparent',
-                        }}
-                      >
-                        {/* Artwork display */}
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={imageSrc ?? undefined}
-                          alt="Custom layout preview"
-                          className="max-h-[300px] object-contain transition-all relative z-0"
-                          style={{
-                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-                          }}
-                        />
-
-                        {/* Reflections sheet for Glass and Plexiglass */}
-                        {(selectedFrame.id === 'frame-vitre' || selectedFrame.id === 'frame-plexiglas') && (
-                          <div 
-                            className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-tr from-white/0 via-white/5 to-white/30"
-                            style={{
-                              mixBlendMode: 'overlay',
-                            }}
-                          />
-                        )}
-
-                        {/* Beveled edge border glow overlay for Vitre (Glass) */}
-                        {selectedFrame.id === 'frame-vitre' && (
-                          <div className="absolute inset-0 pointer-events-none border border-white/40 z-20" />
-                        )}
-
-                        {/* 4 corner metallic clips for Clip-Frame Vitre */}
-                        {selectedFrame.id === 'frame-vitre' && (
-                          <>
-                            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-4 h-3 bg-stone-300 border border-stone-400 rounded-sm shadow-md z-30" />
-                            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-3 bg-stone-300 border border-stone-400 rounded-sm shadow-md z-30" />
-                            <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-4 bg-stone-300 border border-stone-400 rounded-sm shadow-md z-30" />
-                            <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-4 bg-stone-300 border border-stone-400 rounded-sm shadow-md z-30" />
-                          </>
-                        )}
+                    /* 2D Realistic Frame Preview using SVG FrameRenderer */
+                    <div className="relative flex flex-col items-center justify-center w-full h-full select-none">
+                      <div className="flex items-center justify-center w-full h-full">
+                        {(() => {
+                          const mat = materialMap[selectedFrame.id] ?? 'bois';
+                          // Compute frame dimensions that fit in ~380px max
+                          const ratio = artworkHeightMm / artworkWidthMm;
+                          const maxArtW = 260;
+                          const maxArtH = 320;
+                          let artW = maxArtW;
+                          let artH = artW * ratio;
+                          if (artH > maxArtH) {
+                            artH = maxArtH;
+                            artW = artH / ratio;
+                          }
+                          const isThinProfile = mat === 'vitre' || mat === 'plexiglas';
+                          const frameW = isThinProfile
+                            ? Math.max(11, selectedFrame.widthMm / 4.2)
+                            : Math.max(18, selectedFrame.widthMm / 2.8);
+                          return (
+                            <FrameRenderer
+                              key={`${selectedFrame.id}-${artworkWidthMm}-${artworkHeightMm}`}
+                              imageSrc={imageSrc!}
+                              material={mat}
+                              artWidth={Math.round(artW)}
+                              artHeight={Math.round(artH)}
+                              frameWidth={Math.round(frameW)}
+                            />
+                          );
+                        })()}
                       </div>
 
                       {/* Dimension labels overlay */}
@@ -403,14 +375,6 @@ export default function ConfigurePage() {
                         </span>
                       </div>
                     </div>
-//                     <FrameRenderer
-//   imageSrc={imageSrc!}
-//   material={materialMap[selectedFrame.id]}
-//   artWidth={280}
-//   artHeight={artworkHeightMm / artworkWidthMm * 280}
-//   frameWidth={selectedFrame.widthMm / 3.5}
-//   lean
-// />
                   )}
                 </div>
 
