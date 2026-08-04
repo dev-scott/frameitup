@@ -50,19 +50,19 @@ export function Footer() {
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-40 bg-[var(--brand-500)] opacity-5 blur-3xl rounded-full pointer-events-none" />
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
         {/* Main grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-4">
           {/* Brand col */}
           <div className="lg:col-span-2">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 mb-6 group w-fit">
+            {/* <Link href="/" className="flex items-center gap-2.5 mb-6 group w-fit">
               <div className="relative ">
 
                 <Image src={resolvedTheme === "dark" ? "/frameitup_logo_black.svg" : "/frameitup_logo_black.svg"} alt="Frame It Up" width={90} height={90} />
               </div>
-            </Link>
-            <p className="text-sm text-[rgba(250,250,249,0.5)] leading-relaxed mb-6 max-w-xs">
+            </Link> */}
+            {/* <p className="text-sm text-[rgba(250,250,249,0.5)] leading-relaxed mb-6 max-w-xs">
               {t.footer.tagline}
-            </p>
+            </p> */}
             {/* Social icons */}
             <div className="flex gap-3">
               {[
@@ -110,7 +110,7 @@ export function Footer() {
             </div>
           </div>
           {/* Links columns */}
-          {(Object.entries(links) as [string, { label: string; href: string; external?: boolean }[]][]).map(([title, items]) => (
+          {/* {(Object.entries(links) as [string, { label: string; href: string; external?: boolean }[]][]).map(([title, items]) => (
             <div key={title}>
               <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-[rgba(250,250,249,0.4)] mb-5">
                 {title}
@@ -132,10 +132,10 @@ export function Footer() {
                 ))}
               </ul>
             </div>
-          ))}
+          ))} */}
         </div>
         {/* Newsletter */}
-        <div className="border border-[rgba(168,162,158,0.12)] rounded-2xl p-6 mb-10 bg-[rgba(255,255,255,0.03)]">
+        {/* <div className="border border-[rgba(168,162,158,0.12)] rounded-2xl p-6 mb-10 bg-[rgba(255,255,255,0.03)]">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 justify-between">
             <div>
               <h4 className="font-semibold text-white mb-1">{t.footer.newsletter.title}</h4>
@@ -156,7 +156,7 @@ export function Footer() {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-[rgba(168,162,158,0.1)]">
           <p className="text-xs text-[rgba(250,250,249,0.3)]">

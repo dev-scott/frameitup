@@ -174,8 +174,8 @@ export function TestimonialsSection() {
                 key={i}
                 onClick={() => setActive(i)}
                 className={`rounded-full transition-all duration-300 ${i === active
-                    ? 'w-8 h-2 bg-[var(--brand-500)]'
-                    : 'w-2 h-2 bg-[var(--border-strong)] hover:bg-[var(--brand-300)]'
+                  ? 'w-8 h-2 bg-[var(--brand-500)]'
+                  : 'w-2 h-2 bg-[var(--border-strong)] hover:bg-[var(--brand-300)]'
                   }`}
               />
             ))}
