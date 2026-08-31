@@ -55,6 +55,63 @@ enum RevenueSource {
   CORPORATE
 }
 
+enum ExpenseCategory {
+  RAW_MATERIALS_WOOD
+  RAW_MATERIALS_GLASS
+  PACKAGING
+  SHIPPING_LOGISTICS
+  MARKETING_ADS
+  SOFTWARE_SERVERS
+  PAYROLL_SALARIES
+  WORKSHOP_RENT
+  PAYMENT_FEES
+  LEGAL_ACCOUNTING
+  OTHER_OPEX
+}
+
+enum ExpenseStatus {
+  PENDING
+  APPROVED
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  CREDIT_CARD
+  STRIPE
+  PAYPAL
+  DIRECT_DEBIT
+}
+
+enum PaymentTerms {
+  DUE_ON_RECEIPT
+  NET_15
+  NET_30
+  NET_60
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+}
+
+enum JournalEntryType {
+  DEBIT
+  CREDIT
+}
+
 // ─── Models ───────────────────────────────────────────────────────────────────
 
 model User {
@@ -133,18 +190,19 @@ model OrderItem {
 }
 
 model ArtistProfile {
-  id               String   @id @default(cuid())
-  userId           String   @unique
-  user             User     @relation(fields: [userId], references: [id])
+  id               String         @id @default(cuid())
+  userId           String         @unique
+  user             User           @relation(fields: [userId], references: [id])
   bio              String
   portfolioUrl     String?
   country          String
-  stripeConnectId  String?  @unique
-  royaltyPercent   Decimal  @default(70) @db.Decimal(5, 2)
-  verified         Boolean  @default(false)
+  stripeConnectId  String?        @unique
+  royaltyPercent   Decimal        @default(70) @db.Decimal(5, 2)
+  verified         Boolean        @default(false)
   artworks         Artwork[]
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  payouts          ArtistPayout[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
   @@map("artist_profiles")
 }
@@ -196,4 +254,126 @@ model Subscription {
   updatedAt            DateTime @updatedAt
 
   @@map("subscriptions")
+}
+
+// ─── Modèles Finance & Comptabilité Entreprise ──────────────────────────────
+
+model Supplier {
+  id            String          @id @default(cuid())
+  name          String
+  category      ExpenseCategory
+  contactEmail  String?
+  contactPhone  String?
+  taxId         String?         // N° TVA intracommunautaire / SIRET
+  paymentTerms  PaymentTerms    @default(NET_30)
+  currency      String          @default("USD")
+  balanceDueUsd Decimal         @default(0) @db.Decimal(10, 2)
+  expenses      Expense[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@map("suppliers")
+}
+
+model Expense {
+  id             String          @id @default(cuid())
+  supplierId     String?
+  supplier       Supplier?       @relation(fields: [supplierId], references: [id])
+  supplierName   String?
+  category       ExpenseCategory
+  description    String
+  amountUsd      Decimal         @db.Decimal(10, 2) // Montant HT
+  taxRatePercent Decimal         @default(20) @db.Decimal(5, 2) // TVA %
+  taxAmountUsd   Decimal         @default(0) @db.Decimal(10, 2)
+  totalWithTaxUsd Decimal        @db.Decimal(10, 2) // Montant TTC
+  status         ExpenseStatus   @default(PAID)
+  paymentMethod  PaymentMethod   @default(BANK_TRANSFER)
+  date           DateTime        @default(now())
+  dueDate        DateTime?
+  paidAt         DateTime?
+  period         String          // YYYY-MM
+  isRecurring    Boolean         @default(false)
+  receiptUrl     String?
+  notes          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([period])
+  @@index([category])
+  @@index([status])
+  @@map("expenses")
+}
+
+model Invoice {
+  id             String        @id @default(cuid())
+  invoiceNumber  String        @unique
+  orderId        String?
+  clientName     String
+  clientEmail    String
+  clientAddress  String?
+  clientTaxId    String?
+  issueDate      DateTime      @default(now())
+  dueDate        DateTime
+  subtotalUsd    Decimal       @db.Decimal(10, 2) // Total HT
+  taxRatePercent Decimal       @default(20) @db.Decimal(5, 2)
+  taxAmountUsd   Decimal       @default(0) @db.Decimal(10, 2)
+  totalUsd       Decimal       @db.Decimal(10, 2) // Total TTC
+  status         InvoiceStatus @default(ISSUED)
+  paidAt         DateTime?
+  items          Json?         // Lignes de facture [{ description, qty, unitPrice, total }]
+  pdfUrl         String?
+  notes          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status])
+  @@map("invoices")
+}
+
+model ArtistPayout {
+  id               String        @id @default(cuid())
+  artistId         String
+  artist           ArtistProfile @relation(fields: [artistId], references: [id])
+  amountUsd        Decimal       @db.Decimal(10, 2)
+  period           String        // YYYY-MM
+  status           PayoutStatus  @default(PENDING)
+  stripeTransferId String?
+  processedAt      DateTime?
+  artworksCount    Int           @default(1)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([period])
+  @@index([status])
+  @@map("artist_payouts")
+}
+
+model FinancialBudget {
+  id              String   @id @default(cuid())
+  period          String   // YYYY-MM
+  category        String   // REVENUE_SAAS, COGS_MATERIALS, MARKETING, PAYROLL, RENT, SOFTWARE
+  targetAmountUsd Decimal  @db.Decimal(10, 2)
+  actualAmountUsd Decimal  @default(0) @db.Decimal(10, 2)
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([period, category])
+  @@map("financial_budgets")
+}
+
+model JournalEntry {
+  id          String           @id @default(cuid())
+  entryNumber String           @unique
+  date        DateTime         @default(now())
+  accountCode String           // ex: "701" (Ventes), "601" (Achats matières), "512" (Banque), "44571" (TVA Collectée)
+  accountName String
+  type        JournalEntryType
+  amountUsd   Decimal          @db.Decimal(10, 2)
+  description String
+  reference   String?          // ID commande ou facture
+  createdAt   DateTime         @default(now())
+
+  @@index([accountCode])
+  @@map("journal_entries")
 }
