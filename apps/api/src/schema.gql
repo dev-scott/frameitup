@@ -2,6 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ArtistPayoutModel {
+  amountUsd: Float!
+  artistId: String!
+  artworksCount: Float!
+  createdAt: DateTime!
+  id: ID!
+  period: String!
+  status: String!
+  stripeTransferId: String
+}
+
 enum ArtworkEdition {
   LIMITED
   ONE_OF_ONE
@@ -27,11 +38,42 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type FinanceSummary {
-  margin: Float!
+type ExpenseModel {
+  amountUsd: Float!
+  category: String!
+  date: DateTime!
+  description: String!
+  dueDate: DateTime
+  id: ID!
+  isRecurring: Boolean!
+  paymentMethod: String!
+  period: String!
+  status: String!
+  supplierId: String
+  supplierName: String
+  taxAmountUsd: Float!
+  taxRatePercent: Float!
+  totalWithTaxUsd: Float!
+}
+
+type FinancialKpiModel {
+  artistPayoutsPending: Float!
+  averageOrderValue: Float!
+  cashRunwayMonths: Float!
+  currentCashReserve: Float!
+  ebitda: Float!
+  grossMarginPercent: Float!
+  grossProfit: Float!
+  netCashFlow: Float!
+  netMarginPercent: Float!
+  netProfit: Float!
+  pendingExpensesAmount: Float!
+  revenueGrowthPercent: Float!
   totalCogs: Float!
-  totalProfit: Float!
+  totalOpex: Float!
+  totalOrdersCount: Float!
   totalRevenue: Float!
+  unpaidInvoicesAmount: Float!
 }
 
 type FrameModel {
@@ -50,6 +92,37 @@ type FrameModel {
 
 type HealthCheck {
   status: String!
+}
+
+type InvoiceModel {
+  clientAddress: String
+  clientEmail: String!
+  clientName: String!
+  dueDate: DateTime!
+  id: ID!
+  invoiceNumber: String!
+  issueDate: DateTime!
+  paidAt: DateTime
+  status: String!
+  subtotalUsd: Float!
+  taxAmountUsd: Float!
+  taxRatePercent: Float!
+  totalUsd: Float!
+}
+
+type MonthlyTrendModel {
+  cashFlow: Float!
+  cogs: Float!
+  grossProfit: Float!
+  netProfit: Float!
+  opex: Float!
+  period: String!
+  revenue: Float!
+}
+
+type Mutation {
+  """Créer une nouvelle dépense"""
+  createExpense(amountUsd: Float!, category: String!, description: String!, paymentMethod: String!, supplierName: String, taxRatePercent: Float): ExpenseModel!
 }
 
 type OrderModel {
@@ -74,11 +147,72 @@ enum OrderStatus {
 }
 
 type Query {
+  """Reversements artistes marketplace"""
+  artistPayoutsList: [ArtistPayoutModel!]!
   artwork(id: ID!): ArtworkModel
   artworks(tags: [String!]): [ArtworkModel!]!
-  financeSummary: FinanceSummary!
+
+  """Liste des dépenses"""
+  expensesList(category: String, period: String): [ExpenseModel!]!
+
+  """Résumé des KPIs financiers exécutifs"""
+  financialOverview(period: String): FinancialKpiModel!
   frame(id: ID!): FrameModel
   frames: [FrameModel!]!
   health: HealthCheck!
+
+  """Liste des factures émises"""
+  invoicesList: [InvoiceModel!]!
+
+  """Tendances financières mensuelles"""
+  monthlyFinancialTrends: [MonthlyTrendModel!]!
   myOrders(userId: ID!): [OrderModel!]!
+
+  """Liste des fournisseurs"""
+  suppliersList: [SupplierModel!]!
+
+  """Analyse unitaire de rentabilité par commande"""
+  unitEconomicsList: [UnitEconomicsModel!]!
+
+  """Déclaration et rapport de TVA"""
+  vatReport(period: String): VatReportModel!
+}
+
+type SupplierModel {
+  balanceDueUsd: Float!
+  category: String!
+  contactEmail: String
+  contactPhone: String
+  id: ID!
+  name: String!
+  paymentTerms: String!
+  taxId: String
+}
+
+type UnitEconomicsModel {
+  clientName: String!
+  costGlass: Float!
+  costMaterial: Float!
+  costPackaging: Float!
+  costShipping: Float!
+  date: DateTime!
+  frameMaterial: String!
+  glasingType: String!
+  netMargin: Float!
+  netMarginPercent: Float!
+  orderId: ID!
+  orderNumber: String!
+  productName: String!
+  sellingPrice: Float!
+  stripeFee: Float!
+  totalCost: Float!
+}
+
+type VatReportModel {
+  collectedVat: Float!
+  deductibleVat: Float!
+  netVatPayable: Float!
+  period: String!
+  totalTaxablePurchases: Float!
+  totalTaxableSales: Float!
 }
