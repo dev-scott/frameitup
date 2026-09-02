@@ -83,14 +83,14 @@ export function HeroSection() {
   const activeFrame = selectedFrame ?? FEATURED_FRAMES[0]!;
 
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+    <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-20 md:pt-40 md:pb-28 overflow-hidden">
       {/* Subtle Luxury Ambient Background Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-[#c59b52]/10 via-[#dfc397]/5 to-transparent rounded-full blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[700px] h-[300px] sm:h-[500px] bg-gradient-to-tr from-[#c59b52]/15 via-[#dfc397]/5 to-transparent rounded-full blur-[90px] sm:blur-[120px] pointer-events-none -z-10" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-8 items-center">
           {/* Left Column: Editorial Headline & Actions */}
-          <div className="lg:col-span-6 space-y-8 text-center lg:text-left">
+          <div className="lg:col-span-6 space-y-6 sm:space-y-8 text-center lg:text-left">
             {/* Atelier Label Badge */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -109,7 +109,7 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="space-y-3"
             >
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-[var(--text-primary)] leading-[1.1]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-[var(--text-primary)] leading-[1.15]">
                 {isFr ? (
                   <>
                     Vos plus beaux tirages, <br />
@@ -122,9 +122,9 @@ export function HeroSection() {
                   </>
                 )}
               </h1>
-              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans">
+              <p className="text-xs sm:text-base text-[var(--text-secondary)] leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans">
                 {isFr
-                  ? "Importez votre photo ou œuvre. Choisissez vos moulures en bois noble et votre vitrage musée anti-reflet. Fabrication artisanale et expédition en 3 à 5 jours."
+                  ? "Importez votre photo ou œuvre. Choisissez vos moulures en bois noble et votre vitrage musée anti-reflet. Fabrication artisanale et expédition sous 3 à 5 jours."
                   : 'Upload your photo. Customise with sustainable European solid woods and invisible 99% UV museum glass. Handcrafted and delivered ready to hang.'}
               </p>
             </motion.div>
@@ -134,11 +134,11 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2"
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4 pt-2"
             >
               <Link
                 href="/configure"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-[#c59b52] via-[#d4af37] to-[#b08140] px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-black shadow-lg shadow-[#c59b52]/25 hover:shadow-[#c59b52]/40 transition-all hover:scale-[1.02] active:scale-95"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-[#d4af37] via-[#c59b52] to-[#b08140] px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-black shadow-lg shadow-[#c59b52]/25 hover:shadow-xl hover:shadow-[#c59b52]/40 transition-all hover:scale-[1.02] active:scale-95"
               >
                 <UploadCloud className="h-4 w-4" />
                 <span>{isFr ? 'Créer mon cadre sur-mesure' : 'Design my frame'}</span>
@@ -158,7 +158,7 @@ export function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-[var(--text-muted)] border-t border-[var(--border)]/70"
+              className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-5 sm:gap-6 text-xs text-[var(--text-muted)] border-t border-[var(--border)]/70"
             >
               <div className="flex items-center gap-1.5">
                 <div className="flex text-amber-400">
@@ -186,23 +186,24 @@ export function HeroSection() {
               className="relative mx-auto max-w-md lg:max-w-none"
             >
               {/* Studio Frame Card */}
-              <div className="relative rounded-3xl p-6 sm:p-8 glass-card bg-[var(--bg-card)]/90 border border-[var(--border-gold)] shadow-2xl backdrop-blur-xl">
+              <div className="relative rounded-3xl p-5 sm:p-8 glass-card bg-[var(--bg-card)]/90 border border-[var(--border-gold)] shadow-2xl backdrop-blur-xl">
                 {/* Visual Art in Frame with Dynamic Border */}
-                <div className="relative mx-auto flex items-center justify-center p-4 sm:p-6 rounded-2xl bg-[var(--bg-secondary)] shadow-inner">
+                <div className="relative mx-auto flex items-center justify-center p-3 sm:p-6 rounded-2xl bg-[var(--bg-secondary)] shadow-inner">
                   <div
                     style={{
-                      borderWidth: '16px',
+                      borderWidth: '14px',
                       borderColor: activeFrame.color,
                       backgroundColor: activeFrame.matColor,
                     }}
-                    className="relative p-6 sm:p-8 rounded-lg shadow-2xl transition-all duration-500 overflow-hidden"
+                    className="relative p-4 sm:p-7 rounded-lg shadow-2xl transition-all duration-500 overflow-hidden"
                   >
                     {/* The artwork */}
-                    <div className="relative w-56 h-72 sm:w-64 sm:h-80 overflow-hidden rounded shadow-sm">
+                    <div className="relative w-44 h-56 sm:w-60 sm:h-76 md:w-64 md:h-80 overflow-hidden rounded shadow-sm">
                       <Image
                         src={activeFrame.image}
                         alt={activeFrame.title}
                         fill
+                        sizes="(max-width: 640px) 200px, 300px"
                         className="object-cover transition-transform duration-700 hover:scale-105"
                         priority
                       />
@@ -213,7 +214,7 @@ export function HeroSection() {
                 </div>
 
                 {/* Frame Selector Pills */}
-                <div className="mt-6 space-y-3">
+                <div className="mt-5 sm:mt-6 space-y-3">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-semibold text-[var(--text-secondary)]">
                       {isFr ? 'Moulure sélectionnée :' : 'Selected moulding :'}
@@ -223,7 +224,7 @@ export function HeroSection() {
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {FEATURED_FRAMES.map((f) => {
                       const isActive = activeFrame.id === f.id;
                       return (
@@ -238,7 +239,7 @@ export function HeroSection() {
                         >
                           <div
                             style={{ backgroundColor: f.color }}
-                            className="h-4 w-full rounded-md shadow-sm transition-transform group-hover:scale-105"
+                            className="h-3.5 sm:h-4 w-full rounded-md shadow-sm transition-transform group-hover:scale-105"
                           />
                           <span className="text-[10px] font-medium text-[var(--text-secondary)] truncate w-full text-center">
                             {f.name.split(' ')[0]}
@@ -250,13 +251,13 @@ export function HeroSection() {
                 </div>
 
                 {/* Live Customizer Link */}
-                <div className="mt-5 pt-4 border-t border-[var(--border)] flex items-center justify-between text-xs">
-                  <span className="text-[var(--text-muted)]">
+                <div className="mt-4 sm:mt-5 pt-4 border-t border-[var(--border)] flex items-center justify-between text-xs">
+                  <span className="text-[var(--text-muted)] text-[11px] sm:text-xs">
                     {isFr ? 'Format A3 • Verre Anti-Reflet' : 'A3 Format • Anti-Reflective'}
                   </span>
                   <Link
                     href="/configure"
-                    className="font-bold text-[#c59b52] hover:underline flex items-center gap-1"
+                    className="font-bold text-[#c59b52] hover:underline flex items-center gap-1 text-[11px] sm:text-xs"
                   >
                     <span>{isFr ? 'Personnaliser ce cadre' : 'Customize this frame'}</span>
                     <ArrowRight className="h-3 w-3" />
