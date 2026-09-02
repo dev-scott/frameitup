@@ -1,194 +1,230 @@
 'use client';
+
+import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { useLanguageStore, type Language } from '@/store/use-language-store';
-import Image from 'next/image';
-import { useTheme } from 'next-themes';
-const LANGUAGES: { code: Language; label: string; flag: string }[] = [
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-];
-function GlobeIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" />
-      <line x1="2" y1="12" x2="22" y2="12" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-    </svg>
-  );
-}
+import { useLanguageStore } from '@/store/use-language-store';
+import {
+  ShieldCheck,
+  Award,
+  Sparkles,
+  TreePine,
+  Truck,
+  ArrowRight,
+  Heart,
+  Instagram,
+  Facebook,
+  Linkedin,
+  MapPin,
+  Mail,
+  Phone,
+} from 'lucide-react';
 
 export function Footer() {
-  const { theme, resolvedTheme } = useTheme();
-  const { t, language, setLanguage } = useLanguageStore();
-  const links = {
-    [t.footer.product]: [
-      { label: t.footer.links.browseFrames, href: '/frames' },
-      { label: t.footer.links.designYours, href: '/configure' },
-      { label: t.footer.links.myOrders, href: '/orders' },
-      { label: t.footer.links.marketplace, href: 'http://localhost:3001', external: true },
-    ],
-    // [t.footer.company]: [
-    //   { label: t.footer.links.aboutUs, href: '/about' },
-    //   { label: t.footer.links.craftsmanship, href: '/craftsmanship' },
-    //   { label: t.footer.links.sustainability, href: '/sustainability' },
-    //   { label: t.footer.links.blog, href: '/blog' },
-    // ],
-    // [t.footer.support]: [
-    //   { label: t.footer.links.faq, href: '/faq' },
-    //   { label: t.footer.links.shipping, href: '/shipping' },
-    //   { label: t.footer.links.contact, href: '/contact' },
-    //   { label: t.footer.links.privacy, href: '/privacy' },
-    // ],
-  };
+  const { language } = useLanguageStore();
+  const isFr = language === 'fr';
+
+  const commitments = [
+    {
+      icon: TreePine,
+      title: isFr ? 'Bois Nobles Certifiés FSC' : 'FSC Certified Solid Wood',
+      desc: isFr
+        ? 'Chêne, noyer et pin issus de forêts éco-gérées en France & Europe.'
+        : 'Sustainably sourced oak and walnut from European managed forests.',
+    },
+    {
+      icon: Award,
+      title: isFr ? 'Verre Musée Anti-Reflet 99% UV' : '99% UV Museum Glass',
+      desc: isFr
+        ? 'Protection optique invisible contre la décoloration et le vieillissement.'
+        : 'Invisible optical glass protecting your art from light degradation.',
+    },
+    {
+      icon: ShieldCheck,
+      title: isFr ? 'Passe-Partout 100% Coton Sans Acide' : '100% Acid-Free Cotton Mats',
+      desc: isFr
+        ? 'Qualité de conservation muséale garantissant une longévité séculaire.'
+        : 'Archival grade conservation matboards built to last generations.',
+    },
+    {
+      icon: Truck,
+      title: isFr ? 'Livraison Blindée & Garantie' : 'Armored Delivery & Guarantee',
+      desc: isFr
+        ? 'Emballage caisse renforcée haute protection. Prêt à être posé.'
+        : 'Delivered in shock-absorbent custom crates, ready to hang.',
+    },
+  ];
 
   return (
-    <footer id="footer" className="relative overflow-hidden bg-[var(--frame-dark)] text-white">
-      {/* Top border gradient */}
-      <div className="h-px bg-gradient-to-r from-transparent via-[var(--brand-500)] to-transparent opacity-30" />
-      {/* Ambient glow */}
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-40 bg-[var(--brand-500)] opacity-5 blur-3xl rounded-full pointer-events-none" />
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
-        {/* Main grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-4">
-          {/* Brand col */}
-          <div className="lg:col-span-2">
-            {/* Logo */}
-            {/* <Link href="/" className="flex items-center gap-2.5 mb-6 group w-fit">
-              <div className="relative ">
-
-                <Image src={resolvedTheme === "dark" ? "/frameitup_logo_black.svg" : "/frameitup_logo_black.svg"} alt="Frame It Up" width={90} height={90} />
+    <footer className="border-t border-[var(--border)] bg-[var(--bg-secondary)]/70 text-[var(--text-primary)] transition-colors duration-300">
+      {/* Top Value Commitments Row */}
+      <div className="border-b border-[var(--border)] py-12 px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {commitments.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <div key={idx} className="flex items-start gap-4 group">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#c59b52]/10 text-[#c59b52] border border-[#c59b52]/20 transition-transform group-hover:scale-110">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">
+                    {item.title}
+                  </h4>
+                  <p className="mt-1 text-xs text-[var(--text-muted)] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-            </Link> */}
-            {/* <p className="text-sm text-[rgba(250,250,249,0.5)] leading-relaxed mb-6 max-w-xs">
-              {t.footer.tagline}
-            </p> */}
-            {/* Social icons */}
-            <div className="flex gap-3">
-              {[
-                {
-                  label: 'Instagram', icon: (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" />
-                      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
-                    </svg>
-                  ),
-                  href: "https://www.instagram.com/__frameitup/",
-                  external: true,
-                },
-                {
-                  label: 'Twitter', icon: (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
-                    </svg>
-                  ),
-                  href: "https://x.com/_Frameitup",
-                  external: true,
-                },
-                {
-                  label: 'Linkdin', icon: (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                      <rect x="2" y="9" width="4" height="12" />
-                      <circle cx="4" cy="4" r="2" />
-                    </svg>
-                  ),
-                  href: "https://www.linkedin.com/company/frameitup/?viewAsMember=true",
-                  external: true,
-                },
-              ].map((social) => (
-                <button
-                  key={social.label}
-                  aria-label={social.label}
-                  className="w-9 h-9 rounded-lg border border-[rgba(168,162,158,0.2)] flex items-center justify-center text-[rgba(250,250,249,0.4)] hover:border-[var(--brand-500)] hover:text-[var(--brand-400)] transition-all duration-200"
-                >
-                  <Link href={social.href} target={social.external ? "_blank" : undefined} className=''>
-                    {social.icon}
-                  </Link>
-                </button>
-              ))}
-            </div>
-          </div>
-          {/* Links columns */}
-          {/* {(Object.entries(links) as [string, { label: string; href: string; external?: boolean }[]][]).map(([title, items]) => (
-            <div key={title}>
-              <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-[rgba(250,250,249,0.4)] mb-5">
-                {title}
-              </h4>
-              <ul className="space-y-3">
-                {items.map((item) => (
-                  <li key={item.label}>
-                    <Link
-                      href={item.label === t.footer.links.marketplace ? "#" : "#"}
-                      target={item.external ? '_blank' : undefined}
-                      className={`${item.label === t.footer.links.marketplace ? 'bg-muted opacity-40 cursor-not-allowed' : ''}text-sm text-[rgba(250,250,249,0.55)] hover:text-[var(--brand-400)] transition-colors duration-200 flex items-center gap-1.5 group `}
-                    >
-                      {item.label}
-                      {item.external && (
-                        <span className="text-xs opacity-40 group-hover:opacity-70">↗</span>
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))} */}
+            );
+          })}
         </div>
-        {/* Newsletter */}
-        {/* <div className="border border-[rgba(168,162,158,0.12)] rounded-2xl p-6 mb-10 bg-[rgba(255,255,255,0.03)]">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 justify-between">
-            <div>
-              <h4 className="font-semibold text-white mb-1">{t.footer.newsletter.title}</h4>
-              <p className="text-sm text-[rgba(250,250,249,0.45)]">{t.footer.newsletter.subtitle}</p>
+      </div>
+
+      {/* Main Footer Links */}
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+        {/* Col 1 & 2: Brand & Atelier */}
+        <div className="lg:col-span-2 space-y-5">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#c59b52] to-[#926435] text-black font-black text-sm shadow-md">
+              <span>F</span>
             </div>
-            <div className="flex gap-2 w-full md:w-auto">
-              <input
-                type="email"
-                placeholder={t.footer.newsletter.placeholder}
-                id="footer-newsletter-input"
-                className="flex-1 md:w-64 px-4 py-2.5 bg-[rgba(255,255,255,0.06)] border border-[rgba(168,162,158,0.15)] rounded-xl text-sm text-white placeholder-[rgba(250,250,249,0.3)] focus:outline-none focus:border-[var(--brand-500)] transition-colors duration-200"
-              />
-              <button
-                id="footer-newsletter-btn"
-                className="px-5 py-2.5 bg-[var(--brand-500)] hover:bg-[var(--brand-600)] text-white text-sm font-semibold rounded-xl transition-colors duration-200 whitespace-nowrap"
-              >
-                {t.footer.newsletter.subscribe}
-              </button>
+            <div className="flex flex-col">
+              <span className="text-base font-bold tracking-[0.2em] font-serif uppercase">
+                FrameItUp
+              </span>
+              <span className="text-[9px] uppercase tracking-[0.25em] text-[#c59b52] font-sans -mt-1 font-semibold">
+                Haute Encadrement
+              </span>
             </div>
-          </div>
-        </div> */}
-        {/* Bottom bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-[rgba(168,162,158,0.1)]">
-          <p className="text-xs text-[rgba(250,250,249,0.3)]">
-            {t.footer.copyright}
+          </Link>
+
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed max-w-sm">
+            {isFr
+              ? "Atelier d'encadrement sur-mesure d'exception. Nous sublimons vos photographies, tirages d'art et souvenirs précieux avec des matériaux nobles et des techniques de conservation muséale."
+              : 'Premier bespoke framing atelier. Preserving and showcasing your finest photographs, prints, and memories with museum-grade craftsmanship.'}
           </p>
-          {/* Center: Language Switcher */}
-          {/* Language Switcher */}
-          <div className="flex items-center gap-2">
-            <span className="text-[rgba(250,250,249,0.3)]">
-              <GlobeIcon />
-            </span>
-            <div className="flex items-center gap-1 rounded-lg border border-[rgba(168,162,158,0.15)] bg-[rgba(255,255,255,0.04)] p-0.5">
-              {LANGUAGES.map((lang) => (
-                <motion.button
-                  key={lang.code}
-                  id={`lang-switch-${lang.code}`}
-                  onClick={() => setLanguage(lang.code)}
-                  whileTap={{ scale: 0.95 }}
-                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all duration-200 ${language === lang.code
-                    ? 'bg-[var(--brand-500)] text-white shadow-sm'
-                    : 'text-[rgba(250,250,249,0.4)] hover:text-[rgba(250,250,249,0.7)] hover:bg-[rgba(255,255,255,0.06)]'
-                    }`}
-                >
-                  <span>{lang.flag}</span>
-                  <span>{lang.label}</span>
-                </motion.button>
-              ))}
+
+          <div className="space-y-2 text-xs text-[var(--text-secondary)] pt-2">
+            <div className="flex items-center gap-2">
+              <MapPin className="h-3.5 w-3.5 text-[#c59b52]" />
+              <span>Atelier & Showroom : 14 Rue de Charonne, 75011 Paris</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="h-3.5 w-3.5 text-[#c59b52]" />
+              <span>concierge@frameitup.com</span>
             </div>
           </div>
-          <div className="flex items-center gap-1 text-xs text-[rgba(250,250,249,0.3)]">
-            <span>{t.footer.paymentsBy}</span>
-            <span className="font-semibold text-[rgba(250,250,249,0.5)] ml-1">Stripe</span>
+        </div>
+
+        {/* Col 3: Collections */}
+        <div className="space-y-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)] font-serif">
+            {isFr ? 'Collections' : 'Collections'}
+          </h4>
+          <ul className="space-y-2 text-xs text-[var(--text-muted)]">
+            <li>
+              <Link href="/configure" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Chêne de France Massif' : 'French Solid Oak'}
+              </Link>
+            </li>
+            <li>
+              <Link href="/configure" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Noyer Américain Fumé' : 'American Smoked Walnut'}
+              </Link>
+            </li>
+            <li>
+              <Link href="/configure" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? "Doré Musée à la Feuille d'Or" : 'Gold Leaf Museum Gilt'}
+              </Link>
+            </li>
+            <li>
+              <Link href="/configure" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Aluminium Brossé Noir Minuit' : 'Brushed Midnight Aluminium'}
+              </Link>
+            </li>
+            <li>
+              <Link href="/configure" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Caisse Américaine Flottante' : 'Floating Shadowbox'}
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Col 4: Services */}
+        <div className="space-y-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)] font-serif">
+            {isFr ? 'Services & Savoir-Faire' : 'Services & Craft'}
+          </h4>
+          <ul className="space-y-2 text-xs text-[var(--text-muted)]">
+            <li>
+              <Link href="/configure" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Studio de Configuration 3D' : '3D Customizer Studio'}
+              </Link>
+            </li>
+            <li>
+              <Link href="/frames" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Tirages Papier Fine Art' : 'Fine Art Printing'}
+              </Link>
+            </li>
+            <li>
+              <Link href="/orders" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Suivi de Commande en Direct' : 'Live Order Tracking'}
+              </Link>
+            </li>
+            <li>
+              <Link href="http://localhost:3001" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Marketplace Artistes & Tirages 1/1' : 'Art Marketplace Prints'}
+              </Link>
+            </li>
+            <li>
+              <Link href="/configure" className="hover:text-[#c59b52] transition-colors">
+                {isFr ? 'Service Architectes & B2B' : 'Trade & Interior Architects'}
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Col 5: Newsletter */}
+        <div className="space-y-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)] font-serif">
+            {isFr ? 'Le Cercle Privé' : 'Private Circle'}
+          </h4>
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            {isFr
+              ? 'Recevez nos invitations aux ventes privées de tirages d’art et actualités de l’atelier.'
+              : 'Receive exclusive invitations to fine art print releases and atelier updates.'}
+          </p>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              alert(isFr ? 'Merci pour votre inscription au Cercle Privé.' : 'Thank you for subscribing.');
+            }}
+            className="flex items-center gap-1.5 pt-1"
+          >
+            <input
+              type="email"
+              required
+              placeholder={isFr ? 'Votre adresse email' : 'Your email address'}
+              className="h-9 w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-3 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-subtle)] focus:border-[#c59b52] focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#c59b52] text-black hover:bg-[#d4af37] transition-colors"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Bottom Legal Bar */}
+      <div className="border-t border-[var(--border)] py-6 px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-subtle)]">
+          <p>© {new Date().getFullYear()} FrameItUp SAS — Atelier d'Encadrement de France. Tous droits réservés.</p>
+          <div className="flex items-center gap-6">
+            <span className="hover:text-[#c59b52] cursor-pointer">Conditions Générales</span>
+            <span className="hover:text-[#c59b52] cursor-pointer">Politique de Confidentialité</span>
+            <span className="hover:text-[#c59b52] cursor-pointer">Garantie Musée</span>
           </div>
         </div>
       </div>

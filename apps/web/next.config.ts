@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: '**.cloudflare.com' },
       { protocol: 'https', hostname: '**.r2.dev' },
+      { protocol:"https", hostname:"images.unsplash.com"}
     ],
   },
   typescript: {

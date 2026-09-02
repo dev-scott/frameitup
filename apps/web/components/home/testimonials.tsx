@@ -1,194 +1,110 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { useLanguageStore } from '@/store/use-language-store';
+import { Star, Quote, Sparkles, CheckCircle2 } from 'lucide-react';
 
-interface TestimonialType {
-  id: number;
-  name: string;
-  role: string;
-  avatar: string;
-  avatarColor: string;
-  rating: number;
-  text: string;
-  frame: string;
-  frameColor: string;
-}
-
-const testimonialsInfo = [
-  {
-    id: 1,
-    avatar: 'SM',
-    avatarColor: '#8B6914',
-    rating: 5,
-    frameColor: '#8B6914',
-  },
-  {
-    id: 2,
-    avatar: 'MC',
-    avatarColor: '#2C5F8A',
-    rating: 5,
-    frameColor: '#1a1a1a',
-  },
-  {
-    id: 3,
-    avatar: 'EJ',
-    avatarColor: '#5C4A8A',
-    rating: 5,
-    frameColor: '#B8860B',
-  },
-  {
-    id: 4,
-    avatar: 'LR',
-    avatarColor: '#C4622D',
-    rating: 5,
-    frameColor: '#C4622D',
-  },
-];
-
-/* ─── Stars ──────────────────────────────────────────── */
-function Stars({ count }: { count: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <span key={i} className="text-[var(--brand-400)] text-sm">★</span>
-      ))}
-    </div>
-  );
-}
-
-/* ─── Testimonial card ───────────────────────────────── */
-function TestimonialCard({ t, active }: { t: TestimonialType; active: boolean }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95, y: -20 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full"
-    >
-      <div className="max-w-3xl mx-auto p-8 md:p-12 rounded-3xl bg-[var(--bg-card)] dark:bg-[var(--bg-secondary)] border border-[var(--border)] relative overflow-hidden">
-        {/* Quote mark */}
-        <div className="absolute top-6 right-8 font-display text-[120px] leading-none text-[var(--brand-500)] opacity-[0.06] select-none pointer-events-none">
-          "
-        </div>
-
-        {/* Stars */}
-        <Stars count={t.rating} />
-
-        {/* Quote */}
-        <p className="mt-5 text-lg md:text-xl text-[var(--text-secondary)] leading-relaxed mb-8 relative z-10">
-          "{t.text}"
-        </p>
-
-        {/* Author + Frame */}
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            {/* Avatar */}
-            <div
-              className="w-12 h-12 rounded-full flex items-center justify-center text-white text-sm font-bold"
-              style={{ backgroundColor: t.avatarColor }}
-            >
-              {t.avatar}
-            </div>
-            <div>
-              <p className="font-semibold text-[var(--text-primary)]">{t.name}</p>
-              <p className="text-sm text-[var(--text-muted)]">{t.role}</p>
-            </div>
-          </div>
-
-          {/* Frame tag */}
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)] dark:bg-[var(--bg-tertiary)]">
-            <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: t.frameColor }} />
-            <span className="text-xs font-medium text-[var(--text-muted)]">{t.frame}</span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─── Main section ───────────────────────────────────── */
 export function TestimonialsSection() {
-  const [active, setActive] = useState(0);
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
-  const { t } = useLanguageStore();
+  const { language } = useLanguageStore();
+  const isFr = language === 'fr';
 
-  const testimonials = t.testimonials.items.map((item, idx) => ({
-    ...item,
-    ...testimonialsInfo[idx],
-  })) as TestimonialType[];
-
-  const prev = () => setActive((a) => (a - 1 + testimonials.length) % testimonials.length);
-  const next = () => setActive((a) => (a + 1) % testimonials.length);
+  const reviews = [
+    {
+      name: 'Sophie Marceau-Lemaire',
+      role: isFr ? 'Architecte d’Intérieur, Paris 7e' : 'Interior Architect, Paris',
+      text: isFr
+        ? "J’ai confié l’encadrement des tirages d’une galerie haussmannienne à FrameItUp. La régularité des assemblages en chêne et le verre musée anti-reflet sont simplement irréprochables."
+        : 'I commissioned FrameItUp for an entire Haussmannian apartment gallery. The flawless oak joinery and reflection-free glass are exceptional.',
+      frame: 'Chêne de France Massif',
+      rating: 5,
+    },
+    {
+      name: 'Marcus Vance',
+      role: isFr ? 'Photographe d’Art, New York' : 'Fine Art Photographer, NYC',
+      text: isFr
+        ? "En tant que photographe professionnel, la fidélité des tirages papier 100% coton et la neutralité des passe-partout sans acide sont cruciales. FrameItUp est devenu mon atelier attitré."
+        : 'As a fine art photographer, archival cotton paper fidelity and acid-free mats are paramount. FrameItUp is now my go-to atelier.',
+      frame: 'Aluminium Noir Brossé',
+      rating: 5,
+    },
+    {
+      name: 'Elena Rostova',
+      role: isFr ? 'Collectionneuse & Artiste, Milan' : 'Collector & Artist, Milan',
+      text: isFr
+        ? "Le cadre Doré Feuille d'Or a métamorphosé une lithographie ancienne. L'effet de profondeur et la caisse de transport renforcée m'ont impressionnée. Une perfection du début à la fin."
+        : 'The Gilded Gold Leaf frame transformed an antique lithograph. The optical depth and armored delivery crate were deeply impressive.',
+      frame: "Doré Musée à la Feuille d'Or",
+      rating: 5,
+    },
+  ];
 
   return (
-    <section ref={ref} id="testimonials" className="section-padding relative overflow-hidden">
-      {/* BG */}
-      <div className="absolute inset-0 bg-[var(--bg-primary)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_60%,rgba(217,141,46,0.06)_0%,transparent_60%)]" />
-
-      <div className="relative max-w-7xl mx-auto px-6">
+    <section className="py-24 border-t border-[var(--border)] bg-[var(--bg-primary)]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16"
-        >
-          <p className="section-label mb-4">{t.testimonials.sectionLabel}</p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-[var(--text-primary)]">
-            {t.testimonials.title}{' '}
-            <span className="gradient-text">{t.testimonials.titleHighlight}</span>
-          </h2>
-        </motion.div>
-
-        {/* Carousel */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.3 }}
-        >
-          <AnimatePresence mode="wait">
-            {testimonials[active] && <TestimonialCard key={active} t={testimonials[active]!} active={true} />}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Controls */}
-        <div className="flex items-center justify-center gap-6 mt-10">
-          {/* Prev */}
-          <button
-            onClick={prev}
-            id="testimonials-prev-btn"
-            className="w-11 h-11 rounded-full border border-[var(--border-strong)] flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--brand-400)] hover:text-[var(--brand-500)] transition-all duration-200 hover:-translate-x-0.5"
-          >
-            ←
-          </button>
-
-          {/* Dots */}
-          <div className="flex gap-2">
-            {testimonials.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                className={`rounded-full transition-all duration-300 ${i === active
-                  ? 'w-8 h-2 bg-[var(--brand-500)]'
-                  : 'w-2 h-2 bg-[var(--border-strong)] hover:bg-[var(--brand-300)]'
-                  }`}
-              />
-            ))}
+        <div className="text-center max-w-2xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#c59b52]/10 px-3 py-1 text-xs font-semibold text-[#c59b52] border border-[#c59b52]/20">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>{isFr ? 'Avis & Critiques' : 'Collector Reviews'}</span>
           </div>
 
-          {/* Next */}
-          <button
-            onClick={next}
-            id="testimonials-next-btn"
-            className="w-11 h-11 rounded-full border border-[var(--border-strong)] flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--brand-400)] hover:text-[var(--brand-500)] transition-all duration-200 hover:translate-x-0.5"
-          >
-            →
-          </button>
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[var(--text-primary)] tracking-tight">
+            {isFr ? (
+              <>
+                Ce que nos collectionneurs <span className="italic text-[#c59b52]">adorent.</span>
+              </>
+            ) : (
+              <>
+                What our collectors <span className="italic text-[#c59b52]">cherish.</span>
+              </>
+            )}
+          </h2>
+
+          <p className="text-sm text-[var(--text-muted)] font-sans">
+            {isFr
+              ? 'Plus de 8 400 tirages et œuvres d’art encadrés pour des particuliers exigeants et des professionnels.'
+              : 'Over 8,400 works framed for discerning collectors and design studios worldwide.'}
+          </p>
+        </div>
+
+        {/* Reviews Cards */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {reviews.map((rev, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.15 }}
+              className="rounded-3xl p-8 glass-card bg-[var(--bg-card)] border border-[var(--border)] hover:border-[#c59b52]/40 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            >
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex text-amber-400">
+                    {[...Array(rev.rating)].map((_, i) => (
+                      <Star key={i} className="h-3.5 w-3.5 fill-current" />
+                    ))}
+                  </div>
+                  <Quote className="h-6 w-6 text-[#c59b52]/30" />
+                </div>
+
+                <p className="text-xs sm:text-sm text-[var(--text-secondary)] italic leading-relaxed font-serif">
+                  "{rev.text}"
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-[var(--border)] flex items-center justify-between">
+                <div>
+                  <div className="text-xs font-bold text-[var(--text-primary)]">{rev.name}</div>
+                  <div className="text-[11px] text-[var(--text-muted)]">{rev.role}</div>
+                </div>
+                <span className="text-[10px] font-semibold text-[#c59b52] bg-[#c59b52]/10 px-2 py-0.5 rounded border border-[#c59b52]/20">
+                  {rev.frame}
+                </span>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
