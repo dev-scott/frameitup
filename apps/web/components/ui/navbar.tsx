@@ -59,11 +59,11 @@ function NavLink({ href, label, external, active }: {
 
   return (
     <Link
-      {...props}
+      {...(label === "Marketplace" ? { href: "#" } : props)}
       className={`relative text-sm font-medium transition-colors duration-200 group ${active
         ? 'text-[var(--brand-500)]'
         : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-        }`}
+        } ${label === 'Marketplace' ? 'px-4 py-4 bg-muted opacity-30 cursor-not-allowed' : ''} `}
     >
       {label}
       {external && (

@@ -22,7 +22,6 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
-    outputFileTracingRoot: path.join(__dirname, '../../'),
     serverActions: {
       bodySizeLimit: '10mb',
     }
