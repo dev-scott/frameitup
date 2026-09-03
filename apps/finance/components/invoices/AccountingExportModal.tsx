@@ -9,7 +9,7 @@ import {
   DialogFooter,
   Button,
 } from '@frameitup/ui';
-import { Download, FileSpreadsheet, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react';
+import { Download, FileSpreadsheet, ShieldCheck } from 'lucide-react';
 
 interface AccountingExportModalProps {
   isOpen: boolean;
@@ -50,17 +50,17 @@ export function AccountingExportModal({ isOpen, onClose }: AccountingExportModal
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg bg-gray-900 border-gray-800 text-gray-100 p-6 rounded-2xl">
-        <DialogHeader className="border-b border-gray-800 pb-3">
+      <DialogContent className="max-w-lg bg-[var(--bg-card)] border border-[var(--border-gold)] text-[var(--text-primary)] p-6 rounded-3xl shadow-2xl backdrop-blur-2xl">
+        <DialogHeader className="border-b border-[var(--border)] pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#c59b52]/10 text-[#c59b52] border border-[#c59b52]/20">
               <FileSpreadsheet className="h-4 w-4" />
             </div>
             <div>
-              <DialogTitle className="text-base font-bold text-white">
+              <DialogTitle className="text-base font-bold font-serif text-[var(--text-primary)]">
                 Export Comptable & Liasse Fiscale
               </DialogTitle>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-[var(--text-muted)]">
                 Génération des écritures pour votre expert-comptable ou logiciel ERP
               </p>
             </div>
@@ -70,7 +70,7 @@ export function AccountingExportModal({ isOpen, onClose }: AccountingExportModal
         <div className="space-y-4 pt-3">
           {/* Format selection */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-gray-300">Format d'export</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)]">Format d'export</label>
             <div className="grid grid-cols-3 gap-2">
               {[
                 { id: 'FEC', label: 'FEC Conforme', sub: 'Norme DGFIP / Audit' },
@@ -81,14 +81,14 @@ export function AccountingExportModal({ isOpen, onClose }: AccountingExportModal
                   key={f.id}
                   type="button"
                   onClick={() => setFormat(f.id as any)}
-                  className={`p-3 rounded-xl border text-left transition-all ${
+                  className={`p-3 rounded-2xl border text-left transition-all ${
                     format === f.id
-                      ? 'border-emerald-500/50 bg-emerald-500/10 text-white shadow-sm'
-                      : 'border-gray-800 bg-gray-950/60 text-gray-400 hover:border-gray-700'
+                      ? 'border-[#c59b52] bg-[#c59b52]/15 text-[var(--text-primary)] shadow-sm'
+                      : 'border-[var(--border)] bg-[var(--bg-primary)] text-[var(--text-muted)] hover:border-[#c59b52]/50'
                   }`}
                 >
-                  <div className="text-xs font-bold">{f.label}</div>
-                  <div className="text-[10px] text-gray-500 mt-0.5">{f.sub}</div>
+                  <div className="text-xs font-bold font-sans">{f.label}</div>
+                  <div className="text-[10px] text-[var(--text-subtle)] mt-0.5">{f.sub}</div>
                 </button>
               ))}
             </div>
@@ -96,11 +96,11 @@ export function AccountingExportModal({ isOpen, onClose }: AccountingExportModal
 
           {/* Period */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-300">Période comptable</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)]">Période comptable</label>
             <select
               value={period}
               onChange={(e) => setPeriod(e.target.value)}
-              className="h-9 w-full rounded-lg border border-gray-800 bg-gray-950 px-3 text-xs text-gray-200 focus:border-emerald-500 focus:outline-none"
+              className="h-9 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-primary)] px-3 text-xs text-[var(--text-primary)] focus:border-[#c59b52] focus:outline-none"
             >
               <option value="2026-02">Février 2026 (En cours)</option>
               <option value="2026-01">Janvier 2026</option>
@@ -109,23 +109,23 @@ export function AccountingExportModal({ isOpen, onClose }: AccountingExportModal
             </select>
           </div>
 
-          <div className="rounded-xl border border-gray-800 bg-gray-950/60 p-3 text-xs text-gray-400 space-y-1">
-            <div className="flex items-center gap-1.5 text-gray-300 font-semibold">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-primary)] p-3.5 text-xs text-[var(--text-muted)] space-y-1">
+            <div className="flex items-center gap-1.5 text-[var(--text-primary)] font-semibold">
+              <ShieldCheck className="h-3.5 w-3.5 text-[#c59b52]" />
               Contrôle de cohérence automatique
             </div>
-            <p className="text-[11px] text-gray-500">
+            <p className="text-[11px] text-[var(--text-subtle)]">
               Total Débits et Crédits équilibrés. Numérotation continue des pièces comptables.
             </p>
           </div>
         </div>
 
-        <DialogFooter className="pt-3 border-t border-gray-800">
+        <DialogFooter className="pt-3 border-t border-[var(--border)] gap-2">
           <Button
             type="button"
             variant="outline"
             onClick={onClose}
-            className="text-xs border-gray-700 text-gray-300 hover:bg-gray-800"
+            className="text-xs border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] rounded-xl"
           >
             Fermer
           </Button>
@@ -133,7 +133,7 @@ export function AccountingExportModal({ isOpen, onClose }: AccountingExportModal
             type="button"
             onClick={handleDownload}
             disabled={isExporting}
-            className="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-md shadow-emerald-900/30 gap-1.5"
+            className="text-xs bg-gradient-to-r from-[#d4af37] via-[#c59b52] to-[#b08140] text-black font-bold shadow-md gap-1.5 rounded-xl"
           >
             <Download className="h-3.5 w-3.5" />
             {isExporting ? 'Génération en cours...' : `Télécharger le fichier ${format}`}

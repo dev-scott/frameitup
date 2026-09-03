@@ -100,7 +100,10 @@ export default function FinanceDashboard() {
   const unpaidInvoicesCount = invoices.filter((i) => i.status !== 'PAID').length;
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-gray-950 text-gray-100 antialiased selection:bg-emerald-500 selection:text-gray-950">
+    <div className="flex h-screen w-full overflow-hidden bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased relative">
+      {/* Subtle luxury ambient gold blur */}
+      <div className="absolute top-0 right-1/4 w-[600px] h-[400px] bg-gradient-to-b from-[#c59b52]/10 via-transparent to-transparent rounded-full blur-[140px] pointer-events-none -z-10" />
+
       {/* Sidebar Navigation */}
       <Sidebar
         activeTab={activeTab}
