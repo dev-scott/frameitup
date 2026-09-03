@@ -53,12 +53,12 @@ export function Navbar() {
   }, [mobileOpen]);
 
   const navLinks = [
-    {
-      href: '/configure',
-      label: language === 'fr' ? 'Studio Sur-Mesure' : 'Custom Studio',
-      icon: Layers,
-      highlight: true,
-    },
+    // {
+    //   href: '/configure',
+    //   label: language === 'fr' ? 'Studio Sur-Mesure' : 'Custom Studio',
+    //   icon: Layers,
+    //   highlight: true,
+    // },
     {
       href: '/frames',
       label: language === 'fr' ? 'Collections' : 'Collections',
