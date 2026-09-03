@@ -102,7 +102,7 @@ export function ArtistPayoutsTable({
                       </div>
                     </TableCell>
                     <TableCell className="py-3 px-4 text-center font-bold text-[var(--text-primary)]">
-                      {p.totalOrdersCount} ventes
+                      {p.artworksCount} ventes
                     </TableCell>
                     <TableCell className="py-3 px-4 text-[var(--text-muted)]">
                       {p.period}

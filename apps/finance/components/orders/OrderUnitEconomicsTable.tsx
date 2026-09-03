@@ -38,9 +38,6 @@ export function OrderUnitEconomicsTable({ orders, currency }: OrderUnitEconomics
       ? (filtered.reduce((sum, o) => sum + o.netMarginPercent, 0) / filtered.length).toFixed(1)
       : '0';
 
-  const totalSales = filtered.reduce((sum, o) => sum + o.sellingPrice, 0);
-  const totalNetMargin = filtered.reduce((sum, o) => sum + o.netMargin, 0);
-
   return (
     <Card className="border border-[var(--border-gold)] glass-card rounded-2xl shadow-xl">
       <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
@@ -110,13 +107,13 @@ export function OrderUnitEconomicsTable({ orders, currency }: OrderUnitEconomics
                     {symbol}{(o.sellingPrice * rate).toFixed(2)}
                   </TableCell>
                   <TableCell className="py-3 px-3 text-right text-rose-400">
-                    {symbol}{(o.woodCost * rate).toFixed(2)}
+                    {symbol}{(o.costMaterial * rate).toFixed(2)}
                   </TableCell>
                   <TableCell className="py-3 px-3 text-right text-rose-400">
-                    {symbol}{(o.glassCost * rate).toFixed(2)}
+                    {symbol}{(o.costGlass * rate).toFixed(2)}
                   </TableCell>
                   <TableCell className="py-3 px-3 text-right text-rose-400">
-                    {symbol}{(o.packagingAndShippingCost * rate).toFixed(2)}
+                    {symbol}{((o.costPackaging + o.costShipping) * rate).toFixed(2)}
                   </TableCell>
                   <TableCell className="py-3 px-3 text-right text-[var(--text-muted)]">
                     {symbol}{(o.stripeFee * rate).toFixed(2)}

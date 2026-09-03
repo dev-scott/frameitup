@@ -22,7 +22,6 @@ import {
   CheckCircle2,
   Clock,
   Building2,
-  Download,
 } from 'lucide-react';
 
 interface ExpensesTableProps {
@@ -210,7 +209,7 @@ export function ExpensesTable({
                 {filtered.map((e) => (
                   <TableRow key={e.id} className="hover:bg-[var(--bg-tertiary)]/40 transition-colors">
                     <TableCell className="py-3 px-4 text-[var(--text-muted)]">
-                      {new Date(e.expenseDate).toLocaleDateString('fr-FR')}
+                      {new Date(e.date).toLocaleDateString('fr-FR')}
                     </TableCell>
                     <TableCell className="py-3 px-4 font-sans font-medium text-[var(--text-primary)]">
                       <div className="flex items-center gap-1.5">

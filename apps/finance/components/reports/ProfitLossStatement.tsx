@@ -101,71 +101,79 @@ export function ProfitLossStatementView({ pnl, currency }: ProfitLossStatementPr
           <div className="divide-y divide-[var(--border)] px-4 font-mono">
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Ventes de cadres sur-mesure (SaaS Direct)</span>
-              <span>{fmt(pnl.revenue.customFramesSales)}</span>
+              <span>{fmt(pnl.revenue.saasCustomFrames)}</span>
             </div>
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Commissions Marketplace Artistes</span>
-              <span>{fmt(pnl.revenue.marketplaceCommissions)}</span>
+              <span>{fmt(pnl.revenue.marketplaceArt)}</span>
             </div>
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Commandes Entreprises & B2B</span>
-              <span>{fmt(pnl.revenue.b2bCorporateSales)}</span>
+              <span>{fmt(pnl.revenue.corporateB2b)}</span>
             </div>
             <div className="py-2 flex justify-between">
-              <span className="text-[var(--text-secondary)] font-sans">Frais de port refacturés clients</span>
-              <span>{fmt(pnl.revenue.shippingFeesCollected)}</span>
+              <span className="text-[var(--text-secondary)] font-sans">Abonnements & Formules Pro</span>
+              <span>{fmt(pnl.revenue.subscriptions)}</span>
             </div>
           </div>
 
           {/* 2. COÛTS DIRECTS */}
           <div className="bg-[var(--bg-secondary)] px-4 py-2.5 font-bold text-[var(--text-primary)] uppercase tracking-wider flex justify-between items-center border-y border-[var(--border)] mt-2 font-serif">
             <span>II. ACHATS CONSOMMÉS & COÛTS DIRECTS (COGS)</span>
-            <span className="font-mono text-rose-400">-{fmt(pnl.cogs.totalCogs)}</span>
+            <span className="font-mono text-rose-400">-{fmt(pnl.costOfGoodsSold.totalCogs)}</span>
           </div>
           <div className="divide-y divide-[var(--border)] px-4 font-mono">
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Baguettes en bois noble (Chêne, Noyer, Doré)</span>
-              <span className="text-rose-400">-{fmt(pnl.cogs.woodMouldings)}</span>
+              <span className="text-rose-400">-{fmt(pnl.costOfGoodsSold.woodMouldings)}</span>
             </div>
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Vitrage optique musée & anti-reflet UV</span>
-              <span className="text-rose-400">-{fmt(pnl.cogs.glassAndPlexiglass)}</span>
+              <span className="text-rose-400">-{fmt(pnl.costOfGoodsSold.museumGlassPlexi)}</span>
             </div>
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Passe-partout 100% coton sans acide</span>
-              <span className="text-rose-400">-{fmt(pnl.cogs.matboards)}</span>
+              <span className="text-rose-400">-{fmt(pnl.costOfGoodsSold.matboardsBackings)}</span>
             </div>
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Emballages renforcés & caisses de transport</span>
-              <span className="text-rose-400">-{fmt(pnl.cogs.packaging)}</span>
+              <span className="text-rose-400">-{fmt(pnl.costOfGoodsSold.packagingSupplies)}</span>
             </div>
             <div className="py-2 flex justify-between">
-              <span className="text-[var(--text-secondary)] font-sans">Expéditions DHL Express & transporteurs</span>
-              <span className="text-rose-400">-{fmt(pnl.cogs.shippingCosts)}</span>
+              <span className="text-[var(--text-secondary)] font-sans">Expéditions directes & transporteurs</span>
+              <span className="text-rose-400">-{fmt(pnl.costOfGoodsSold.directShipping)}</span>
             </div>
           </div>
 
           {/* 3. CHARGES D'EXPLOITATION */}
           <div className="bg-[var(--bg-secondary)] px-4 py-2.5 font-bold text-[var(--text-primary)] uppercase tracking-wider flex justify-between items-center border-y border-[var(--border)] mt-2 font-serif">
             <span>III. CHARGES D'EXPLOITATION & FRAIS GÉNÉRAUX (OPEX)</span>
-            <span className="font-mono text-rose-400">-{fmt(pnl.opex.totalOpex)}</span>
+            <span className="font-mono text-rose-400">-{fmt(pnl.operatingExpenses.totalOpex)}</span>
           </div>
           <div className="divide-y divide-[var(--border)] px-4 font-mono">
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Salaires atelier & équipe</span>
-              <span className="text-rose-400">-{fmt(pnl.opex.salariesAndWages)}</span>
+              <span className="text-rose-400">-{fmt(pnl.operatingExpenses.salariesAndWages)}</span>
             </div>
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Loyer atelier Paris 11e & énergie</span>
-              <span className="text-rose-400">-{fmt(pnl.opex.workshopRentAndUtilities)}</span>
+              <span className="text-rose-400">-{fmt(pnl.operatingExpenses.workshopRentAndUtilities)}</span>
             </div>
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Marketing digital & acquisition</span>
-              <span className="text-rose-400">-{fmt(pnl.opex.marketingAndAds)}</span>
+              <span className="text-rose-400">-{fmt(pnl.operatingExpenses.marketingAndAds)}</span>
             </div>
             <div className="py-2 flex justify-between">
               <span className="text-[var(--text-secondary)] font-sans">Commissions bancaires & passerelle Stripe</span>
-              <span className="text-rose-400">-{fmt(pnl.opex.paymentProcessingFees)}</span>
+              <span className="text-rose-400">-{fmt(pnl.operatingExpenses.paymentProcessingFees)}</span>
+            </div>
+            <div className="py-2 flex justify-between">
+              <span className="text-[var(--text-secondary)] font-sans">Logiciels, cloud & serveurs</span>
+              <span className="text-rose-400">-{fmt(pnl.operatingExpenses.softwareAndHosting)}</span>
+            </div>
+            <div className="py-2 flex justify-between">
+              <span className="text-[var(--text-secondary)] font-sans">Conseil juridique & expert-comptable</span>
+              <span className="text-rose-400">-{fmt(pnl.operatingExpenses.legalAndAccounting)}</span>
             </div>
           </div>
 

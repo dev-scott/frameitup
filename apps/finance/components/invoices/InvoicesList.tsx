@@ -15,7 +15,7 @@ import {
   Button,
 } from '@frameitup/ui';
 import { Invoice, InvoiceStatus } from '@frameitup/types';
-import { FileText, Download, CheckCircle2, Clock, AlertTriangle, Building, Eye } from 'lucide-react';
+import { FileText, Download, CheckCircle2, Clock, AlertTriangle, Building } from 'lucide-react';
 
 interface InvoicesListProps {
   invoices: Invoice[];
@@ -161,13 +161,13 @@ export function InvoicesList({
                     {new Date(inv.dueDate).toLocaleDateString('fr-FR')}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-right text-[var(--text-primary)]">
-                    {symbol}{(inv.amountUsd * rate).toFixed(2)}
+                    {symbol}{(inv.subtotalUsd * rate).toFixed(2)}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-right text-[#c59b52]">
                     {symbol}{(inv.taxAmountUsd * rate).toFixed(2)}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-right font-bold text-[var(--text-primary)]">
-                    {symbol}{(inv.totalWithTaxUsd * rate).toFixed(2)}
+                    {symbol}{(inv.totalUsd * rate).toFixed(2)}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-center">
                     {getStatusBadge(inv.status)}

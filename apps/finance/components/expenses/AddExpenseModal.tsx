@@ -11,7 +11,7 @@ import {
   Input,
 } from '@frameitup/ui';
 import { ExpenseCategory, PaymentMethod, ExpenseStatus, Expense } from '@frameitup/types';
-import { Receipt, DollarSign, Euro, Calculator } from 'lucide-react';
+import { Receipt } from 'lucide-react';
 
 interface AddExpenseModalProps {
   isOpen: boolean;
@@ -56,7 +56,7 @@ export function AddExpenseModal({
       totalWithTaxUsd: totalTtc,
       status: ExpenseStatus.PAID,
       paymentMethod,
-      expenseDate: new Date(),
+      date: new Date(),
       paidAt: new Date(),
       period: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`,
       isRecurring,
@@ -119,7 +119,7 @@ export function AddExpenseModal({
             </div>
           </div>
 
-          {/* Catégorie & Moyen de Paiement */}
+          {/* Catégorie & Mode de Paiement */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-[var(--text-secondary)]">Catégorie Comptable</label>
@@ -148,7 +148,7 @@ export function AddExpenseModal({
                 className="w-full h-9 rounded-xl border border-[var(--border)] bg-[var(--bg-primary)] px-3 text-xs text-[var(--text-primary)] focus:border-[#c59b52] focus:outline-none"
               >
                 <option value={PaymentMethod.BANK_TRANSFER}>Virement Bancaire (SEPA)</option>
-                <option value={PaymentMethod.CARD}>Carte Bancaire Société</option>
+                <option value={PaymentMethod.CREDIT_CARD}>Carte Bancaire Société</option>
                 <option value={PaymentMethod.DIRECT_DEBIT}>Prélèvement Automatique</option>
                 <option value={PaymentMethod.STRIPE}>Passerelle Stripe</option>
               </select>
