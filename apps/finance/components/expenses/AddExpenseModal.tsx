@@ -11,7 +11,7 @@ import {
   Input,
 } from '@frameitup/ui';
 import { ExpenseCategory, PaymentMethod, ExpenseStatus, Expense } from '@frameitup/types';
-import { PlusCircle, Receipt, DollarSign, Euro, Calculator } from 'lucide-react';
+import { Receipt, DollarSign, Euro, Calculator } from 'lucide-react';
 
 interface AddExpenseModalProps {
   isOpen: boolean;
@@ -56,7 +56,7 @@ export function AddExpenseModal({
       totalWithTaxUsd: totalTtc,
       status: ExpenseStatus.PAID,
       paymentMethod,
-      date: new Date(),
+      expenseDate: new Date(),
       paidAt: new Date(),
       period: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`,
       isRecurring,
@@ -75,17 +75,17 @@ export function AddExpenseModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl bg-gray-900 border-gray-800 text-gray-100 p-6 rounded-2xl">
-        <DialogHeader className="border-b border-gray-800 pb-3">
+      <DialogContent className="max-w-xl bg-[var(--bg-card)] border border-[var(--border-gold)] text-[var(--text-primary)] p-6 rounded-3xl shadow-2xl backdrop-blur-2xl">
+        <DialogHeader className="border-b border-[var(--border)] pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#c59b52]/10 text-[#c59b52] border border-[#c59b52]/20">
               <Receipt className="h-4 w-4" />
             </div>
             <div>
-              <DialogTitle className="text-base font-bold text-white">
+              <DialogTitle className="text-base font-bold font-serif text-[var(--text-primary)]">
                 Saisie d'une Dépense ou Facture Fournisseur
               </DialogTitle>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-[var(--text-muted)]">
                 Enregistrez un achat de matière première ou un frais de fonctionnement
               </p>
             </div>
@@ -96,132 +96,125 @@ export function AddExpenseModal({
           {/* Libellé & Fournisseur */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-300">
+              <label className="text-xs font-semibold text-[var(--text-secondary)]">
                 Libellé de la dépense *
               </label>
               <Input
                 required
-                placeholder="ex: Lot 200m baguettes Noyer"
+                placeholder="Ex: Baguettes Chêne 500m"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="h-9 text-xs"
+                className="bg-[var(--bg-primary)] border-[var(--border)] text-xs h-9 focus:border-[#c59b52] rounded-xl"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-300">
-                Fournisseur / Prestataire
-              </label>
+              <label className="text-xs font-semibold text-[var(--text-secondary)]">Fournisseur</label>
               <Input
-                placeholder="ex: Moulures des Vosges SAS"
+                placeholder="Ex: Scierie Vosgienne"
                 value={supplierName}
                 onChange={(e) => setSupplierName(e.target.value)}
-                className="h-9 text-xs"
+                className="bg-[var(--bg-primary)] border-[var(--border)] text-xs h-9 focus:border-[#c59b52] rounded-xl"
               />
             </div>
           </div>
 
-          {/* Catégorie & Mode de règlement */}
+          {/* Catégorie & Moyen de Paiement */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-300">Catégorie comptable</label>
+              <label className="text-xs font-semibold text-[var(--text-secondary)]">Catégorie Comptable</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
-                className="h-9 w-full rounded-lg border border-gray-800 bg-gray-950 px-3 text-xs text-gray-200 focus:border-emerald-500 focus:outline-none"
+                className="w-full h-9 rounded-xl border border-[var(--border)] bg-[var(--bg-primary)] px-3 text-xs text-[var(--text-primary)] focus:border-[#c59b52] focus:outline-none"
               >
                 <option value={ExpenseCategory.RAW_MATERIALS_WOOD}>Baguettes Bois / Moulures</option>
                 <option value={ExpenseCategory.RAW_MATERIALS_GLASS}>Verre Optique & Musée</option>
                 <option value={ExpenseCategory.PACKAGING}>Cartons & Emballages</option>
-                <option value={ExpenseCategory.SHIPPING_LOGISTICS}>Transport & DHL Express</option>
-                <option value={ExpenseCategory.MARKETING_ADS}>Publicité Meta & Google</option>
+                <option value={ExpenseCategory.SHIPPING_LOGISTICS}>Transport & Expéditions</option>
+                <option value={ExpenseCategory.MARKETING_ADS}>Publicité Meta / Google</option>
                 <option value={ExpenseCategory.SOFTWARE_SERVERS}>Serveurs & Logiciels</option>
+                <option value={ExpenseCategory.WORKSHOP_RENT}>Loyer Atelier Paris</option>
                 <option value={ExpenseCategory.PAYROLL_SALARIES}>Salaires & Rémunérations</option>
-                <option value={ExpenseCategory.WORKSHOP_RENT}>Loyer Atelier & Charges</option>
-                <option value={ExpenseCategory.LEGAL_ACCOUNTING}>Expert-Comptable & Juridique</option>
                 <option value={ExpenseCategory.OTHER_OPEX}>Autres Frais Généraux</option>
               </select>
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-300">Mode de paiement</label>
+              <label className="text-xs font-semibold text-[var(--text-secondary)]">Mode de Paiement</label>
               <select
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-                className="h-9 w-full rounded-lg border border-gray-800 bg-gray-950 px-3 text-xs text-gray-200 focus:border-emerald-500 focus:outline-none"
+                className="w-full h-9 rounded-xl border border-[var(--border)] bg-[var(--bg-primary)] px-3 text-xs text-[var(--text-primary)] focus:border-[#c59b52] focus:outline-none"
               >
                 <option value={PaymentMethod.BANK_TRANSFER}>Virement Bancaire (SEPA)</option>
-                <option value={PaymentMethod.CREDIT_CARD}>Carte Bancaire Entreprise</option>
+                <option value={PaymentMethod.CARD}>Carte Bancaire Société</option>
                 <option value={PaymentMethod.DIRECT_DEBIT}>Prélèvement Automatique</option>
-                <option value={PaymentMethod.STRIPE}>Stripe / En ligne</option>
-                <option value={PaymentMethod.PAYPAL}>PayPal</option>
+                <option value={PaymentMethod.STRIPE}>Passerelle Stripe</option>
               </select>
             </div>
           </div>
 
-          {/* Montant HT & Taux TVA */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-300">Montant HT ({symbol}) *</label>
-              <Input
-                required
-                type="number"
-                step="0.01"
-                min="0.01"
-                placeholder="0.00"
-                value={amountHt}
-                onChange={(e) => setAmountHt(e.target.value)}
-                className="h-9 text-xs font-mono font-bold"
-              />
+          {/* Montants HT, TVA et TTC */}
+          <div className="p-4 rounded-2xl bg-[var(--bg-primary)] border border-[var(--border)] space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-[var(--text-secondary)]">Montant HT ({symbol}) *</label>
+                <Input
+                  required
+                  type="number"
+                  step="0.01"
+                  placeholder="0.00"
+                  value={amountHt}
+                  onChange={(e) => setAmountHt(e.target.value)}
+                  className="bg-[var(--bg-card)] border-[var(--border)] font-mono text-xs h-9 focus:border-[#c59b52] rounded-xl"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-[var(--text-secondary)]">Taux TVA (%)</label>
+                <select
+                  value={taxRate}
+                  onChange={(e) => setTaxRate(Number(e.target.value))}
+                  className="w-full h-9 rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-3 text-xs text-[var(--text-primary)] focus:border-[#c59b52] focus:outline-none"
+                >
+                  <option value={20}>20.0% (Taux Normal)</option>
+                  <option value={10}>10.0% (Intermédiaire)</option>
+                  <option value={5.5}>5.5% (Taux Réduit)</option>
+                  <option value={0}>0.0% (Exonéré / Intracom)</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-[var(--text-secondary)]">TVA Calculée</label>
+                <div className="h-9 flex items-center px-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-xs font-mono font-bold text-[#c59b52]">
+                  {symbol}{taxAmount.toFixed(2)}
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-300">Taux de TVA (%)</label>
-              <select
-                value={taxRate}
-                onChange={(e) => setTaxRate(Number(e.target.value))}
-                className="h-9 w-full rounded-lg border border-gray-800 bg-gray-950 px-3 text-xs text-gray-200 focus:border-emerald-500 focus:outline-none"
-              >
-                <option value={20}>20% (Taux normal)</option>
-                <option value={10}>10% (Taux intermédiaire)</option>
-                <option value={5.5}>5.5% (Taux réduit art/livre)</option>
-                <option value={0}>0% (Exonéré / Autoliquidation)</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Tax summary banner */}
-          <div className="p-3 rounded-xl bg-gray-950 border border-gray-800 flex items-center justify-between text-xs">
-            <div>
-              <span className="text-gray-400">TVA déductible : </span>
-              <span className="font-mono font-bold text-emerald-400">
-                {symbol}
-                {taxAmount.toFixed(2)}
-              </span>
-            </div>
-            <div>
-              <span className="text-gray-400">Total TTC à décaisser : </span>
-              <span className="font-mono font-bold text-white text-sm">
-                {symbol}
-                {totalTtc.toFixed(2)}
+            <div className="pt-2 border-t border-[var(--border)] flex items-center justify-between">
+              <span className="text-xs font-bold text-[var(--text-secondary)] uppercase">Total TTC Décaissé :</span>
+              <span className="text-base font-bold font-mono text-[var(--text-primary)]">
+                {symbol}{totalTtc.toFixed(2)}
               </span>
             </div>
           </div>
 
-          <DialogFooter className="pt-2 border-t border-gray-800">
+          <DialogFooter className="border-t border-[var(--border)] pt-3 gap-2">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
-              className="text-xs border-gray-700 text-gray-300 hover:bg-gray-800"
+              className="border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] text-xs rounded-xl"
             >
               Annuler
             </Button>
             <Button
               type="submit"
-              className="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-md shadow-emerald-900/30"
+              className="bg-gradient-to-r from-[#d4af37] via-[#c59b52] to-[#b08140] text-black font-bold text-xs rounded-xl shadow-md"
             >
-              Valider & Enregistrer l'Écriture
+              Enregistrer l'Écriture
             </Button>
           </DialogFooter>
         </form>

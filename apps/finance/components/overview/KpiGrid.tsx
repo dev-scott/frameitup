@@ -3,9 +3,7 @@
 import React from 'react';
 import {
   TrendingUp,
-  TrendingDown,
   DollarSign,
-  Euro,
   Percent,
   Wallet,
   ShoppingBag,
@@ -40,7 +38,7 @@ export function KpiGrid({ kpis, currency }: KpiGridProps) {
       subValue: `+${kpis.revenueGrowthPercent}% vs m-1`,
       isPositive: true,
       icon: DollarSign,
-      color: 'emerald',
+      color: 'gold',
       sparkline: [40, 48, 55, 62, 59, 74.5],
     },
     {
@@ -49,7 +47,7 @@ export function KpiGrid({ kpis, currency }: KpiGridProps) {
       subValue: `${kpis.grossMarginPercent}% du CA`,
       isPositive: true,
       icon: Percent,
-      color: 'teal',
+      color: 'gold',
       sparkline: [30, 36, 42, 58, 46, 56],
     },
     {
@@ -58,7 +56,7 @@ export function KpiGrid({ kpis, currency }: KpiGridProps) {
       subValue: `${kpis.netMarginPercent}% marge nette`,
       isPositive: true,
       icon: Scale,
-      color: 'blue',
+      color: 'emerald',
       sparkline: [9, 12, 16, 26, 17, 23.9],
     },
     {
@@ -67,7 +65,7 @@ export function KpiGrid({ kpis, currency }: KpiGridProps) {
       subValue: `${kpis.cashRunwayMonths} mois de runway`,
       isPositive: true,
       icon: Wallet,
-      color: 'indigo',
+      color: 'gold',
       sparkline: [110, 118, 125, 140, 138, 148.5],
     },
     {
@@ -76,7 +74,7 @@ export function KpiGrid({ kpis, currency }: KpiGridProps) {
       subValue: `${kpis.totalOrdersCount} commandes traitées`,
       isPositive: true,
       icon: ShoppingBag,
-      color: 'amber',
+      color: 'gold',
       sparkline: [180, 195, 205, 220, 210, 217.8],
     },
     {
@@ -97,30 +95,30 @@ export function KpiGrid({ kpis, currency }: KpiGridProps) {
         return (
           <Card
             key={idx}
-            className="border-gray-800/80 bg-gradient-to-b from-gray-900/90 to-gray-900/50 backdrop-blur-md hover:border-gray-700/80 transition-all duration-200 group"
+            className="border border-[var(--border-gold)] glass-card hover:border-[#c59b52]/60 transition-all duration-300 group rounded-2xl shadow-lg"
           >
             <CardContent className="p-4 flex flex-col justify-between h-full space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider line-clamp-1">
+                <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider line-clamp-1">
                   {card.title}
                 </span>
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-800/80 text-gray-400 group-hover:text-emerald-400 group-hover:bg-emerald-500/10 transition-colors">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#c59b52]/10 text-[#c59b52] group-hover:scale-110 group-hover:bg-[#c59b52] group-hover:text-black transition-all border border-[#c59b52]/20">
                   <Icon className="h-3.5 w-3.5" />
                 </div>
               </div>
 
               <div>
-                <div className="text-xl font-bold text-white tracking-tight">
+                <div className="text-2xl font-serif font-bold text-[var(--text-primary)] tracking-tight">
                   {card.value}
                 </div>
-                <div className="mt-1 flex items-center gap-1.5 text-[11px]">
+                <div className="mt-1 flex items-center gap-1 text-[11px] font-mono">
                   {card.isPositive ? (
-                    <span className="inline-flex items-center text-emerald-400 font-medium">
+                    <span className="inline-flex items-center text-[#c59b52] font-semibold">
                       <ArrowUpRight className="h-3 w-3 mr-0.5" />
                       {card.subValue}
                     </span>
                   ) : (
-                    <span className="inline-flex items-center text-amber-400 font-medium">
+                    <span className="inline-flex items-center text-rose-400 font-semibold">
                       <ArrowDownRight className="h-3 w-3 mr-0.5" />
                       {card.subValue}
                     </span>
@@ -141,14 +139,14 @@ export function KpiGrid({ kpis, currency }: KpiGridProps) {
                   return (
                     <div
                       key={sIdx}
-                      className="flex-1 bg-gray-800 rounded-sm overflow-hidden h-full flex items-end"
+                      className="flex-1 bg-[var(--bg-tertiary)] rounded-sm overflow-hidden h-full flex items-end"
                     >
                       <div
                         style={{ height: `${heightPercent}%` }}
                         className={`w-full rounded-sm transition-all duration-500 ${
                           isLast
-                            ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50'
-                            : 'bg-gray-700 group-hover:bg-gray-600'
+                            ? 'bg-gradient-to-t from-[#c59b52] to-[#d4af37] shadow-sm shadow-[#c59b52]/50'
+                            : 'bg-[#c59b52]/25 group-hover:bg-[#c59b52]/40'
                         }`}
                       />
                     </div>

@@ -42,7 +42,7 @@ export function InvoicesList({
     switch (status) {
       case InvoiceStatus.PAID:
         return (
-          <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-400 border border-emerald-500/20">
+          <span className="inline-flex items-center gap-1 rounded-md bg-[#c59b52]/10 px-2 py-0.5 text-xs font-semibold text-[#c59b52] border border-[#c59b52]/20">
             <CheckCircle2 className="h-3 w-3" /> Encaissée
           </span>
         );
@@ -60,7 +60,7 @@ export function InvoicesList({
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 rounded-md bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-300">
+          <span className="inline-flex items-center gap-1 rounded-md bg-[var(--bg-tertiary)] px-2 py-0.5 text-xs font-semibold text-[var(--text-muted)]">
             {status}
           </span>
         );
@@ -68,18 +68,18 @@ export function InvoicesList({
   };
 
   return (
-    <Card className="border-gray-800/80 bg-gradient-to-b from-gray-900/90 to-gray-900/40 backdrop-blur-md">
-      <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-800/60">
+    <Card className="border border-[var(--border-gold)] glass-card rounded-2xl shadow-xl">
+      <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
         <div>
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#c59b52]/10 text-[#c59b52] border border-[#c59b52]/20">
               <FileText className="h-4 w-4" />
             </div>
-            <CardTitle className="text-base font-bold text-white">
+            <CardTitle className="text-base font-bold font-serif text-[var(--text-primary)]">
               Factures Clients & Commandes B2B / Proforma
             </CardTitle>
           </div>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-[var(--text-muted)] mt-1">
             Émission, suivi des encaissements clients et téléchargement des justificatifs comptables
           </p>
         </div>
@@ -88,9 +88,9 @@ export function InvoicesList({
           <Button
             onClick={onExportModalOpen}
             variant="outline"
-            className="border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs h-9 gap-1.5"
+            className="border-[var(--border)] bg-[var(--bg-primary)] hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-xs h-9 gap-1.5 rounded-xl"
           >
-            <Download className="h-3.5 w-3.5" />
+            <Download className="h-3.5 w-3.5 text-[#c59b52]" />
             Exporter Écritures (FEC / CSV)
           </Button>
         </div>
@@ -98,90 +98,87 @@ export function InvoicesList({
 
       <CardContent className="pt-4 space-y-4">
         {/* Filter bar */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {['ALL', 'PAID', 'ISSUED', 'OVERDUE'].map((st) => (
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-1 bg-[var(--bg-primary)] p-1 rounded-xl border border-[var(--border)] text-xs">
+            {['ALL', 'PAID', 'ISSUED', 'OVERDUE'].map((s) => (
               <button
-                key={st}
-                onClick={() => setStatusFilter(st)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  statusFilter === st
-                    ? 'bg-gray-800 text-white border border-gray-700 shadow-sm'
-                    : 'text-gray-400 hover:text-gray-200'
+                key={s}
+                onClick={() => setStatusFilter(s)}
+                className={`px-3 py-1 rounded-lg text-[11px] font-medium transition-all ${
+                  statusFilter === s
+                    ? 'bg-[#c59b52] text-black font-bold shadow-sm'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 }`}
               >
-                {st === 'ALL' && 'Toutes les factures'}
-                {st === 'PAID' && 'Encaissées'}
-                {st === 'ISSUED' && 'En attente'}
-                {st === 'OVERDUE' && 'En retard'}
+                {s === 'ALL'
+                  ? 'Toutes'
+                  : s === 'PAID'
+                  ? 'Encaissées'
+                  : s === 'ISSUED'
+                  ? 'En attente'
+                  : 'En retard'}
               </button>
             ))}
           </div>
 
-          <div className="text-xs text-gray-400">
-            Total facturé :{' '}
-            <span className="font-bold text-white font-mono">
-              {symbol}
-              {(
-                filtered.reduce((sum, i) => sum + i.totalUsd, 0) * rate
-              ).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </span>
-          </div>
+          <span className="text-xs text-[var(--text-muted)] font-mono">
+            {filtered.length} facture(s)
+          </span>
         </div>
 
         {/* Table */}
-        <div className="rounded-xl border border-gray-800/80 overflow-hidden bg-gray-950/40">
+        <div className="rounded-xl border border-[var(--border)] overflow-hidden">
           <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-900/60 border-b border-gray-800">
-                <TableHead className="text-gray-400 text-xs">N° Facture</TableHead>
-                <TableHead className="text-gray-400 text-xs">Client & Contact</TableHead>
-                <TableHead className="text-gray-400 text-xs">Date d'Émission</TableHead>
-                <TableHead className="text-gray-400 text-xs">Date d'Échéance</TableHead>
-                <TableHead className="text-right text-gray-400 text-xs">Total HT</TableHead>
-                <TableHead className="text-right text-gray-400 text-xs">TVA (20%)</TableHead>
-                <TableHead className="text-right text-gray-400 text-xs">Total TTC</TableHead>
-                <TableHead className="text-center text-gray-400 text-xs">Statut</TableHead>
-                <TableHead className="text-right text-gray-400 text-xs">Actions</TableHead>
+            <TableHeader className="bg-[var(--bg-secondary)] text-[var(--text-muted)] text-[11px] uppercase tracking-wider font-semibold">
+              <TableRow className="border-b border-[var(--border)]">
+                <TableHead className="py-3 px-4">N° Facture</TableHead>
+                <TableHead className="py-3 px-4">Client / Entreprise</TableHead>
+                <TableHead className="py-3 px-4">Date d'Émission</TableHead>
+                <TableHead className="py-3 px-4">Échéance</TableHead>
+                <TableHead className="py-3 px-4 text-right">Montant HT</TableHead>
+                <TableHead className="py-3 px-4 text-right">TVA 20%</TableHead>
+                <TableHead className="py-3 px-4 text-right">Total TTC</TableHead>
+                <TableHead className="py-3 px-4 text-center">Statut</TableHead>
+                <TableHead className="py-3 px-4 text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="divide-y divide-[var(--border)] text-xs font-mono">
               {filtered.map((inv) => (
-                <TableRow key={inv.id} className="hover:bg-gray-800/30">
-                  <TableCell className="text-xs font-mono font-bold text-blue-400">
+                <TableRow key={inv.id} className="hover:bg-[var(--bg-tertiary)]/40 transition-colors">
+                  <TableCell className="py-3 px-4 font-bold text-[#c59b52]">
                     {inv.invoiceNumber}
                   </TableCell>
-                  <TableCell>
-                    <div className="text-xs font-semibold text-white">{inv.clientName}</div>
-                    <div className="text-[11px] text-gray-400">{inv.clientEmail}</div>
+                  <TableCell className="py-3 px-4 font-sans font-medium text-[var(--text-primary)]">
+                    <div className="flex items-center gap-1.5">
+                      <Building className="h-3.5 w-3.5 text-[var(--text-subtle)]" />
+                      <span>{inv.clientName}</span>
+                    </div>
                   </TableCell>
-                  <TableCell className="text-xs text-gray-300 font-mono">
+                  <TableCell className="py-3 px-4 text-[var(--text-muted)]">
                     {new Date(inv.issueDate).toLocaleDateString('fr-FR')}
                   </TableCell>
-                  <TableCell className="text-xs text-gray-300 font-mono">
+                  <TableCell className="py-3 px-4 text-[var(--text-muted)]">
                     {new Date(inv.dueDate).toLocaleDateString('fr-FR')}
                   </TableCell>
-                  <TableCell className="text-right text-xs font-mono text-gray-300">
-                    {symbol}
-                    {(inv.subtotalUsd * rate).toFixed(2)}
+                  <TableCell className="py-3 px-4 text-right text-[var(--text-primary)]">
+                    {symbol}{(inv.amountUsd * rate).toFixed(2)}
                   </TableCell>
-                  <TableCell className="text-right text-xs font-mono text-gray-400">
-                    {symbol}
-                    {(inv.taxAmountUsd * rate).toFixed(2)}
+                  <TableCell className="py-3 px-4 text-right text-[#c59b52]">
+                    {symbol}{(inv.taxAmountUsd * rate).toFixed(2)}
                   </TableCell>
-                  <TableCell className="text-right text-xs font-mono font-bold text-white">
-                    {symbol}
-                    {(inv.totalUsd * rate).toFixed(2)}
+                  <TableCell className="py-3 px-4 text-right font-bold text-[var(--text-primary)]">
+                    {symbol}{(inv.totalWithTaxUsd * rate).toFixed(2)}
                   </TableCell>
-                  <TableCell className="text-center">{getStatusBadge(inv.status)}</TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      className="h-8 px-2 text-xs text-gray-400 hover:text-white hover:bg-gray-800"
-                      onClick={() => alert(`Aperçu de la facture ${inv.invoiceNumber}`)}
+                  <TableCell className="py-3 px-4 text-center">
+                    {getStatusBadge(inv.status)}
+                  </TableCell>
+                  <TableCell className="py-3 px-4 text-right">
+                    <button
+                      onClick={() => alert(`Téléchargement de la facture ${inv.invoiceNumber} (PDF)`)}
+                      className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-2.5 py-1 text-[11px] text-[var(--text-secondary)] hover:text-[#c59b52] hover:border-[#c59b52]/50 transition-colors"
                     >
-                      <Eye className="h-3.5 w-3.5 mr-1" /> PDF
-                    </Button>
+                      <Download className="h-3 w-3" /> PDF
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}

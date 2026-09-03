@@ -1,3 +1,72 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  --bg-primary: #090807;
+  --bg-secondary: #110F0D;
+  --bg-tertiary: #191714;
+  --bg-card: #151311;
+  --bg-card-hover: #1D1A17;
+
+  --text-primary: #FAF8F5;
+  --text-secondary: #D4CEBF;
+  --text-muted: #9E9689;
+  --text-subtle: #6E685E;
+
+  --border: rgba(250, 248, 245, 0.08);
+  --border-strong: rgba(250, 248, 245, 0.16);
+  --border-gold: rgba(197, 155, 82, 0.28);
+  --border-gold-glow: rgba(212, 175, 55, 0.45);
+
+  --brand-gold: #c59b52;
+  --brand-gold-bright: #d4af37;
+  --brand-gold-dark: #844819;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.011em;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: var(--font-playfair), 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+.glass-card {
+  background: rgba(21, 19, 17, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #f2d08a 0%, #c59b52 50%, #926435 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-glow {
+  box-shadow: 0 0 35px -8px rgba(197, 155, 82, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090807;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(197, 155, 82, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(197, 155, 82, 0.55);
+}

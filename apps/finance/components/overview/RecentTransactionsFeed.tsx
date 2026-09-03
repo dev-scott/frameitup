@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent, Badge } from '@frameitup/ui';
-import { ArrowDownLeft, ArrowUpRight, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from '@frameitup/ui';
+import { ArrowDownLeft, ArrowUpRight, Clock } from 'lucide-react';
 
 interface RecentTransactionsFeedProps {
   currency: 'USD' | 'EUR';
@@ -15,7 +15,7 @@ export function RecentTransactionsFeed({ currency }: RecentTransactionsFeedProps
   const transactions = [
     {
       id: 'tx-1',
-      title: 'Commande SaaS #CMD-2026-0412',
+      title: 'Commande Client #CMD-2026-0412',
       subtitle: 'Sophie Martin — Cadre Chêne 50x70',
       amount: 189.0,
       type: 'INCOME',
@@ -61,31 +61,31 @@ export function RecentTransactionsFeed({ currency }: RecentTransactionsFeedProps
   ];
 
   return (
-    <Card className="border-gray-800/80 bg-gradient-to-b from-gray-900/90 to-gray-900/40 backdrop-blur-md">
-      <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-gray-800/60">
+    <Card className="border border-[var(--border-gold)] glass-card rounded-2xl shadow-xl">
+      <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-[var(--border)]">
         <div>
-          <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
-            <Clock className="h-4 w-4 text-emerald-400" />
+          <CardTitle className="text-base font-bold font-serif text-[var(--text-primary)] flex items-center gap-2">
+            <Clock className="h-4 w-4 text-[#c59b52]" />
             Flux des Écritures & Transactions Récentes
           </CardTitle>
-          <p className="text-xs text-gray-400">Dernières entrées de trésorerie et règlements</p>
+          <p className="text-xs text-[var(--text-muted)] mt-0.5">Dernières entrées de trésorerie et règlements</p>
         </div>
-        <span className="text-[10px] text-emerald-400 font-mono">Temps Réel</span>
+        <span className="text-[10px] text-[#c59b52] font-mono font-bold bg-[#c59b52]/10 px-2 py-0.5 rounded-full border border-[#c59b52]/20">Temps Réel</span>
       </CardHeader>
 
-      <CardContent className="pt-4 divide-y divide-gray-800/60">
+      <CardContent className="pt-4 divide-y divide-[var(--border)]">
         {transactions.map((tx) => {
           const isIncome = tx.amount > 0;
           return (
             <div
               key={tx.id}
-              className="py-3 first:pt-0 last:pb-0 flex items-center justify-between hover:bg-gray-800/20 px-2 rounded-lg transition-colors"
+              className="py-3 first:pt-0 last:pb-0 flex items-center justify-between hover:bg-[var(--bg-tertiary)]/40 px-2 rounded-xl transition-colors"
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-lg ${
                     isIncome
-                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                      ? 'bg-[#c59b52]/10 text-[#c59b52] border border-[#c59b52]/30'
                       : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                   }`}
                 >
@@ -97,15 +97,15 @@ export function RecentTransactionsFeed({ currency }: RecentTransactionsFeedProps
                 </div>
 
                 <div>
-                  <div className="text-xs font-semibold text-white">{tx.title}</div>
-                  <div className="text-[10px] text-gray-400">{tx.subtitle}</div>
+                  <div className="text-xs font-semibold text-[var(--text-primary)]">{tx.title}</div>
+                  <div className="text-[10px] text-[var(--text-muted)]">{tx.subtitle}</div>
                 </div>
               </div>
 
               <div className="text-right">
                 <div
                   className={`text-xs font-bold font-mono ${
-                    isIncome ? 'text-emerald-400' : 'text-gray-200'
+                    isIncome ? 'text-[#c59b52]' : 'text-[var(--text-secondary)]'
                   }`}
                 >
                   {isIncome ? '+' : ''}
@@ -115,7 +115,7 @@ export function RecentTransactionsFeed({ currency }: RecentTransactionsFeedProps
                     maximumFractionDigits: 2,
                   })}
                 </div>
-                <div className="text-[10px] text-gray-400">{tx.time}</div>
+                <div className="text-[10px] text-[var(--text-subtle)]">{tx.time}</div>
               </div>
             </div>
           );

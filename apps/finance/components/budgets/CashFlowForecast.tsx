@@ -12,7 +12,7 @@ import {
   Legend,
 } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from '@frameitup/ui';
-import { Target, Sparkles, TrendingUp } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 interface CashFlowForecastProps {
   currency: 'USD' | 'EUR';
@@ -32,18 +32,18 @@ export function CashFlowForecast({ currency }: CashFlowForecastProps) {
   ];
 
   return (
-    <Card className="border-gray-800/80 bg-gradient-to-b from-gray-900/90 to-gray-900/40 backdrop-blur-md">
-      <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-gray-800/60">
+    <Card className="border border-[var(--border-gold)] glass-card rounded-2xl shadow-xl">
+      <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-[var(--border)]">
         <div>
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#c59b52]/10 text-[#c59b52] border border-[#c59b52]/20">
               <Sparkles className="h-4 w-4" />
             </div>
-            <CardTitle className="text-sm font-bold text-white">
+            <CardTitle className="text-base font-bold font-serif text-[var(--text-primary)]">
               Prévisions Prédictives de Trésorerie (Horizon 6 Mois)
             </CardTitle>
           </div>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-[var(--text-muted)] mt-0.5">
             Modèle de projection basé sur +7.5% de croissance mensuelle et structure de coûts actuelle
           </p>
         </div>
@@ -53,16 +53,16 @@ export function CashFlowForecast({ currency }: CashFlowForecastProps) {
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={forecastData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(250, 248, 245, 0.06)" vertical={false} />
               <XAxis
                 dataKey="month"
-                stroke="#6b7280"
+                stroke="#9E9689"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: '#374151' }}
+                axisLine={{ stroke: 'rgba(250, 248, 245, 0.1)' }}
               />
               <YAxis
-                stroke="#6b7280"
+                stroke="#9E9689"
                 fontSize={11}
                 tickLine={false}
                 axisLine={false}
@@ -70,11 +70,11 @@ export function CashFlowForecast({ currency }: CashFlowForecastProps) {
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#111827',
-                  borderColor: '#374151',
-                  borderRadius: '12px',
+                  backgroundColor: '#151311',
+                  borderColor: 'rgba(197, 155, 82, 0.3)',
+                  borderRadius: '16px',
                   fontSize: '11px',
-                  color: '#fff',
+                  color: '#FAF8F5',
                 }}
               />
               <Legend
@@ -83,9 +83,9 @@ export function CashFlowForecast({ currency }: CashFlowForecastProps) {
                 iconType="circle"
                 wrapperStyle={{ paddingBottom: '10px', fontSize: '11px' }}
               />
-              <Bar dataKey="cashIn" name="Encaissements Prévus" fill="#10b981" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="cashIn" name="Encaissements Prévus" fill="#d4af37" radius={[4, 4, 0, 0]} />
               <Bar dataKey="cashOut" name="Décaissements Prévus" fill="#f43f5e" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="net" name="Génération Nette de Cash" fill="#6366f1" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="net" name="Génération Nette de Cash" fill="#c59b52" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

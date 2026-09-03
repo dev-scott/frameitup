@@ -3,14 +3,12 @@
 import React from 'react';
 import {
   Search,
-  Bell,
   Calendar,
   DollarSign,
   Euro,
   PlusCircle,
-  ShieldCheck,
-  Sparkles,
   TrendingUp,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@frameitup/ui';
 
@@ -30,35 +28,35 @@ export function Header({
   onOpenAddExpense,
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-gray-800/80 bg-gray-950/80 px-8 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[var(--border)] bg-[var(--bg-primary)]/85 px-8 backdrop-blur-xl">
       {/* Search & Breadcrumb */}
       <div className="flex items-center gap-6">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/30 text-emerald-400 shadow-lg shadow-emerald-950/40">
+        <div className="flex items-center gap-3.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c59b52]/10 border border-[#c59b52]/30 text-[#c59b52] shadow-md shadow-[#c59b52]/10">
             <TrendingUp className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c59b52]">
                 FrameItUp Enterprise
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400 border border-emerald-500/20">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#c59b52]/10 px-2 py-0.5 text-[9px] font-semibold text-[#c59b52] border border-[#c59b52]/20">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#c59b52] animate-pulse" />
                 Live Sync
               </span>
             </div>
-            <h1 className="text-lg font-bold text-white tracking-tight">
-              Finance & Direction Financière
+            <h1 className="text-lg font-bold font-serif text-[var(--text-primary)] tracking-tight">
+              Direction Financière & Comptabilité Atelier
             </h1>
           </div>
         </div>
 
         <div className="hidden lg:flex relative items-center ml-4">
-          <Search className="absolute left-3 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 h-4 w-4 text-[var(--text-subtle)]" />
           <input
             type="text"
-            placeholder="Rechercher une écriture, facture, fournisseur (⌘K)..."
-            className="h-9 w-72 rounded-lg border border-gray-800 bg-gray-900/60 pl-9 pr-4 text-xs text-gray-200 placeholder:text-gray-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all"
+            placeholder="Rechercher une écriture, facture, fournisseur..."
+            className="h-9 w-72 rounded-xl border border-[var(--border)] bg-[var(--bg-card)] pl-9 pr-4 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-subtle)] focus:border-[#c59b52] focus:outline-none transition-all"
           />
         </div>
       </div>
@@ -66,16 +64,16 @@ export function Header({
       {/* Right Controls */}
       <div className="flex items-center gap-3">
         {/* Period Selector */}
-        <div className="flex items-center rounded-lg border border-gray-800 bg-gray-900/80 p-1 text-xs text-gray-300">
-          <Calendar className="ml-2 mr-1.5 h-3.5 w-3.5 text-gray-400" />
+        <div className="flex items-center rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-1 text-xs text-[var(--text-secondary)]">
+          <Calendar className="ml-2 mr-1.5 h-3.5 w-3.5 text-[#c59b52]" />
           {['Fév 2026', 'Q1 2026', 'Année 2026'].map((p) => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
-              className={`rounded-md px-2.5 py-1 font-medium transition-all ${
+              className={`rounded-lg px-2.5 py-1 text-[11px] font-medium transition-all ${
                 period === p
-                  ? 'bg-gray-800 text-white shadow-sm'
-                  : 'text-gray-400 hover:text-gray-200'
+                  ? 'bg-[#c59b52] text-black font-bold shadow-sm'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
             >
               {p}
@@ -84,36 +82,36 @@ export function Header({
         </div>
 
         {/* Currency Switcher */}
-        <div className="flex items-center rounded-lg border border-gray-800 bg-gray-900/80 p-1 text-xs">
+        <div className="flex items-center rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-1 text-xs">
           <button
             onClick={() => setCurrency('USD')}
-            className={`flex items-center gap-1 rounded-md px-2 py-1 font-semibold transition-all ${
+            className={`flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-bold font-mono transition-all ${
               currency === 'USD'
-                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                : 'text-gray-400 hover:text-gray-200'
+                ? 'bg-[#c59b52]/20 text-[#c59b52] border border-[#c59b52]/30'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
-            <DollarSign className="h-3.5 w-3.5" /> USD
+            <DollarSign className="h-3 w-3" /> USD
           </button>
           <button
             onClick={() => setCurrency('EUR')}
-            className={`flex items-center gap-1 rounded-md px-2 py-1 font-semibold transition-all ${
+            className={`flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-bold font-mono transition-all ${
               currency === 'EUR'
-                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                : 'text-gray-400 hover:text-gray-200'
+                ? 'bg-[#c59b52]/20 text-[#c59b52] border border-[#c59b52]/30'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
-            <Euro className="h-3.5 w-3.5" /> EUR
+            <Euro className="h-3 w-3" /> EUR
           </button>
         </div>
 
         {/* Quick Add Expense Action */}
         <Button
           onClick={onOpenAddExpense}
-          className="gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-900/30 font-medium text-xs px-3.5 h-9"
+          className="gap-2 bg-gradient-to-r from-[#d4af37] via-[#c59b52] to-[#b08140] hover:shadow-lg hover:shadow-[#c59b52]/30 text-black font-bold text-xs px-4 h-9 rounded-xl transition-all active:scale-95"
         >
           <PlusCircle className="h-4 w-4" />
-          + Saisie Dépense / Achat
+          <span>+ Saisie Dépense / Achat</span>
         </Button>
       </div>
     </header>

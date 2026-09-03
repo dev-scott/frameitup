@@ -12,20 +12,17 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  Badge,
   Button,
 } from '@frameitup/ui';
 import { Expense, ExpenseCategory, ExpenseStatus } from '@frameitup/types';
 import {
   Receipt,
   Search,
-  Filter,
-  Download,
   Plus,
   CheckCircle2,
   Clock,
-  AlertCircle,
   Building2,
+  Download,
 } from 'lucide-react';
 
 interface ExpensesTableProps {
@@ -79,7 +76,7 @@ export function ExpensesTable({
     switch (status) {
       case ExpenseStatus.PAID:
         return (
-          <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-400 border border-emerald-500/20">
+          <span className="inline-flex items-center gap-1 rounded-md bg-[#c59b52]/10 px-2 py-0.5 text-xs font-semibold text-[#c59b52] border border-[#c59b52]/20">
             <CheckCircle2 className="h-3 w-3" /> Payée
           </span>
         );
@@ -97,7 +94,7 @@ export function ExpensesTable({
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 rounded-md bg-gray-800 px-2 py-0.5 text-xs font-semibold text-gray-300">
+          <span className="inline-flex items-center gap-1 rounded-md bg-[var(--bg-tertiary)] px-2 py-0.5 text-xs font-semibold text-[var(--text-muted)]">
             {status}
           </span>
         );
@@ -105,190 +102,145 @@ export function ExpensesTable({
   };
 
   return (
-    <Card className="border-gray-800/80 bg-gradient-to-b from-gray-900/90 to-gray-900/40 backdrop-blur-md">
-      <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-800/60">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20">
+    <div className="space-y-6">
+      {/* Top Totals Ribbon */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-2xl border border-[var(--border-gold)] glass-card p-4">
+          <span className="text-[10px] uppercase font-bold text-[var(--text-muted)] tracking-wider">Total Dépenses HT</span>
+          <div className="text-xl font-serif font-bold text-[var(--text-primary)] mt-1">
+            {symbol}{(totalHT * rate).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-[var(--border-gold)] glass-card p-4">
+          <span className="text-[10px] uppercase font-bold text-[var(--text-muted)] tracking-wider">TVA Déductible Récupérable</span>
+          <div className="text-xl font-serif font-bold text-[#c59b52] mt-1">
+            {symbol}{(totalTVA * rate).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-[var(--border-gold)] glass-card p-4">
+          <span className="text-[10px] uppercase font-bold text-[var(--text-muted)] tracking-wider">Total TTC Décaissements</span>
+          <div className="text-xl font-serif font-bold text-[var(--text-primary)] mt-1">
+            {symbol}{(totalTTC * rate).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Table Card */}
+      <Card className="border border-[var(--border-gold)] glass-card rounded-2xl shadow-xl">
+        <CardHeader className="pb-4 border-b border-[var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#c59b52]/10 text-[#c59b52] border border-[#c59b52]/20">
               <Receipt className="h-4 w-4" />
             </div>
-            <CardTitle className="text-base font-bold text-white">
-              Gestion des Dépenses & Achats Fournisseurs
-            </CardTitle>
-          </div>
-          <p className="text-xs text-gray-400 mt-1">
-            Enregistrement des factures d'achats, déductibilité de la TVA et suivi des règlements
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            onClick={onAddExpense}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs h-9 gap-1.5"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            Nouvelle Dépense
-          </Button>
-        </div>
-      </CardHeader>
-
-      <CardContent className="pt-4 space-y-4">
-        {/* Filters and Search */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Filtrer par libellé ou fournisseur..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="h-9 w-full rounded-lg border border-gray-800 bg-gray-950/70 pl-9 pr-3 text-xs text-gray-200 placeholder:text-gray-500 focus:border-emerald-500 focus:outline-none"
-            />
+            <div>
+              <CardTitle className="text-base font-bold font-serif text-[var(--text-primary)]">
+                Journal des Dépenses & Achats Matières
+              </CardTitle>
+              <p className="text-xs text-[var(--text-muted)]">
+                {filtered.length} écriture(s) enregistrée(s)
+              </p>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-            {/* Category Filter */}
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="h-9 rounded-lg border border-gray-800 bg-gray-950/70 px-3 text-xs text-gray-300 focus:border-emerald-500 focus:outline-none"
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={onAddExpense}
+              className="gap-1.5 bg-gradient-to-r from-[#d4af37] to-[#b08140] text-black font-bold text-xs h-9 rounded-xl shadow-md"
             >
-              <option value="ALL">Toutes les catégories</option>
-              {Object.entries(categoryLabels).map(([key, label]) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-            </select>
-
-            {/* Status Filter */}
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="h-9 rounded-lg border border-gray-800 bg-gray-950/70 px-3 text-xs text-gray-300 focus:border-emerald-500 focus:outline-none"
-            >
-              <option value="ALL">Tous les statuts</option>
-              <option value="PAID">Payée</option>
-              <option value="APPROVED">À Décaisser</option>
-              <option value="PENDING">En attente</option>
-            </select>
+              <Plus className="h-4 w-4" />
+              Nouvelle Dépense
+            </Button>
           </div>
-        </div>
+        </CardHeader>
 
-        {/* Expenses Table */}
-        <div className="rounded-xl border border-gray-800/80 overflow-hidden bg-gray-950/40">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-900/60 border-b border-gray-800">
-                <TableHead className="text-gray-400 text-xs">Date / Échéance</TableHead>
-                <TableHead className="text-gray-400 text-xs">Fournisseur & Libellé</TableHead>
-                <TableHead className="text-gray-400 text-xs">Catégorie</TableHead>
-                <TableHead className="text-gray-400 text-xs">Paiement</TableHead>
-                <TableHead className="text-right text-gray-400 text-xs">Montant HT</TableHead>
-                <TableHead className="text-right text-gray-400 text-xs">TVA (20%)</TableHead>
-                <TableHead className="text-right text-gray-400 text-xs">Total TTC</TableHead>
-                <TableHead className="text-center text-gray-400 text-xs">Statut</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.length === 0 ? (
+        <CardContent className="pt-4 space-y-4">
+          {/* Filters Row */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="relative w-full sm:w-72">
+              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-[var(--text-subtle)]" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Filtrer par intitulé, fournisseur..."
+                className="w-full h-8.5 rounded-xl border border-[var(--border)] bg-[var(--bg-primary)] pl-9 pr-3 text-xs text-[var(--text-primary)] focus:border-[#c59b52] focus:outline-none"
+              />
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="h-8.5 rounded-xl border border-[var(--border)] bg-[var(--bg-primary)] px-3 text-xs text-[var(--text-primary)] focus:border-[#c59b52] focus:outline-none"
+              >
+                <option value="ALL">Toutes Catégories</option>
+                {Object.entries(categoryLabels).map(([k, v]) => (
+                  <option key={k} value={k}>{v}</option>
+                ))}
+              </select>
+
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="h-8.5 rounded-xl border border-[var(--border)] bg-[var(--bg-primary)] px-3 text-xs text-[var(--text-primary)] focus:border-[#c59b52] focus:outline-none"
+              >
+                <option value="ALL">Tous Statuts</option>
+                <option value="PAID">Payée</option>
+                <option value="APPROVED">À Décaisser</option>
+                <option value="PENDING">En Attente</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className="rounded-xl border border-[var(--border)] overflow-hidden">
+            <Table>
+              <TableHeader className="bg-[var(--bg-secondary)] text-[var(--text-muted)] text-[11px] uppercase tracking-wider font-semibold">
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-8 text-gray-500 text-xs">
-                    Aucune dépense ne correspond aux critères de recherche.
-                  </TableCell>
+                  <TableHead className="py-3 px-4">Date</TableHead>
+                  <TableHead className="py-3 px-4">Fournisseur & Intitulé</TableHead>
+                  <TableHead className="py-3 px-4">Catégorie</TableHead>
+                  <TableHead className="py-3 px-4 text-right">Montant HT</TableHead>
+                  <TableHead className="py-3 px-4 text-right">TVA ({symbol})</TableHead>
+                  <TableHead className="py-3 px-4 text-right">Total TTC</TableHead>
+                  <TableHead className="py-3 px-4 text-center">Statut</TableHead>
                 </TableRow>
-              ) : (
-                filtered.map((exp) => (
-                  <TableRow key={exp.id} className="hover:bg-gray-800/30">
-                    <TableCell className="text-xs text-gray-300 font-mono">
-                      {new Date(exp.date).toLocaleDateString('fr-FR')}
+              </TableHeader>
+              <TableBody className="divide-y divide-[var(--border)] text-xs font-mono">
+                {filtered.map((e) => (
+                  <TableRow key={e.id} className="hover:bg-[var(--bg-tertiary)]/40 transition-colors">
+                    <TableCell className="py-3 px-4 text-[var(--text-muted)]">
+                      {new Date(e.expenseDate).toLocaleDateString('fr-FR')}
                     </TableCell>
-                    <TableCell>
-                      <div className="text-xs font-semibold text-white">{exp.description}</div>
-                      <div className="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5">
-                        <Building2 className="h-3 w-3 text-gray-500" />
-                        {exp.supplierName || 'Frais direct interne'}
+                    <TableCell className="py-3 px-4 font-sans font-medium text-[var(--text-primary)]">
+                      <div className="flex items-center gap-1.5">
+                        <Building2 className="h-3.5 w-3.5 text-[#c59b52]" />
+                        <span>{e.supplierName ?? 'Fournisseur Général'}</span>
                       </div>
+                      <div className="text-[11px] text-[var(--text-muted)] font-normal">{e.description}</div>
                     </TableCell>
-                    <TableCell>
-                      <span className="text-[11px] font-medium text-gray-300 bg-gray-800/80 px-2 py-0.5 rounded-md border border-gray-700/50">
-                        {categoryLabels[exp.category] || exp.category}
-                      </span>
+                    <TableCell className="py-3 px-4 font-sans text-[var(--text-secondary)]">
+                      {categoryLabels[e.category] ?? e.category}
                     </TableCell>
-                    <TableCell className="text-xs text-gray-400">
-                      {exp.paymentMethod.replace('_', ' ')}
+                    <TableCell className="py-3 px-4 text-right text-[var(--text-primary)]">
+                      {symbol}{(e.amountUsd * rate).toFixed(2)}
                     </TableCell>
-                    <TableCell className="text-right text-xs font-mono font-medium text-gray-300">
-                      {symbol}
-                      {(exp.amountUsd * rate).toLocaleString('fr-FR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
+                    <TableCell className="py-3 px-4 text-right text-[#c59b52]">
+                      {symbol}{(e.taxAmountUsd * rate).toFixed(2)}
                     </TableCell>
-                    <TableCell className="text-right text-xs font-mono text-gray-400">
-                      {symbol}
-                      {(exp.taxAmountUsd * rate).toLocaleString('fr-FR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
+                    <TableCell className="py-3 px-4 text-right font-bold text-[var(--text-primary)]">
+                      {symbol}{(e.totalWithTaxUsd * rate).toFixed(2)}
                     </TableCell>
-                    <TableCell className="text-right text-xs font-mono font-bold text-white">
-                      {symbol}
-                      {(exp.totalWithTaxUsd * rate).toLocaleString('fr-FR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
+                    <TableCell className="py-3 px-4 text-center">
+                      {getStatusBadge(e.status)}
                     </TableCell>
-                    <TableCell className="text-center">{getStatusBadge(exp.status)}</TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
-
-        {/* Totals Summary Footer */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-gray-950/80 border border-gray-800/80">
-          <div className="text-xs text-gray-400">
-            Affichage de <span className="font-bold text-white">{filtered.length}</span> dépenses
+                ))}
+              </TableBody>
+            </Table>
           </div>
-
-          <div className="flex items-center gap-6">
-            <div className="text-right">
-              <div className="text-[10px] uppercase text-gray-400">Total HT</div>
-              <div className="text-xs font-bold text-gray-200 font-mono">
-                {symbol}
-                {(totalHT * rate).toLocaleString('fr-FR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </div>
-            </div>
-
-            <div className="text-right">
-              <div className="text-[10px] uppercase text-gray-400">TVA Déductible</div>
-              <div className="text-xs font-bold text-emerald-400 font-mono">
-                {symbol}
-                {(totalTVA * rate).toLocaleString('fr-FR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </div>
-            </div>
-
-            <div className="text-right border-l border-gray-800 pl-6">
-              <div className="text-[10px] uppercase text-emerald-400 font-bold">Total Décaissements TTC</div>
-              <div className="text-base font-black text-white font-mono">
-                {symbol}
-                {(totalTTC * rate).toLocaleString('fr-FR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
