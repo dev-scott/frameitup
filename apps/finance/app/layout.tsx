@@ -15,7 +15,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${inter.variable} ${playfair.variable}`}>
       <body className="bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased min-h-screen">
-        <ClerkProvider>{children}</ClerkProvider>
+        <ClerkProvider
+          appearance={{
+            variables: {
+              colorPrimary: '#c59b52',
+              colorBackground: '#0f1118',
+              colorInputBackground: '#090a0f',
+              colorInputText: '#f5f5f5',
+              colorText: '#f5f5f5',
+              colorTextSecondary: '#a1a1aa',
+              borderRadius: '0.75rem',
+            },
+          }}
+        >
+          {children}
+        </ClerkProvider>
       </body>
     </html>
   );

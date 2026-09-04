@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { AdminGuard } from '../components/auth/AdminGuard';
 import { Header } from '../components/layout/Header';
 import { Sidebar, FinanceTab } from '../components/layout/Sidebar';
 import { KpiGrid } from '../components/overview/KpiGrid';
