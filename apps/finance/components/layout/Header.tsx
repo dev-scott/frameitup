@@ -31,26 +31,6 @@ export function Header({
     <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[var(--border)] bg-[var(--bg-primary)]/85 px-8 backdrop-blur-xl">
       {/* Search & Breadcrumb */}
       <div className="flex items-center gap-6">
-        <div className="flex items-center gap-3.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#c59b52]/10 border border-[#c59b52]/30 text-[#c59b52] shadow-md shadow-[#c59b52]/10">
-            <TrendingUp className="h-5 w-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c59b52]">
-                FrameItUp Enterprise
-              </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#c59b52]/10 px-2 py-0.5 text-[9px] font-semibold text-[#c59b52] border border-[#c59b52]/20">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#c59b52] animate-pulse" />
-                Live Sync
-              </span>
-            </div>
-            <h1 className="text-lg font-bold font-serif text-[var(--text-primary)] tracking-tight">
-              Direction Financière & Comptabilité Atelier
-            </h1>
-          </div>
-        </div>
-
         <div className="hidden lg:flex relative items-center ml-4">
           <Search className="absolute left-3 h-4 w-4 text-[var(--text-subtle)]" />
           <input

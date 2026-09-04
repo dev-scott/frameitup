@@ -89,13 +89,13 @@ export function Sidebar({
         {/* Brand Hallmark */}
         <div className="flex items-center gap-3 px-3 py-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#d4af37] via-[#c59b52] to-[#844819] text-black font-black text-sm shadow-md shadow-[#c59b52]/20">
-            F
+            <img src="/images/frameitup_full_logo_horizontal.png" alt="" />
           </div>
           <div>
             <div className="text-sm font-bold font-serif text-[var(--text-primary)] tracking-wider flex items-center gap-1.5 uppercase">
-              FrameItUp <span className="text-[#c59b52] font-mono text-[10px] lowercase px-1 rounded bg-[#c59b52]/10 border border-[#c59b52]/30">fin</span>
+              FrameItUp
             </div>
-            <p className="text-[10px] text-[var(--text-subtle)] uppercase tracking-widest font-sans font-semibold">Cockpit Direction Financière</p>
+            <p className="text-[10px] text-[var(--text-subtle)] uppercase tracking-widest font-sans font-semibold">Finance Dashboard</p>
           </div>
         </div>
 
