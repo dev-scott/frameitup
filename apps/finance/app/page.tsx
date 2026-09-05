@@ -101,118 +101,121 @@ export default function FinanceDashboard() {
   const unpaidInvoicesCount = invoices.filter((i) => i.status !== 'PAID').length;
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased relative">
-      {/* Subtle luxury ambient gold blur */}
-      <div className="absolute top-0 right-1/4 w-[600px] h-[400px] bg-gradient-to-b from-[#c59b52]/10 via-transparent to-transparent rounded-full blur-[140px] pointer-events-none -z-10" />
+    <AdminGuard>
+      <div className="flex h-screen w-full overflow-hidden bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased relative">
+        {/* Subtle luxury ambient gold blur */}
+        <div className="absolute top-0 right-1/4 w-[600px] h-[400px] bg-gradient-to-b from-[#c59b52]/10 via-transparent to-transparent rounded-full blur-[140px] pointer-events-none -z-10" />
 
-      {/* Sidebar Navigation */}
-      <Sidebar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        pendingExpensesCount={pendingExpensesCount}
-        unpaidInvoicesCount={unpaidInvoicesCount}
-      />
-
-      {/* Main Content Area */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <Header
-          currency={currency}
-          setCurrency={setCurrency}
-          period={period}
-          setPeriod={setPeriod}
-          onOpenAddExpense={() => setIsAddExpenseOpen(true)}
+        {/* Sidebar Navigation */}
+        <Sidebar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          pendingExpensesCount={pendingExpensesCount}
+          unpaidInvoicesCount={unpaidInvoicesCount}
         />
 
-        <main className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
-          {/* TAB 1: COCKPIT & OVERVIEW */}
-          {activeTab === 'cockpit' && (
-            <div className="space-y-8 animate-in fade-in-50 duration-300">
-              {/* Top KPI Metrics Grid */}
-              <KpiGrid kpis={kpis} currency={currency} />
+        {/* Main Content Area */}
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <Header
+            currency={currency}
+            setCurrency={setCurrency}
+            period={period}
+            setPeriod={setPeriod}
+            onOpenAddExpense={() => setIsAddExpenseOpen(true)}
+          />
 
-              {/* Main Charts & Analytics Row */}
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                <div className="xl:col-span-2">
-                  <RevenueExpensesChart data={MONTHLY_TRENDS} currency={currency} />
+          <main className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
+            {/* TAB 1: COCKPIT & OVERVIEW */}
+            {activeTab === 'cockpit' && (
+              <div className="space-y-8 animate-in fade-in-50 duration-300">
+                {/* Top KPI Metrics Grid */}
+                <KpiGrid kpis={kpis} currency={currency} />
+
+                {/* Main Charts & Analytics Row */}
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                  <div className="xl:col-span-2">
+                    <RevenueExpensesChart data={MONTHLY_TRENDS} currency={currency} />
+                  </div>
+                  <div className="xl:col-span-1">
+                    <RecentTransactionsFeed currency={currency} />
+                  </div>
                 </div>
-                <div className="xl:col-span-1">
-                  <RecentTransactionsFeed currency={currency} />
-                </div>
+
+                {/* Margin Simulator */}
+                <MarginSimulator currency={currency} />
               </div>
+            )}
 
-              {/* Margin Simulator */}
-              <MarginSimulator currency={currency} />
-            </div>
-          )}
+            {/* TAB 2: DÉPENSES & FOURNISSEURS */}
+            {activeTab === 'expenses' && (
+              <div className="space-y-8 animate-in fade-in-50 duration-300">
+                <ExpensesTable
+                  expenses={expenses}
+                  currency={currency}
+                  onAddExpense={() => setIsAddExpenseOpen(true)}
+                />
+                <SuppliersDirectory suppliers={suppliers} currency={currency} />
+              </div>
+            )}
 
-          {/* TAB 2: DÉPENSES & FOURNISSEURS */}
-          {activeTab === 'expenses' && (
-            <div className="space-y-8 animate-in fade-in-50 duration-300">
-              <ExpensesTable
-                expenses={expenses}
-                currency={currency}
-                onAddExpense={() => setIsAddExpenseOpen(true)}
-              />
-              <SuppliersDirectory suppliers={suppliers} currency={currency} />
-            </div>
-          )}
+            {/* TAB 3: COMMANDES & UNIT ECONOMICS */}
+            {activeTab === 'orders' && (
+              <div className="space-y-8 animate-in fade-in-50 duration-300">
+                <OrderUnitEconomicsTable orders={UNIT_ECONOMICS_DATA} currency={currency} />
+                <MarginSimulator currency={currency} />
+              </div>
+            )}
 
-          {/* TAB 3: COMMANDES & UNIT ECONOMICS */}
-          {activeTab === 'orders' && (
-            <div className="space-y-8 animate-in fade-in-50 duration-300">
-              <OrderUnitEconomicsTable orders={UNIT_ECONOMICS_DATA} currency={currency} />
-              <MarginSimulator currency={currency} />
-            </div>
-          )}
+            {/* TAB 4: FACTURATION & TVA */}
+            {activeTab === 'invoices' && (
+              <div className="space-y-8 animate-in fade-in-50 duration-300">
+                <VatReportCard vatReport={vatReport} currency={currency} />
+                <InvoicesList
+                  invoices={invoices}
+                  currency={currency}
+                  onExportModalOpen={() => setIsExportModalOpen(true)}
+                />
+              </div>
+            )}
 
-          {/* TAB 4: FACTURATION & TVA */}
-          {activeTab === 'invoices' && (
-            <div className="space-y-8 animate-in fade-in-50 duration-300">
-              <VatReportCard vatReport={vatReport} currency={currency} />
-              <InvoicesList
-                invoices={invoices}
-                currency={currency}
-                onExportModalOpen={() => setIsExportModalOpen(true)}
-              />
-            </div>
-          )}
+            {/* TAB 5: COMPTE DE RÉSULTAT (P&L) */}
+            {activeTab === 'pnl' && (
+              <div className="space-y-8 animate-in fade-in-50 duration-300">
+                <ProfitLossStatementView pnl={pnl} currency={currency} />
+              </div>
+            )}
 
-          {/* TAB 5: COMPTE DE RÉSULTAT (P&L) */}
-          {activeTab === 'pnl' && (
-            <div className="space-y-8 animate-in fade-in-50 duration-300">
-              <ProfitLossStatementView pnl={pnl} currency={currency} />
-            </div>
-          )}
+            {/* TAB 6: ARTISTES MARKETPLACE */}
+            {activeTab === 'artists' && (
+              <div className="space-y-8 animate-in fade-in-50 duration-300">
+                <ArtistPayoutsTable payouts={ARTIST_PAYOUTS_DATA} currency={currency} />
+              </div>
+            )}
 
-          {/* TAB 6: ARTISTES MARKETPLACE */}
-          {activeTab === 'artists' && (
-            <div className="space-y-8 animate-in fade-in-50 duration-300">
-              <ArtistPayoutsTable payouts={ARTIST_PAYOUTS_DATA} currency={currency} />
-            </div>
-          )}
+            {/* TAB 7: BUDGETS & TRÉSORERIE */}
+            {activeTab === 'budgets' && (
+              <div className="space-y-8 animate-in fade-in-50 duration-300">
+                <CashFlowForecast currency={currency} />
+                <BudgetVsActualTable budgets={BUDGET_TARGETS} currency={currency} />
+              </div>
+            )}
+          </main>
+        </div>
 
-          {/* TAB 7: BUDGETS & TRÉSORERIE */}
-          {activeTab === 'budgets' && (
-            <div className="space-y-8 animate-in fade-in-50 duration-300">
-              <CashFlowForecast currency={currency} />
-              <BudgetVsActualTable budgets={BUDGET_TARGETS} currency={currency} />
-            </div>
-          )}
-        </main>
+        {/* Interactive Modals */}
+        <AddExpenseModal
+          isOpen={isAddExpenseOpen}
+          onClose={() => setIsAddExpenseOpen(false)}
+          onAdd={handleAddExpense}
+          currency={currency}
+        />
+
+        <AccountingExportModal
+          isOpen={isExportModalOpen}
+          onClose={() => setIsExportModalOpen(false)}
+        />
       </div>
-
-      {/* Interactive Modals */}
-      <AddExpenseModal
-        isOpen={isAddExpenseOpen}
-        onClose={() => setIsAddExpenseOpen(false)}
-        onAdd={handleAddExpense}
-        currency={currency}
-      />
-
-      <AccountingExportModal
-        isOpen={isExportModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
-      />
-    </div>
+    </AdminGuard>
   );
 }
+
